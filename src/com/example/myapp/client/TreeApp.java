@@ -29,17 +29,17 @@ public class TreeApp implements EntryPoint {
     private static int idCounter = 0;
     
     private int nextId() {
-        return ++idCounter;
+        return idCounter++;
     }
 
     private class TreeListLine {
         private Integer id;
-        private int parentId;
+        private Integer parentId;
         private String name;
         private String ip;
         private int port;
 
-        public TreeListLine(Integer id, int parentId, String name, String ip, int port) {
+        public TreeListLine(Integer id, Integer parentId, String name, String ip, int port) {
             this.id = id;
             this.parentId = parentId;
             this.name = name;
@@ -117,7 +117,7 @@ public class TreeApp implements EntryPoint {
         List<TreeNode> children = rootNode.getChildren();
 
         int id = rootNode.getId();
-        Integer parentId = 0;
+        Integer parentId = rootNode.getParentId();
         String name = rootNode.getData().getName();
         String ip = rootNode.getData().getIp();
         int port = rootNode.getData().getPort();
