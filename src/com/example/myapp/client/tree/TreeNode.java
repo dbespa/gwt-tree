@@ -24,12 +24,23 @@ public class TreeNode {
         this.data = data;
     }
 
+    public List<TreeNode> getChildren() {
+        return this.children;
+    }
+
     public int getId() {
         return id;
+    }
+
+    public void setParent(TreeNode parent) {
+        this.parent = parent;
     }
 
     public Integer getParentId() {
         return parent.getId();
     }
 
+    public void addChildrenNode(TreeNode node) {
+        children.add(node);
+    }
 }
