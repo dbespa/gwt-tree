@@ -15,6 +15,22 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 public class TreeApp implements EntryPoint {
+    
+
+    private static final int NODE2_PORT = 12;
+    private static final String NODE2_IP = "127.0.1.2";
+    private static final String NODE2_NAME = "node-2";
+    private static final int NODE1_PORT = 11;
+    private static final String NODE1_IP = "127.0.1.1";
+    private static final String NODE1_NAME = "node-1";
+    private static final int ROOT_NODE_PORT = 1111;
+    private static final String ROOT_NODE_IP = "127.0.0.1";
+    private static final String ROOT_NODE_NAME = "rootNode";
+    private static int idCounter = 0;
+    
+    private int nextId() {
+        return ++idCounter;
+    }
 
     private class TreeListLine {
         private Integer id;
@@ -87,15 +103,15 @@ public class TreeApp implements EntryPoint {
 
         Tree tree = new Tree();
 
-        Data data1 = new Data("rootNode", "127.0.0.1", 1111);
-        Data data2 = new Data("node-1", "127.0.1.1", 11);
-        Data data3 = new Data("node-2", "127.0.1.2", 12);
+        Data data1 = new Data(ROOT_NODE_NAME, ROOT_NODE_IP, ROOT_NODE_PORT);
+        Data data2 = new Data(NODE1_NAME, NODE1_IP, NODE1_PORT);
+        Data data3 = new Data(NODE2_NAME, NODE2_IP, NODE2_PORT);
 
-        TreeNode rootNode = new TreeNode(0, data1, null);
+        TreeNode rootNode = new TreeNode(nextId(), data1, null);
         
         tree.addRootNode(rootNode);
-        TreeNode node1 = new TreeNode(1, data2, rootNode);
-        TreeNode node2 = new TreeNode(2, data3, rootNode);
+        TreeNode node1 = new TreeNode(nextId(), data2, rootNode);
+        TreeNode node2 = new TreeNode(nextId(), data3, rootNode);
         tree.addNode(rootNode, node1);
         tree.addNode(rootNode, node2);
         List<TreeNode> children = rootNode.getChildren();
