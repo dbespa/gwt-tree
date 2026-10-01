@@ -37,6 +37,8 @@ public class TreeNode {
     }
 
     public Integer getParentId() {
+        if (this.parent == null)
+            return null;
         return parent.getId();
     }
 
