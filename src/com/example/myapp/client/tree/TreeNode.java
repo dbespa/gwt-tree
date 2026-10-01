@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TreeNode {
-    int id;
-    Data data;
-    List<TreeNode> children;
-    TreeNode parent;
+    private int id;
+    private Data data;
+    private List<TreeNode> children;
+    private TreeNode parent;
 
     public TreeNode(int id, Data data, TreeNode parent) {
         this.id = id;
@@ -28,7 +28,7 @@ public class TreeNode {
         return id;
     }
 
-    public int getParentId() {
+    public Integer getParentId() {
         return parent.getId();
     }
 
