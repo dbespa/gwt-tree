@@ -101,20 +101,20 @@ public class TreeApp implements EntryPoint {
         dataProvider.addDataDisplay(table);
         List<TreeListLine> list = dataProvider.getList();
 
-        Tree tree = new Tree();
+        Tree<Data> tree = new Tree<>();
 
         Data data1 = new Data(ROOT_NODE_NAME, ROOT_NODE_IP, ROOT_NODE_PORT);
         Data data2 = new Data(NODE1_NAME, NODE1_IP, NODE1_PORT);
         Data data3 = new Data(NODE2_NAME, NODE2_IP, NODE2_PORT);
 
-        TreeNode rootNode = new TreeNode(nextId(), data1, null);
+        TreeNode<Data> rootNode = new TreeNode<Data>(nextId(), data1, null);
         
         tree.addRootNode(rootNode);
-        TreeNode node1 = new TreeNode(nextId(), data2, rootNode);
-        TreeNode node2 = new TreeNode(nextId(), data3, rootNode);
+        TreeNode<Data> node1 = new TreeNode<>(nextId(), data2, rootNode);
+        TreeNode<Data> node2 = new TreeNode<>(nextId(), data3, rootNode);
         tree.addNode(rootNode, node1);
         tree.addNode(rootNode, node2);
-        List<TreeNode> children = rootNode.getChildren();
+        List<TreeNode<Data>> children = rootNode.getChildren();
 
         int id = rootNode.getId();
         Integer parentId = rootNode.getParentId();
@@ -128,7 +128,7 @@ public class TreeApp implements EntryPoint {
         RootPanel.get().add(refreshButton);
 
         for (int i = 0; i < children.size(); i++) {
-            TreeNode node = children.get(i);
+            TreeNode<Data> node = children.get(i);
 
             id = node.getId();
             parentId = node.getParentId();
