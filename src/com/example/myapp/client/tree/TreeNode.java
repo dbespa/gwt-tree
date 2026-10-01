@@ -32,7 +32,7 @@ public class TreeNode {
         return id;
     }
 
-    public void setParent(TreeNode parent) {
+    void setParent(TreeNode parent) {
         this.parent = parent;
     }
 
@@ -40,7 +40,7 @@ public class TreeNode {
         return parent.getId();
     }
 
-    public void addChildrenNode(TreeNode node) {
+    void addChildrenNode(TreeNode node) {
         children.add(node);
     }
 }
