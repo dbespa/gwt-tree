@@ -27,8 +27,9 @@
     <mkdir dir="war/WEB-INF/classes"/>
     <javac srcdir="src" includes="**" encoding="utf-8"
         destdir="war/WEB-INF/classes"
-        source="1.7" target="1.7" nowarn="true"
-        debug="true" debuglevel="lines,vars,source">
+        source="1.8" target="1.8" nowarn="true"
+        debug="true" debuglevel="lines,vars,source" fork="true"
+    	executable="/opt/jdk8u352-b08/bin/javac">
       <classpath refid="project.class.path"/>
     </javac>
     <copy todir="war/WEB-INF/classes">
@@ -37,7 +38,7 @@
   </target>
 
   <target name="gwtc" depends="javac" description="GWT compile to JavaScript (production mode)">
-    <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler" maxmemory="256m">
+    <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler" maxmemory="256m" jvm="/opt/jdk8u352-b08/bin/java">
       <classpath>
         <pathelement location="src"/>
         <path refid="project.class.path"/>

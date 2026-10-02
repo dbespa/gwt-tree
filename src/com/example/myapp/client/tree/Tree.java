@@ -1,22 +1,31 @@
 package com.example.myapp.client.tree;
 
-public class Tree<T> {
-    private TreeNode<T> root;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Tree {
+    private TreeNode root;
 
     public Tree() {
         root = null;
     }
 
-    public TreeNode<T> getRoot() {
+    public TreeNode getRoot() {
         return root;
     }
 
-    public void addRootNode(TreeNode<T> node) {
+    public void addRootNode(TreeNode node) {
         root = node;
     }
 
-    public void addNode(TreeNode<T> parentNode, TreeNode<T> node) {
-        parentNode.addChildrenNode(node);
-        node.setParent(parentNode);
+    public List<TreeNode> getAllNodes() {
+        List<TreeNode> allNodesList = new ArrayList<>();
+        allNodesList.add(root);
+
+        if (root != null) {
+            allNodesList.addAll(root.getDescendantsList());
+        }
+
+        return allNodesList;
     }
 }
