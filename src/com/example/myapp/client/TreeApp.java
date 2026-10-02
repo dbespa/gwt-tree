@@ -15,7 +15,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 public class TreeApp implements EntryPoint {
-    
 
     private static final int NODE2_PORT = 12;
     private static final String NODE2_IP = "127.0.1.2";
@@ -27,7 +26,7 @@ public class TreeApp implements EntryPoint {
     private static final String ROOT_NODE_IP = "127.0.0.1";
     private static final String ROOT_NODE_NAME = "rootNode";
     private static int idCounter = 0;
-    
+
     private int nextId() {
         return idCounter++;
     }
@@ -108,13 +107,13 @@ public class TreeApp implements EntryPoint {
         Data data3 = new Data(NODE2_NAME, NODE2_IP, NODE2_PORT);
 
         TreeNode<Data> rootNode = new TreeNode<Data>(nextId(), data1, null);
-        
+
         tree.addRootNode(rootNode);
         TreeNode<Data> node1 = new TreeNode<>(nextId(), data2, rootNode);
         TreeNode<Data> node2 = new TreeNode<>(nextId(), data3, rootNode);
         tree.addNode(rootNode, node1);
         tree.addNode(rootNode, node2);
-        List<TreeNode<Data>> children = rootNode.getChildren();
+        List<TreeNode<Data>> children = rootNode.getCurrentChildren();
 
         int id = rootNode.getId();
         Integer parentId = rootNode.getParentId();

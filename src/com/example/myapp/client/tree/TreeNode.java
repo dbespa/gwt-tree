@@ -24,8 +24,9 @@ public class TreeNode<T> {
         this.data = data;
     }
 
-    public List<TreeNode<T>> getChildren() {
-        return this.children;
+    public List<TreeNode<T>> getCurrentChildren() {
+        List<TreeNode<T>> currentChildren = new ArrayList<>(this.children);
+        return currentChildren;
     }
 
     public int getId() {
