@@ -1,11 +1,11 @@
-package com.example.myapp.client;
+package com.example.myapp.server;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.myapp.client.tree.Tree;
-import com.example.myapp.client.tree.TreeNode;
 import com.example.myapp.shared.TreeNodeBean;
+import com.example.myapp.shared.tree.Tree;
+import com.example.myapp.shared.tree.TreeNode;
 
 public class TreeDao {
 

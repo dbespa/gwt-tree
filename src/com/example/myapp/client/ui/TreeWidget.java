@@ -2,8 +2,7 @@ package com.example.myapp.client.ui;
 
 import java.util.List;
 
-import com.example.myapp.client.tree.Tree;
-import com.example.myapp.client.tree.TreeNode;
+import com.example.myapp.shared.tree.TreeNode;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -47,8 +46,7 @@ public class TreeWidget extends Composite {
         initWidget(tableBase);
     }
 
-    public TreeWidget(Tree tree) {
-        List<TreeNode> allNodes = tree.getAllNodes();
+    public TreeWidget(List<TreeNode> allNodes) {
 
         tableBase.addStyleName("table");
         headerRow.addStyleName("row");

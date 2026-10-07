@@ -1,9 +1,10 @@
-package com.example.myapp.client.tree;
+package com.example.myapp.shared.tree;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TreeNode {
+public class TreeNode implements Serializable {
     private int id;
     private List<TreeNode> children;
     private TreeNode parent;
@@ -11,6 +12,10 @@ public class TreeNode {
     private String name;
     private String ip;
     private int port;
+
+    public TreeNode() {
+
+    }
 
     public TreeNode(int id, String name, String ip, int port) {
         this.id = id;

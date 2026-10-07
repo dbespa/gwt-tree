@@ -1,9 +1,10 @@
-package com.example.myapp.client.tree;
+package com.example.myapp.shared.tree;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tree {
+public class Tree implements Serializable {
     private TreeNode root;
 
     public Tree() {
@@ -18,7 +19,7 @@ public class Tree {
         root = node;
     }
 
-    public List<TreeNode> getAllNodes() {
+    public List<TreeNode> getAllDescendants() {
         List<TreeNode> allNodesList = new ArrayList<>();
         allNodesList.add(root);
 
