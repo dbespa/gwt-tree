@@ -21,7 +21,7 @@ public class DataProviderServiceImpl extends RemoteServiceServlet implements Dat
     List<TreeNodeBean> result = new ArrayList<>(Arrays.asList(rootNode, node1, node2, node3));
 
     private TreeDao treeDao = new TreeDao(result);
-    private final TreeServiceImpl treeService =new TreeServiceImpl();
+    private final TreeServiceImpl treeService = new TreeServiceImpl();
 
     private int nextId() {
         return idCounter++;

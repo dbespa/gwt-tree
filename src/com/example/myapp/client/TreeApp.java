@@ -19,6 +19,7 @@ public class TreeApp implements EntryPoint {
 
     final Label listLabel = new Label("All nodes:");
     final Button refreshButton = new Button("Refresh");
+    final RootPanel treeTableContainer = RootPanel.get("treeTableContainer");
 
     private List<TreeNode> serverData = new ArrayList<>();
 
@@ -39,7 +40,7 @@ public class TreeApp implements EntryPoint {
             public void onSuccess(List<TreeNode> result) {
                 serverData.addAll(result);
                 treeWidget = new TreeWidget(result);
-                RootPanel.get().add(treeWidget);
+                treeTableContainer.add(treeWidget);
             }
         });
     }
@@ -52,15 +53,12 @@ public class TreeApp implements EntryPoint {
         private void refreshTable() {
             treeWidget.removeFromParent();
             getDataFromServer();
-
         }
-
     }
 
     public void onModuleLoad() {
-
-        RootPanel.get().add(listLabel);
-        RootPanel.get().add(refreshButton);
+        treeTableContainer.add(listLabel);
+        treeTableContainer.add(refreshButton);
         Handler handler = new Handler();
         refreshButton.addClickHandler(handler);
         getDataFromServer();
