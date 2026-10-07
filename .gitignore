@@ -1,3 +1,4 @@
 /gwt-unitCache/
 /war/treeapp/
-/war/WEB-INF/
+/war/WEB-INF/lib
+/war/WEB-INF/classes

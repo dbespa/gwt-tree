@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.example.myapp.client.DataProviderService;
 import com.example.myapp.shared.TreeNodeBean;
+import com.example.myapp.shared.tree.Tree;
 import com.example.myapp.shared.tree.TreeNode;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -20,6 +21,7 @@ public class DataProviderServiceImpl extends RemoteServiceServlet implements Dat
     List<TreeNodeBean> result = new ArrayList<>(Arrays.asList(rootNode, node1, node2, node3));
 
     private TreeDao treeDao = new TreeDao(result);
+    private final TreeServiceImpl treeService =new TreeServiceImpl();
 
     private int nextId() {
         return idCounter++;
@@ -27,12 +29,16 @@ public class DataProviderServiceImpl extends RemoteServiceServlet implements Dat
 
     public List<TreeNode> getTreeNodes() {
         try {
-            return treeDao.getTree().getAllDescendants();
+            Tree tree = treeDao.getTree();
+            return treeService.getAllDescendants(tree);
         } catch (Throwable e) {
             System.err.println("Ошибка сервера");
             e.printStackTrace();
             throw e;
         }
+    }
 
+    public Tree getTree() {
+        return treeDao.getTree();
     }
 }

@@ -7,8 +7,8 @@ import com.example.myapp.shared.tree.TreeNode;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-@RemoteServiceRelativePath("dataProvider")
-public interface DataProviderService extends RemoteService {
-    public List<TreeNode> getTreeNodes();
-    public Tree getTree();
+@RemoteServiceRelativePath("tree")
+public interface TreeService extends RemoteService {
+    public List<TreeNode> getAllDescendants(Tree tree);
+    public List<TreeNode> getNodeDescendantsList(TreeNode node);
 }

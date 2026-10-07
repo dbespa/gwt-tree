@@ -63,25 +63,6 @@ public class TreeNode implements Serializable {
         return currentChildren;
     }
 
-    public List<TreeNode> getDescendantsList() {
-        List<TreeNode> childrenList = this.getCurrentChildrenList();
-        List<TreeNode> descendantsList = new ArrayList<>();
-
-        if (childrenList.size() == 0) {
-            return new ArrayList<>();
-        }
-
-        descendantsList.addAll(childrenList);
-
-        for (int i = 0; i < childrenList.size(); i++) {
-            TreeNode currentNode = childrenList.get(i);
-            List<TreeNode> currentNodeDescendants = currentNode.getDescendantsList();
-            descendantsList.addAll(currentNodeDescendants);
-        }
-
-        return descendantsList;
-    }
-
     public int getId() {
         return id;
     }
