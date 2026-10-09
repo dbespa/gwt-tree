@@ -45,22 +45,18 @@ public class TreeApp implements EntryPoint {
         });
     }
 
-    public class Handler implements ClickHandler {
-        public void onClick(ClickEvent event) {
-            refreshTable();
-        }
-
-        private void refreshTable() {
-            treeWidget.removeFromParent();
-            getDataFromServer();
-        }
-    }
-
     public void onModuleLoad() {
         treeTableContainer.add(listLabel);
         treeTableContainer.add(refreshButton);
-        Handler handler = new Handler();
-        refreshButton.addClickHandler(handler);
+        refreshButton.addClickHandler(new ClickHandler() {
+            
+            @Override
+            public void onClick(ClickEvent event) {
+                treeWidget.removeFromParent();
+                getDataFromServer();
+                
+            }
+        });
         getDataFromServer();
     }
 }
