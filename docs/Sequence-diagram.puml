@@ -1,0 +1,66 @@
+@startuml
+actor "Пользователь" as user
+box "Клиентская часть"
+participant "Браузер" as browser
+participant "Показатор" as viewer
+participant "Обновлятор" as updater
+participant "Получатор данных с сервера" as receiver
+box end
+box "Серверная часть"
+participant "Отправлятор данных" as sender
+participant "Преобразоватор" as converter
+participant "Получатор данных из БД" as receiverDB
+database "База данных" as db
+box end
+
+group Открытие приложения
+
+user -> browser++:start()
+activate user
+browser -> viewer++:getTreeWidget()
+viewer -> updater++:getAllNodes(List)
+updater -> receiver++:getAllNodes()
+receiver ->> sender++:getAllNodes()
+sender -> receiverDB++:getAllNodes()
+receiverDB -> db++:getAllNodes()
+
+db -->> receiverDB--:List<NodeEntity>
+receiverDB -->> converter--:List<NodeEntity>
+activate converter
+converter -> converter: transformData()
+converter -->> sender--:List<NodeBean>
+sender -->> receiver--:List<NodeBean>
+receiver -->> updater--:List<NodeBean>
+updater -->> viewer--:List<NodeBean>
+viewer -->> browser--:TreeWidget
+browser -->> user--:Отрисованная страница
+deactivate user
+
+end
+
+group Обновление списка узлов
+
+user -> browser++:клик на кнопку "Refresh"
+activate user
+browser -> viewer++:getTreeWidget()
+viewer -> updater++:getAllNodes(List)
+updater -> receiver++:getAllNodes()
+receiver ->> sender++:getAllNodes()
+sender -> receiverDB++:getAllNodes()
+receiverDB -> db++:getAllNodes()
+
+db -->> receiverDB--:List<NodeEntity>
+receiverDB -->> converter--:List<NodeEntity>
+activate converter
+converter -> converter: transformData()
+converter -->> sender--:List<NodeBean>
+sender -->> receiver--:List<NodeBean>
+receiver -->> updater--:List<NodeBean>
+updater -->> viewer--:List<NodeBean>
+viewer -->> browser--:TreeWidget
+browser -->> user--:Отрисованная страница
+deactivate user
+
+end
+
+@enduml
