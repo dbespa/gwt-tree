@@ -18,11 +18,11 @@ group Открытие приложения
 user -> browser++:start()
 activate user
 browser -> viewer++:getTreeWidget()
-viewer -> updater++:getAllNodes(List)
-updater -> receiver++:getAllNodes()
-receiver ->> sender++:getAllNodes()
-sender -> receiverDB++:getAllNodes()
-receiverDB -> db++:getAllNodes()
+viewer -> updater++:getAllNodes(void)
+updater -> receiver++:getAllNodes(void)
+receiver ->> sender++:getAllNodes(void)
+sender -> receiverDB++:getAllNodes(void)
+receiverDB -> db++:getAllNodes(void)
 
 db -->> receiverDB--:List<NodeEntity>
 receiverDB -->> converter--:List<NodeEntity>
@@ -43,11 +43,11 @@ group Обновление списка узлов
 user -> browser++:клик на кнопку "Refresh"
 activate user
 browser -> viewer++:getTreeWidget()
-viewer -> updater++:getAllNodes(List)
-updater -> receiver++:getAllNodes()
-receiver ->> sender++:getAllNodes()
-sender -> receiverDB++:getAllNodes()
-receiverDB -> db++:getAllNodes()
+viewer -> updater++:getAllNodes(void)
+updater -> receiver++:getAllNodes(void)
+receiver ->> sender++:getAllNodes(void)
+sender -> receiverDB++:getAllNodes(void)
+receiverDB -> db++:getAllNodes(void)
 
 db -->> receiverDB--:List<NodeEntity>
 receiverDB -->> converter--:List<NodeEntity>
