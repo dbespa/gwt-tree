@@ -27,7 +27,7 @@ receiverDB -> db++:getAllNodes(void)
 db -->> receiverDB--:List<NodeEntity>
 receiverDB -->> converter--:List<NodeEntity>
 activate converter
-converter -> converter: transformData()
+converter -> converter: transformData(void)
 converter -->> sender--:List<NodeBean>
 sender -->> receiver--:List<NodeBean>
 receiver -->> updater--:List<NodeBean>
@@ -52,7 +52,7 @@ receiverDB -> db++:getAllNodes(void)
 db -->> receiverDB--:List<NodeEntity>
 receiverDB -->> converter--:List<NodeEntity>
 activate converter
-converter -> converter: transformData()
+converter -> converter: transformData(void)
 converter -->> sender--:List<NodeBean>
 sender -->> receiver--:List<NodeBean>
 receiver -->> updater--:List<NodeBean>
