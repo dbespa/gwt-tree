@@ -1,0 +1,9 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(person, "Пользователь", "Использует веб-приложение")
+System(app, "Веб-приложение для получения информации о дереве", "Отображает список узлов дерева")
+
+Rel(person, app, "Использует")
+
+@enduml

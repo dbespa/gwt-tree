@@ -2,14 +2,14 @@
 actor "Пользователь" as user
 box "Клиентская часть"
 participant "Браузер" as browser
-participant "Показатор" as viewer
-participant "Обновлятор" as updater
-participant "Получатор данных с сервера" as receiver
+participant "NodeTableWidget" as widget
+participant "NodeTableRefreshService" as refreshService
+participant "NodeRpcService" as rpcService
 box end
 box "Серверная часть"
-participant "Отправлятор данных" as sender
-participant "Преобразоватор" as converter
-participant "Получатор данных из БД" as receiverDB
+participant "NodeRpcServiceImpl" as rpcServiceImpl
+participant "NodeConvertor" as converter
+participant "NodeDao" as dao
 database "База данных" as db
 box end
 
@@ -17,22 +17,22 @@ group Открытие приложения
 
 user -> browser++:start()
 activate user
-browser -> viewer++:getTreeWidget()
-viewer -> updater++:getAllNodes(void)
-updater -> receiver++:getAllNodes(void)
-receiver ->> sender++:getAllNodes(void)
-sender -> receiverDB++:getAllNodes(void)
-receiverDB -> db++:getAllNodes(void)
+browser -> widget++:getTreeWidget()
+widget -> refreshService++:getAllNodes(void)
+refreshService -> rpcService++:getAllNodes(void)
+rpcService ->> rpcServiceImpl++:getAllNodes(void)
+rpcServiceImpl -> dao++:getAllNodes(void)
+dao -> db++:getAllNodes(void)
 
-db -->> receiverDB--:List<NodeEntity>
-receiverDB -->> converter--:List<NodeEntity>
+db -->> dao--:List<NodeEntity>
+dao -->> converter--:List<NodeEntity>
 activate converter
 converter -> converter: transformData(void)
-converter -->> sender--:List<NodeBean>
-sender -->> receiver--:List<NodeBean>
-receiver -->> updater--:List<NodeBean>
-updater -->> viewer--:List<NodeBean>
-viewer -->> browser--:TreeWidget
+converter -->> rpcServiceImpl--:List<NodeBean>
+rpcServiceImpl -->> rpcService--:List<NodeBean>
+rpcService -->> refreshService--:List<NodeBean>
+refreshService -->> widget--:List<NodeBean>
+widget -->> browser--:TreeWidget
 browser -->> user--:Отрисованная страница
 deactivate user
 
@@ -42,22 +42,22 @@ group Обновление списка узлов
 
 user -> browser++:клик на кнопку "Refresh"
 activate user
-browser -> viewer++:getTreeWidget()
-viewer -> updater++:getAllNodes(void)
-updater -> receiver++:getAllNodes(void)
-receiver ->> sender++:getAllNodes(void)
-sender -> receiverDB++:getAllNodes(void)
-receiverDB -> db++:getAllNodes(void)
+browser -> widget++:getTreeWidget()
+widget -> refreshService++:getAllNodes(void)
+refreshService -> rpcService++:getAllNodes(void)
+rpcService ->> rpcServiceImpl++:getAllNodes(void)
+rpcServiceImpl -> dao++:getAllNodes(void)
+dao -> db++:getAllNodes(void)
 
-db -->> receiverDB--:List<NodeEntity>
-receiverDB -->> converter--:List<NodeEntity>
+db -->> dao--:List<NodeEntity>
+dao -->> converter--:List<NodeEntity>
 activate converter
 converter -> converter: transformData(void)
-converter -->> sender--:List<NodeBean>
-sender -->> receiver--:List<NodeBean>
-receiver -->> updater--:List<NodeBean>
-updater -->> viewer--:List<NodeBean>
-viewer -->> browser--:TreeWidget
+converter -->> rpcServiceImpl--:List<NodeBean>
+rpcServiceImpl -->> rpcService--:List<NodeBean>
+rpcService -->> refreshService--:List<NodeBean>
+refreshService -->> widget--:List<NodeBean>
+widget -->> browser--:TreeWidget
 browser -->> user--:Отрисованная страница
 deactivate user
 

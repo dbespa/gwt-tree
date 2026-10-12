@@ -1,0 +1,19 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(person, "Пользователь", "Использует веб-приложение")
+Container(browser, "Браузер")
+System_Boundary(c1, "") {
+    Container(rpcServiceImpl, "RpcServiceImpl")
+    Container(converter, "NodeConverter")
+    Container(dao, "NodeDao")
+}
+ContainerDb(db, "База Данных")
+
+Rel(person, browser, "Использует")
+Rel(browser, rpcServiceImpl, "GET RPC")
+Rel(rpcServiceImpl, converter, "Вызывает")
+Rel(converter, dao, "Вызывает")
+Rel(dao, db, "Reads from")
+
+@enduml
