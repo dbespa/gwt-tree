@@ -27,7 +27,7 @@ dao -> db++:getAllNodes(void)
 db -->> dao--:List<NodeEntity>
 dao -->> converter--:List<NodeEntity>
 activate converter
-converter -> converter: transformData(void)
+converter -> converter: convertToNodeBeanList(allNodes)
 converter -->> rpcServiceImpl--:List<NodeBean>
 rpcServiceImpl -->> rpcService--:List<NodeBean>
 rpcService -->> refreshService--:List<NodeBean>
@@ -52,7 +52,7 @@ dao -> db++:getAllNodes(void)
 db -->> dao--:List<NodeEntity>
 dao -->> converter--:List<NodeEntity>
 activate converter
-converter -> converter: transformData(void)
+converter -> converter: convertToNodeBeanList(allNodes)
 converter -->> rpcServiceImpl--:List<NodeBean>
 rpcServiceImpl -->> rpcService--:List<NodeBean>
 rpcService -->> refreshService--:List<NodeBean>

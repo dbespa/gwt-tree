@@ -1,0 +1,80 @@
+@startuml
+
+class NodeBean {
+    id: int
+    parentId: String
+    name: String
+    ip: String
+    port: int
+}
+
+class NodeEntity {
+    id: int
+    parentId: Integer
+    name: String
+    ip: String
+    port: int
+}
+
+interface NodeDao {
+    getAllNodes(): List<NodeEntity>    
+}
+
+class NodeDaoDemo {
+    nodeConvertor: NodeConvertor
+
+    getAllNodes(): List<NodeEntity>
+}
+
+class NodeConvertor {
+    convertToNodeBeanList(allNodes: List<NodeEntity>): List<NodeBean>
+}
+
+class NodeRpcServiceImpl {
+    nodeDao: NodeDao
+
+    getAllNodes(): List<NodeBean>
+}
+
+interface NodeRpcService {
+    getAllNodes(): List<NodeBean>
+}
+
+interface NodeRpcServiceAsync {
+    getAllNodes(AsyncCallback<List<NodeBean>>): void   
+}
+
+class NodeTableRefreshService {
+    nodeRpcService: NodeRpcServiceAsync
+
+    getAllNodes(): List<NodeBean>
+}
+
+class NodeTableWidget {
+    nodes: List<NodeBean>
+    table: FlowPanel
+    nodeTableRefreshService: NodeTableRefreshService
+
+    NodeTableWidget()
+    getAllNodes(): List<NodeBean>
+    createTable(): void
+}
+
+class TreeApp {
+    nodeTableWidget: NodeTableWidget
+    onModuleLoad(): void
+}
+
+NodeDao <|.. NodeDaoDemo
+
+NodeDaoDemo -- NodeConvertor
+
+NodeRpcService <|.. NodeRpcServiceImpl
+NodeRpcServiceAsync <|.. NodeRpcServiceImpl
+
+NodeDao -- NodeRpcServiceImpl
+NodeRpcServiceAsync -- NodeTableRefreshService
+NodeTableRefreshService -- NodeTableWidget
+NodeTableWidget -- TreeApp
+
+@enduml
