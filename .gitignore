@@ -3,3 +3,8 @@
 /war/WEB-INF/lib
 /war/WEB-INF/classes
 /docs/out
+/out/
+/.settings/
+.classpath
+.project
+TreeApp.launch
