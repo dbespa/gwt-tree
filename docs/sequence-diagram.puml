@@ -1,4 +1,4 @@
-@startuml
+@startuml sequence-diagram
 actor "Пользователь" as user
 box "Клиентская часть"
 participant "Браузер" as browser
@@ -8,7 +8,7 @@ participant "NodeRpcService" as rpcService
 box end
 box "Серверная часть"
 participant "NodeRpcServiceImpl" as rpcServiceImpl
-participant "NodeConvertor" as converter
+participant "NodeConverter" as converter
 participant "NodeDao" as dao
 database "База данных" as db
 box end
@@ -17,7 +17,7 @@ group Открытие приложения
 
 user -> browser++:start()
 activate user
-browser -> widget++:getTreeWidget()
+browser -> widget++:NodeTableWidget(void)
 widget -> refreshService++:getAllNodes(void)
 refreshService -> rpcService++:getAllNodes(void)
 rpcService ->> rpcServiceImpl++:getAllNodes(void)
@@ -25,14 +25,16 @@ rpcServiceImpl -> dao++:getAllNodes(void)
 dao -> db++:getAllNodes(void)
 
 db -->> dao--:List<NodeEntity>
-dao -->> converter--:List<NodeEntity>
-activate converter
-converter -> converter: convertToNodeBeanList(allNodes)
+dao -->> rpcServiceImpl--:List<NodeEntity>
+rpcServiceImpl -> converter++: convertToNodeBeanList(allNodes: List<NodeEntity>)
+loop for each list item
+converter -> converter: convertToNodeBean(nodeEntity: NodeEntity)
+end
 converter -->> rpcServiceImpl--:List<NodeBean>
 rpcServiceImpl -->> rpcService--:List<NodeBean>
 rpcService -->> refreshService--:List<NodeBean>
 refreshService -->> widget--:List<NodeBean>
-widget -->> browser--:TreeWidget
+widget -->> browser--:NodeTableWidget
 browser -->> user--:Отрисованная страница
 deactivate user
 
@@ -42,7 +44,7 @@ group Обновление списка узлов
 
 user -> browser++:клик на кнопку "Refresh"
 activate user
-browser -> widget++:getTreeWidget()
+browser -> widget++:NodeTableWidget(void)
 widget -> refreshService++:getAllNodes(void)
 refreshService -> rpcService++:getAllNodes(void)
 rpcService ->> rpcServiceImpl++:getAllNodes(void)
@@ -50,14 +52,16 @@ rpcServiceImpl -> dao++:getAllNodes(void)
 dao -> db++:getAllNodes(void)
 
 db -->> dao--:List<NodeEntity>
-dao -->> converter--:List<NodeEntity>
-activate converter
-converter -> converter: convertToNodeBeanList(allNodes)
+dao -->> rpcServiceImpl--:List<NodeEntity>
+rpcServiceImpl -> converter++: convertToNodeBeanList(allNodes: List<NodeEntity>)
+loop for each list item
+converter -> converter: convertToNodeBean(nodeEntity: NodeEntity)
+end
 converter -->> rpcServiceImpl--:List<NodeBean>
 rpcServiceImpl -->> rpcService--:List<NodeBean>
 rpcService -->> refreshService--:List<NodeBean>
 refreshService -->> widget--:List<NodeBean>
-widget -->> browser--:TreeWidget
+widget -->> browser--:NodeTableWidget
 browser -->> user--:Отрисованная страница
 deactivate user
 

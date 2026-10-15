@@ -1,4 +1,4 @@
-@startuml
+@startuml c4-container
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
 Person(person, "Пользователь", "Использует веб-приложение")

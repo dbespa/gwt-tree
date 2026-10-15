@@ -27,17 +27,17 @@
 
 ### Сущности
 
-- УзелBean
-- УзелEntity
+- NodeBean
+- NodeEntity
 
 ### Сервисы
 
-- Показатор
-- Обновлятор
-- Получатель Данных С Сервера
-- Отправлятор Данных
-- Преобразоватор Данных
-- Получатель Данных Из Базы Данных
+- NodeTableWidget
+- NodeTableRefreshService
+- NodeRpcService
+- NodeRpcServiceImpl
+- NodeConverter
+- NodeDao
 
 ## Диаграмма C4
 

@@ -1,8 +1,8 @@
-@startuml
+@startuml class-diagram
 
 class NodeBean {
     id: int
-    parentId: String
+    parentId: Integer
     name: String
     ip: String
     port: int
@@ -21,17 +21,17 @@ interface NodeDao {
 }
 
 class NodeDaoDemo {
-    nodeConvertor: NodeConvertor
-
     getAllNodes(): List<NodeEntity>
 }
 
-class NodeConvertor {
+class NodeConverter {
     convertToNodeBeanList(allNodes: List<NodeEntity>): List<NodeBean>
+    -convertToNodeBean(nodeEntity: NodeEntity): NodeBean
 }
 
 class NodeRpcServiceImpl {
     nodeDao: NodeDao
+    nodeConverter: NodeConverter
 
     getAllNodes(): List<NodeBean>
 }
@@ -51,13 +51,11 @@ class NodeTableRefreshService {
 }
 
 class NodeTableWidget {
-    nodes: List<NodeBean>
     table: FlowPanel
     nodeTableRefreshService: NodeTableRefreshService
 
-    NodeTableWidget()
-    getAllNodes(): List<NodeBean>
-    createTable(): void
+    NodeTableWidget(): NodeTableWidget
+    -createTable(): void
 }
 
 class TreeApp {
@@ -66,12 +64,10 @@ class TreeApp {
 }
 
 NodeDao <|.. NodeDaoDemo
-
-NodeDaoDemo -- NodeConvertor
-
 NodeRpcService <|.. NodeRpcServiceImpl
 NodeRpcServiceAsync <|.. NodeRpcServiceImpl
 
+NodeRpcServiceImpl -- NodeConverter
 NodeDao -- NodeRpcServiceImpl
 NodeRpcServiceAsync -- NodeTableRefreshService
 NodeTableRefreshService -- NodeTableWidget
