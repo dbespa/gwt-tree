@@ -32,12 +32,12 @@
 
 ### Сервисы
 
-- NodeTableWidget
-- NodeTableRefreshService
-- NodeRpcService
-- NodeRpcServiceImpl
-- NodeConverter
-- NodeDao
+- Показатор (NodeTableWidget)
+- Обновлятор (NodeTableRefreshService)
+- Получатор Данных С Сервера (NodeRpcService)
+- Отправлятор Данных (NodeRpcServiceImpl)
+- Преобразоватор Данных (NodeConverter)
+- Получатор Данных Из Базы Данных (NodeDao)
 
 ## Диаграмма C4
 
