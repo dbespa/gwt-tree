@@ -6,24 +6,15 @@
 
     <!-- Servlets -->
     <servlet>
-        <servlet-name>dataProviderServlet</servlet-name>
-        <servlet-class>com.example.myapp.server.DataProviderServiceImpl</servlet-class>
+        <servlet-name>nodeServlet</servlet-name>
+        <servlet-class>com.example.myapp.server.service.impl.NodeRpcServiceImpl</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>dataProviderServlet</servlet-name>
-        <url-pattern>/treeapp/dataProvider</url-pattern>
+        <servlet-name>nodeServlet</servlet-name>
+        <url-pattern>/treeapp/nodeRpc</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>treeServlet</servlet-name>
-        <servlet-class>com.example.myapp.server.TreeServiceImpl</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>treeServlet</servlet-name>
-        <url-pattern>/treeapp/tree</url-pattern>
-    </servlet-mapping>
 
     <!-- Default page to serve -->
     <welcome-file-list>

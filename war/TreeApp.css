@@ -1,50 +1,32 @@
-h1 {
-    font-size: 2em;
-    font-weight: bold;
-    color: #777777;
-    margin: 40px 0px 70px;
-    text-align: center;
+.heading {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
-.sendButton {
-    display: block;
-    font-size: 16pt;
-}
-
-.gwt-DialogBox {
-    width: 400px;
-}
-
-.dialogVPanel {
-    margin: 5px;
-}
-
-.serverResponseLabelError {
-    color: red;
-}
-
-#closeButton {
-    margin: 15px 6px 6px;
+#treeTableContainer button {
+    margin-bottom: 20px;
 }
 
 .table {
-    width: 100%;
     display: flex;
     flex-direction: column;
+    width: max-content;
+    border: 1px solid black;
+    font-size: 14px;
 }
 
 .row {
-    color: black;
     display: flex;
     flex-direction: row;
 }
 
 .header {
     font-weight: 700;
+    border-bottom: 1px solid black;
 }
 
 .cell {
-    font-size: 14px;
     padding: 20px;
-    min-width: 70px;
+    width: 80px;
 }
