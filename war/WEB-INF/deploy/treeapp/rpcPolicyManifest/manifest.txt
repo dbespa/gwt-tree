@@ -1,0 +1,3 @@
+# Module treeapp
+# RPC service class, partial path of RPC policy file
+com.example.myapp.client.rpc.NodeRpcService, 7711350483E80C3CD0724352E3C9265F.gwt.rpc

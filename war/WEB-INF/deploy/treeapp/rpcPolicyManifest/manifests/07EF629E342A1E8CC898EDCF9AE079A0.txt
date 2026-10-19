@@ -1,0 +1,2 @@
+serviceClass: com.example.myapp.client.rpc.NodeRpcService
+path: 7711350483E80C3CD0724352E3C9265F.gwt.rpc

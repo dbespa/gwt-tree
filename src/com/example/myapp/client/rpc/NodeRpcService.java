@@ -8,5 +8,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("nodeRpc")
 public interface NodeRpcService extends RemoteService {
+
     public List<NodeBean> getAllNodes();
 }

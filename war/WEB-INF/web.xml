@@ -7,7 +7,7 @@
     <!-- Servlets -->
     <servlet>
         <servlet-name>nodeServlet</servlet-name>
-        <servlet-class>com.example.myapp.server.service.impl.NodeRpcServiceImpl</servlet-class>
+        <servlet-class>com.example.myapp.server.service.NodeRpcServiceImpl</servlet-class>
     </servlet>
 
     <servlet-mapping>

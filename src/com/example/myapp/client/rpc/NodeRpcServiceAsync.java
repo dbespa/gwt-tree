@@ -6,5 +6,6 @@ import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface NodeRpcServiceAsync {
+
     void getAllNodes(AsyncCallback<List<NodeBean>> callback);
 }

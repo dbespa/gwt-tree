@@ -1,8 +1,9 @@
-package com.example.myapp.server.service.impl;
+package com.example.myapp.server.service;
 
 import java.util.List;
 
 import com.example.myapp.client.rpc.NodeRpcService;
+import com.example.myapp.server.NodeConverter;
 import com.example.myapp.server.dao.NodeDao;
 import com.example.myapp.server.dao.impl.NodeDaoDemo;
 import com.example.myapp.server.entity.NodeEntity;
@@ -10,8 +11,15 @@ import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class NodeRpcServiceImpl extends RemoteServiceServlet implements NodeRpcService {
-    private final NodeDao nodeDao = new NodeDaoDemo();
-    private final NodeConverter nodeConverter = new NodeConverter();
+    private static final long serialVersionUID = -4966825884205570101L;
+
+    private final NodeDao nodeDao;
+    private final NodeConverter nodeConverter;
+
+    public NodeRpcServiceImpl() {
+        nodeDao = new NodeDaoDemo();
+        nodeConverter = new NodeConverter();
+    }
 
     @Override
     public List<NodeBean> getAllNodes() {

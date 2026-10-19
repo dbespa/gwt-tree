@@ -1,13 +1,20 @@
 package com.example.myapp.server.entity;
 
+import com.example.myapp.shared.StringUtils;
+
 public class NodeEntity {
-    private int id;
+
+    private Integer id;
     private Integer parentId;
     private String name;
     private String ip;
-    private int port;
+    private Integer port;
 
-    public NodeEntity(int id, Integer parentId, String name, String ip, int port) {
+    public NodeEntity() {
+        //do nothing
+    }
+
+    public NodeEntity(Integer id, Integer parentId, String name, String ip, Integer port) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
@@ -15,24 +22,53 @@ public class NodeEntity {
         this.port = port;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getParentId() {
         return parentId;
     }
 
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getIp() {
         return ip;
     }
 
-    public int getPort() {
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public Integer getPort() {
         return port;
     }
 
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    @Override
+    public String toString() {
+        return StringUtils.NODE_ENTITY_TO_STRING_START + id + 
+                StringUtils.PARENT_ID_TO_STRING + parentId + 
+                StringUtils.NAME_TO_STRING + name + 
+                StringUtils.IP_TO_STRING + ip + 
+                StringUtils.PORT_TO_STRING + port + 
+                StringUtils.NODE_TO_STRING_END;
+    }
 }
