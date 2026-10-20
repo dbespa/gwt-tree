@@ -22,10 +22,10 @@ public class NodeDaoDemo implements NodeDao {
 
     public NodeDaoDemo() {
         demoNodes = new ArrayList<>(Arrays.asList(
-                new NodeEntity(0, null, ROOT_NODE_NAME, ROOT_NODE_IP, 1111),
-                new NodeEntity(1, 0, NODE_1_NAME, NODE_1_IP, 11),
-                new NodeEntity(2, 0, NODE_2_NAME, NODE_2_IP, 12),
-                new NodeEntity(3, 2, NODE_3_NAME, NODE_3_IP, 121)));
+                new NodeEntity(0L, null, ROOT_NODE_NAME, ROOT_NODE_IP, 1111),
+                new NodeEntity(1L, 0L, NODE_1_NAME, NODE_1_IP, 11),
+                new NodeEntity(2L, 0L, NODE_2_NAME, NODE_2_IP, 12),
+                new NodeEntity(3L, 2L, NODE_3_NAME, NODE_3_IP, 121)));
     }
 
     @Override

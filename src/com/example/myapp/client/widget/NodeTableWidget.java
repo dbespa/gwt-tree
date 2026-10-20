@@ -3,6 +3,7 @@ package com.example.myapp.client.widget;
 import java.util.List;
 
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
+import com.example.myapp.shared.StringUtils;
 import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -18,12 +19,6 @@ public class NodeTableWidget extends Composite {
     private static final String STYLE_HEADER_ROW = "header-row";
     private static final String STYLE_ROW = "row";
     private static final String STYLE_CELL = "cell";
-
-    private static final String HEADER_PORT = "port";
-    private static final String HEADER_IP = "ip";
-    private static final String HEADER_NAME = "name";
-    private static final String HEADER_PARENT_ID = "parentId";
-    private static final String HEADER_ID = "id";
 
     private FlowPanel main;
     private FlowPanel headerRow;
@@ -79,11 +74,11 @@ public class NodeTableWidget extends Composite {
         headerRow.addStyleName(STYLE_ROW);
         headerRow.addStyleName(STYLE_HEADER_ROW);
 
-        headerRow.add(createCell(HEADER_ID));
-        headerRow.add(createCell(HEADER_PARENT_ID));
-        headerRow.add(createCell(HEADER_NAME));
-        headerRow.add(createCell(HEADER_IP));
-        headerRow.add(createCell(HEADER_PORT));
+        headerRow.add(createCell(StringUtils.ID_TO_STRING));
+        headerRow.add(createCell(StringUtils.PARENT_ID_TO_STRING));
+        headerRow.add(createCell(StringUtils.NAME_TO_STRING));
+        headerRow.add(createCell(StringUtils.IP_TO_STRING));
+        headerRow.add(createCell(StringUtils.PORT_TO_STRING));
 
         return headerRow;
     }
@@ -102,7 +97,7 @@ public class NodeTableWidget extends Composite {
             return null;
         }
 
-        Integer parentId = node.getParentId();
+        Long parentId = node.getParentId();
         String strParentId = (parentId == null ? NULL_PARENT_ID_PLACEHOLDER : String.valueOf(parentId));
 
         row.add(createCell(String.valueOf(node.getId())));

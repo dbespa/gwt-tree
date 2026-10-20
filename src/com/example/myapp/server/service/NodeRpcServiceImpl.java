@@ -11,6 +11,7 @@ import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class NodeRpcServiceImpl extends RemoteServiceServlet implements NodeRpcService {
+
     private static final long serialVersionUID = -4966825884205570101L;
 
     private final NodeDao nodeDao;

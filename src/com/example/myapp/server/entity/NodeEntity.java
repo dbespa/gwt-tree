@@ -4,8 +4,10 @@ import com.example.myapp.shared.StringUtils;
 
 public class NodeEntity {
 
-    private Integer id;
-    private Integer parentId;
+    private static final String NODE_ENTITY_TO_STRING = "NodeEntity: ";
+
+    private Long id;
+    private Long parentId;
     private String name;
     private String ip;
     private Integer port;
@@ -14,7 +16,7 @@ public class NodeEntity {
         //do nothing
     }
 
-    public NodeEntity(Integer id, Integer parentId, String name, String ip, Integer port) {
+    public NodeEntity(Long id, Long parentId, String name, String ip, Integer port) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
@@ -22,19 +24,19 @@ public class NodeEntity {
         this.port = port;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
@@ -64,11 +66,11 @@ public class NodeEntity {
 
     @Override
     public String toString() {
-        return StringUtils.NODE_ENTITY_TO_STRING_START + id + 
-                StringUtils.PARENT_ID_TO_STRING + parentId + 
-                StringUtils.NAME_TO_STRING + name + 
-                StringUtils.IP_TO_STRING + ip + 
-                StringUtils.PORT_TO_STRING + port + 
-                StringUtils.NODE_TO_STRING_END;
+        return NODE_ENTITY_TO_STRING + StringUtils.LEFT_BRACKET +
+                StringUtils.ID_TO_STRING + StringUtils.EQUALS + id + StringUtils.SEPARATOR +
+                StringUtils.PARENT_ID_TO_STRING + StringUtils.EQUALS + parentId + StringUtils.SEPARATOR +
+                StringUtils.NAME_TO_STRING + StringUtils.EQUALS + name + StringUtils.SEPARATOR +
+                StringUtils.IP_TO_STRING + StringUtils.EQUALS + ip + StringUtils.SEPARATOR +
+                StringUtils.PORT_TO_STRING + StringUtils.EQUALS + port + StringUtils.RIGTH_BRACKET;
     }
 }
