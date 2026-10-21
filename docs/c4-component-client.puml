@@ -4,7 +4,6 @@
 Person(person, "Пользователь", "Использует веб-приложение")
 System_Boundary(c1, "") {
     Container(widget, "NodeTableWidget")
-    Container(refreshService, "NodeTableRefreshService")
     Container(rpcService, "NodeRpcService")
 }
 Container(server, "Сервер")
@@ -12,8 +11,7 @@ ContainerDb(db, "База Данных")
 
 Rel(person, widget, "Использует")
 
-Rel(widget, refreshService, "Вызывает")
-Rel(refreshService, rpcService, "Вызывает")
+Rel(widget, rpcService, "Вызывает")
 
 Rel(rpcService, server, "GET RPC")
 Rel(server, db, "Reads from")

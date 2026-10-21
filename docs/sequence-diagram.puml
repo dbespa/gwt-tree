@@ -3,7 +3,6 @@ actor "Пользователь" as user
 box "Клиентская часть"
 participant "Браузер" as browser
 participant "NodeTableWidget" as widget
-participant "NodeTableRefreshService" as refreshService
 participant "NodeRpcService" as rpcService
 box end
 box "Серверная часть"
@@ -18,8 +17,7 @@ group Открытие приложения
 user -> browser++:start()
 activate user
 browser -> widget++:NodeTableWidget(void)
-widget -> refreshService++:getAllNodes(void)
-refreshService -> rpcService++:getAllNodes(void)
+widget -> rpcService++:getAllNodes(void)
 rpcService ->> rpcServiceImpl++:getAllNodes(void)
 rpcServiceImpl -> dao++:getAllNodes(void)
 dao -> db++:getAllNodes(void)
@@ -32,8 +30,7 @@ converter -> converter: convertToNodeBean(nodeEntity: NodeEntity)
 end
 converter -->> rpcServiceImpl--:List<NodeBean>
 rpcServiceImpl -->> rpcService--:List<NodeBean>
-rpcService -->> refreshService--:List<NodeBean>
-refreshService -->> widget--:List<NodeBean>
+rpcService -->> widget--:List<NodeBean>
 widget -->> browser--:NodeTableWidget
 browser -->> user--:Отрисованная страница
 deactivate user
@@ -45,8 +42,7 @@ group Обновление списка узлов
 user -> browser++:клик на кнопку "Refresh"
 activate user
 browser -> widget++:NodeTableWidget(void)
-widget -> refreshService++:getAllNodes(void)
-refreshService -> rpcService++:getAllNodes(void)
+widget -> rpcService++:getAllNodes(void)
 rpcService ->> rpcServiceImpl++:getAllNodes(void)
 rpcServiceImpl -> dao++:getAllNodes(void)
 dao -> db++:getAllNodes(void)
@@ -59,8 +55,7 @@ converter -> converter: convertToNodeBean(nodeEntity: NodeEntity)
 end
 converter -->> rpcServiceImpl--:List<NodeBean>
 rpcServiceImpl -->> rpcService--:List<NodeBean>
-rpcService -->> refreshService--:List<NodeBean>
-refreshService -->> widget--:List<NodeBean>
+rpcService -->> widget--:List<NodeBean>
 widget -->> browser--:NodeTableWidget
 browser -->> user--:Отрисованная страница
 deactivate user

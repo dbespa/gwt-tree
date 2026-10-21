@@ -44,20 +44,17 @@ interface NodeRpcServiceAsync {
     getAllNodes(callback: AsyncCallback<List<NodeBean>>): void   
 }
 
-class NodeTableRefreshService {
-    nodeRpcService: NodeRpcServiceAsync
-
-    getAllNodes(callback: AsyncCallback<List<NodeBean>>): void
-}
-
 class NodeTableWidget {
+    main: FlowPanel
+    headerRow: FlowPanel
     table: FlowPanel
-    nodeTableRefreshService: NodeTableRefreshService
+    nodeTableRefreshService: NodeRpcServiceAsync
 
-    NodeTableWidget(command: Command): NodeTableWidget
+    NodeTableWidget(refreshService: NodeRpcServiceAsync): NodeTableWidget
 }
 
 class TreeApp {
+    nodeRpcService: NodeRpcServiceAsync
     nodeTableWidget: NodeTableWidget
     onModuleLoad(): void
 }
@@ -68,8 +65,7 @@ NodeRpcServiceAsync <|.. NodeRpcServiceImpl
 
 NodeRpcServiceImpl -- NodeConverter
 NodeDao -- NodeRpcServiceImpl
-NodeRpcServiceAsync -- NodeTableRefreshService
-NodeTableRefreshService -- NodeTableWidget
+NodeRpcServiceAsync -- NodeTableWidget
 NodeTableWidget -- TreeApp
 
 @enduml
