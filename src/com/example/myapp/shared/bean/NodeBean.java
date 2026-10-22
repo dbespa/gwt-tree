@@ -2,13 +2,9 @@ package com.example.myapp.shared.bean;
 
 import java.io.Serializable;
 
-import com.example.myapp.shared.StringUtils;
-
 public class NodeBean implements Serializable {
 
     private static final long serialVersionUID = 7700175907117996475L;
-
-    private static final String NODE_BEAN_TO_STRING = "NodeBean: ";
 
     private Long id;
     private Long parentId;
@@ -74,11 +70,6 @@ public class NodeBean implements Serializable {
 
     @Override
     public String toString() {
-        return NODE_BEAN_TO_STRING + StringUtils.LEFT_BRACKET +
-                StringUtils.ID_TO_STRING + StringUtils.EQUALS + id + StringUtils.SEPARATOR +
-                StringUtils.PARENT_ID_TO_STRING + StringUtils.EQUALS + parentId + StringUtils.SEPARATOR +
-                StringUtils.NAME_TO_STRING + StringUtils.EQUALS + name + StringUtils.SEPARATOR +
-                StringUtils.IP_TO_STRING + StringUtils.EQUALS + ip + StringUtils.SEPARATOR +
-                StringUtils.PORT_TO_STRING + StringUtils.EQUALS + port + StringUtils.RIGTH_BRACKET;
+        return "NodeBean [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + "]";
     }
 }

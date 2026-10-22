@@ -1,14 +1,14 @@
+.node-table-container button {
+    margin-bottom: 20px;
+}
+
 .heading {
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 10px;
 }
 
-#treeTableContainer button {
-    margin-bottom: 20px;
-}
-
-.list {
+.tree {
     padding: 10px;
     border: 1px solid black;
     width: max-content;
@@ -16,12 +16,22 @@
     font-size: 14px;
 }
 
-.list-item {
+.children-wrapper {
+    display: flex;
+}
+
+.tree-row {
     display: flex;
     gap: 5px;
     align-items: center;
     margin-bottom: 3px;
     padding-right: 25px;
+}
+
+.indent {
+    width: 30px;
+    height: 1px;
+    display: inline-block;
 }
 
 .toggle-button {
@@ -38,6 +48,7 @@
     flex-direction: column;
     width: max-content;
     border: 1px solid black;
+    border-top: none;
     font-size: 14px;
 }
 
@@ -49,7 +60,6 @@
 .header-row {
     width: max-content;
     border: 1px solid black;
-    border-bottom: none;
     font-size: 14px;
     font-weight: 700;
     text-align: center;

@@ -3,7 +3,6 @@ package com.example.myapp.client.widget;
 import java.util.List;
 
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
-import com.example.myapp.shared.StringUtils;
 import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -20,14 +19,20 @@ public class NodeTableWidget extends Composite {
     private static final String STYLE_ROW = "row";
     private static final String STYLE_CELL = "cell";
 
+    private static final String ID_TO_STRING = "id";
+    private static final String PARENT_ID_TO_STRING = "parentId";
+    private static final String NAME_TO_STRING = "name";
+    private static final String IP_TO_STRING = "ip";
+    private static final String PORT_TO_STRING = "port";
+
     private FlowPanel main;
     private FlowPanel headerRow;
     private FlowPanel table;
 
-    private NodeRpcServiceAsync nodeTableRefreshService;
+    private NodeRpcServiceAsync nodeRpsService;
 
     public NodeTableWidget(NodeRpcServiceAsync refreshService) {
-        nodeTableRefreshService = refreshService;
+        nodeRpsService = refreshService;
         build();
         initWidget(main);
     }
@@ -44,7 +49,7 @@ public class NodeTableWidget extends Composite {
     }
 
     public void refreshTable() {
-        nodeTableRefreshService.getAllNodes(new AsyncCallback<List<NodeBean>>() {
+        nodeRpsService.getAllNodes(new AsyncCallback<List<NodeBean>>() {
             @Override
             public void onFailure(Throwable caught) {
                 GWT.log("Ошибка получения данных с сервера: " + caught.getLocalizedMessage());
@@ -65,7 +70,9 @@ public class NodeTableWidget extends Composite {
         }
 
         for (NodeBean node : newNodeList) {
-            table.add(createRow(node));
+            if (node != null) {
+                table.add(createRow(node));
+            }
         }
     }
 
@@ -74,11 +81,11 @@ public class NodeTableWidget extends Composite {
         headerRow.addStyleName(STYLE_ROW);
         headerRow.addStyleName(STYLE_HEADER_ROW);
 
-        headerRow.add(createCell(StringUtils.ID_TO_STRING));
-        headerRow.add(createCell(StringUtils.PARENT_ID_TO_STRING));
-        headerRow.add(createCell(StringUtils.NAME_TO_STRING));
-        headerRow.add(createCell(StringUtils.IP_TO_STRING));
-        headerRow.add(createCell(StringUtils.PORT_TO_STRING));
+        headerRow.add(createCell(ID_TO_STRING));
+        headerRow.add(createCell(PARENT_ID_TO_STRING));
+        headerRow.add(createCell(NAME_TO_STRING));
+        headerRow.add(createCell(IP_TO_STRING));
+        headerRow.add(createCell(PORT_TO_STRING));
 
         return headerRow;
     }

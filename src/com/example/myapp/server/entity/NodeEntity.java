@@ -1,10 +1,6 @@
 package com.example.myapp.server.entity;
 
-import com.example.myapp.shared.StringUtils;
-
 public class NodeEntity {
-
-    private static final String NODE_ENTITY_TO_STRING = "NodeEntity: ";
 
     private Long id;
     private Long parentId;
@@ -66,11 +62,6 @@ public class NodeEntity {
 
     @Override
     public String toString() {
-        return NODE_ENTITY_TO_STRING + StringUtils.LEFT_BRACKET +
-                StringUtils.ID_TO_STRING + StringUtils.EQUALS + id + StringUtils.SEPARATOR +
-                StringUtils.PARENT_ID_TO_STRING + StringUtils.EQUALS + parentId + StringUtils.SEPARATOR +
-                StringUtils.NAME_TO_STRING + StringUtils.EQUALS + name + StringUtils.SEPARATOR +
-                StringUtils.IP_TO_STRING + StringUtils.EQUALS + ip + StringUtils.SEPARATOR +
-                StringUtils.PORT_TO_STRING + StringUtils.EQUALS + port + StringUtils.RIGTH_BRACKET;
+        return "NodeEntity [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + "]";
     }
 }

@@ -8,8 +8,8 @@ import com.example.myapp.server.NodeTreeBuilder;
 import com.example.myapp.server.dao.NodeDao;
 import com.example.myapp.server.dao.impl.NodeDaoDemo;
 import com.example.myapp.server.entity.NodeEntity;
-import com.example.myapp.shared.NodeDto;
 import com.example.myapp.shared.bean.NodeBean;
+import com.example.myapp.shared.bean.NodeTreeBean;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class NodeRpcServiceImpl extends RemoteServiceServlet implements NodeRpcService {
@@ -34,8 +34,8 @@ public class NodeRpcServiceImpl extends RemoteServiceServlet implements NodeRpcS
     }
 
     @Override
-    public List<NodeDto> getTreeRoots() {
+    public NodeTreeBean getTree() {
         List<NodeEntity> allNodes = nodeDao.getAllNodes();
-        return nodeTreeBuilder.getTreeRoots(allNodes);
+        return nodeTreeBuilder.getTree(allNodes);
     }
 }

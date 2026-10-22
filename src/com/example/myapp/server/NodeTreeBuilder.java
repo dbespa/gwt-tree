@@ -1,64 +1,51 @@
 package com.example.myapp.server;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.myapp.server.entity.NodeEntity;
-import com.example.myapp.shared.NodeDto;
+import com.example.myapp.shared.bean.NodeTreeBean;
 import com.google.gwt.dev.util.collect.HashMap;
 
 public class NodeTreeBuilder {
+
+    private static final String UNIVERSAL_ROOT_NODE = "root";
 
     public NodeTreeBuilder() {
         //do nothing
     }
 
-    private NodeDto convertToNodeDto(NodeEntity nodeEntity) {
+    private NodeTreeBean convertToNodeDto(NodeEntity nodeEntity) {
         if (nodeEntity == null) {
             return null;
         }
-
-        return new NodeDto(nodeEntity.getId(), nodeEntity.getName());
+        return new NodeTreeBean(nodeEntity.getId(), nodeEntity.getName());
     }
 
-    private HashMap<Long, NodeDto> buildMap(List<NodeEntity> nodeEntityList) {
-        HashMap<Long, NodeDto> tree = new HashMap<>();
+    public NodeTreeBean getTree(List<NodeEntity> nodeEntityList) {
+        HashMap<Long, NodeTreeBean> tree = new HashMap<>();
+        NodeTreeBean root = new NodeTreeBean(-1L, UNIVERSAL_ROOT_NODE);
 
         if (nodeEntityList == null || nodeEntityList.isEmpty()) {
-            return tree;
+            return null;
         }
 
         for (NodeEntity node : nodeEntityList) {
             if (node != null) {
-                NodeDto convertedNode = convertToNodeDto(node);
+                NodeTreeBean convertedNode = convertToNodeDto(node);
                 tree.put(node.getId(), convertedNode);
+
+                Long id = node.getId();
+                Long parentId = node.getParentId();
+
+                if (parentId == null) {
+                    root.addChild(tree.get(id));
+                } else {
+                    NodeTreeBean child = tree.get(id);
+                    NodeTreeBean parent = tree.get(parentId);
+                    parent.addChild(child);
+                }
             }
         }
-
-        return tree;
-    }
-
-    public List<NodeDto> getTreeRoots(List<NodeEntity> nodeEntityList) {
-        HashMap<Long, NodeDto> tree = buildMap(nodeEntityList);
-        List<NodeDto> treeRoots = new ArrayList<>();
-
-        if (nodeEntityList == null || nodeEntityList.isEmpty()) {
-            return treeRoots;
-        }
-
-        for (NodeEntity node : nodeEntityList) {
-            Long id = node.getId();
-            Long parentId = node.getParentId();
-
-            if (parentId == null) {
-                treeRoots.add(tree.get(id));
-            } else {
-                NodeDto child = tree.get(id);
-                NodeDto parent = tree.get(parentId);
-                parent.addChild(child);
-            }
-        }
-
-        return treeRoots;
+        return root;
     }
 }
