@@ -1,4 +1,4 @@
-package com.example.myapp.client;
+package com.example.myapp.client.bean;
 
 import java.util.ArrayList;
 import java.util.List;

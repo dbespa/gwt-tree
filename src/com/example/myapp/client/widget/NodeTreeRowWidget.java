@@ -1,6 +1,6 @@
 package com.example.myapp.client.widget;
 
-import com.example.myapp.client.NodeViewData;
+import com.example.myapp.client.bean.NodeViewData;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -12,7 +12,7 @@ public class NodeTreeRowWidget extends Composite {
 
     private static final String STYLE_TOGGLE_BUTTON = "toggle-button";
     private static final String STYLE_TREE_ROW = "tree-row";
-    private static final String STYLE_TREE_ROW_ACTIVE = "tree-row_active";
+    private static final String STYLE_TREE_ROW_ACTIVE = STYLE_TREE_ROW + "_active";
 
     private static final String BUTTON_COLLAPSE = "-";
 

@@ -2,7 +2,7 @@ package com.example.myapp.client.widget;
 
 import java.util.List;
 
-import com.example.myapp.client.NodeViewData;
+import com.example.myapp.client.bean.NodeViewData;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.example.myapp.shared.bean.NodeTreeBean;
@@ -32,7 +32,7 @@ public class NodeTreeWidget extends Composite {
 
     private NodeRpcServiceAsync nodeRpcService;
 
-    private NodeSelectHandler handler;
+    private NodeSelectHandler onNodeSelect;
 
     private NodeTreeRowWidget previousSelectedNode;
 
@@ -49,12 +49,8 @@ public class NodeTreeWidget extends Composite {
         root.add(main);
     }
 
-    public void setHandler(NodeSelectHandler handler) {
-        this.handler = handler;
-        bind();
-    }
-
-    private void bind() {
+    public void setNodeSelectHandler(NodeSelectHandler handler) {
+        this.onNodeSelect = handler;
         if (handler != null) {
             root.addClickHandler(new ClickHandler() {
                 @Override

@@ -66,14 +66,14 @@ public class TreeApp implements EntryPoint {
     }
 
     private void bind() {
-        nodeTreeWidget.setHandler(new NodeSelectHandler() {
+        nodeTreeWidget.setNodeSelectHandler(new NodeSelectHandler() {
             @Override
             public void onNodeSelect(Long selectedNodeId) {
                 uiPanelWidget.setSelectedNodeId(selectedNodeId);
             }
         });
 
-        uiPanelWidget.setHandler(new RefreshHandler() {
+        uiPanelWidget.setRefreshHandler(new RefreshHandler() {
             @Override
             public void onRefresh() {
                 update();
