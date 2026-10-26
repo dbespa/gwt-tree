@@ -8,7 +8,7 @@ import com.google.gwt.dev.util.collect.HashMap;
 
 public class NodeTreeBuilder {
 
-    private static final String UNIVERSAL_ROOT_NODE = "root";
+    private static final String UNIVERSAL_ROOT_NODE = "universalRoot";
 
     public NodeTreeBuilder() {
         //do nothing

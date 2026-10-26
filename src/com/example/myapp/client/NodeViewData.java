@@ -31,7 +31,7 @@ public class NodeViewData {
     }
 
     public List<NodeViewData> getChildren() {
-        return new ArrayList<NodeViewData>(children);
+        return new ArrayList<>(children);
     }
 
     public void setChildren(List<NodeViewData> children) {

@@ -1,3 +1,14 @@
+:root {
+    --font-size: 14px;
+    --color-active: rgb(96, 159, 234);
+    --color-hover: rgb(144, 184, 232);
+    --color-active-hover: rgb(68, 142, 231);
+}
+
+* {
+    font-size: 14px;
+}
+
 .node-table-container button {
     margin-bottom: 20px;
 }
@@ -8,12 +19,25 @@
     margin-bottom: 10px;
 }
 
+.ui-panel {
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+    width: max-content;
+    margin-bottom: 20px;
+}
+
 .tree {
     padding: 10px;
     border: 1px solid black;
+    border-radius: 10px;
     width: max-content;
     margin-bottom: 20px;
-    font-size: 14px;
+    width: max-content;
 }
 
 .children-wrapper {
@@ -26,6 +50,20 @@
     align-items: center;
     margin-bottom: 3px;
     padding-right: 25px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.tree-row:hover {
+    background-color: var(--color-hover);
+}
+
+.tree-row_active {
+    background-color: var(--color-active);
+}
+
+.tree-row_active:hover {
+    background-color: var(--color-active-hover);
 }
 
 .indent {
@@ -49,7 +87,6 @@
     width: max-content;
     border: 1px solid black;
     border-top: none;
-    font-size: 14px;
 }
 
 .row {
@@ -60,7 +97,6 @@
 .header-row {
     width: max-content;
     border: 1px solid black;
-    font-size: 14px;
     font-weight: 700;
     text-align: center;
 }

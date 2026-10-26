@@ -1,14 +1,14 @@
 package com.example.myapp.client;
 
+import com.example.myapp.client.handler.NodeSelectHandler;
+import com.example.myapp.client.handler.RefreshHandler;
 import com.example.myapp.client.rpc.NodeRpcService;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.example.myapp.client.widget.NodeTableWidget;
 import com.example.myapp.client.widget.NodeTreeWidget;
+import com.example.myapp.client.widget.UiPanelWidget;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -17,9 +17,9 @@ public class TreeApp implements EntryPoint {
 
     private static final String STYLE_HEADING = "heading";
     private static final String STYLE_TREE_CONTAINER = "tree-container";
+    private static final String STYLE_UI_PANEL = "ui-panel";
     private static final String STYLE_NODE_TABLE_CONTAINER = "node-table-container";
 
-    private static final String LABEL_REFRESH = "Refresh";
     private static final String LABEL_ALL_NODES = "All nodes:";
     private static final String LABEL_TREE = "Tree:";
 
@@ -27,8 +27,7 @@ public class TreeApp implements EntryPoint {
 
     private NodeTableWidget nodeTableWidget;
     private NodeTreeWidget nodeTreeWidget;
-
-    private Button refreshButton;
+    private UiPanelWidget uiPanelWidget;
 
     public void onModuleLoad() {
         build();
@@ -42,6 +41,10 @@ public class TreeApp implements EntryPoint {
         FlowPanel treeContainer = new FlowPanel();
         treeContainer.addStyleName(STYLE_TREE_CONTAINER);
         RootPanel.get().add(treeContainer);
+
+        uiPanelWidget = new UiPanelWidget();
+        uiPanelWidget.addStyleName(STYLE_UI_PANEL);
+        RootPanel.get().add(uiPanelWidget);
 
         FlowPanel nodeTableContainer = new FlowPanel();
         nodeTableContainer.addStyleName(STYLE_NODE_TABLE_CONTAINER);
@@ -58,24 +61,28 @@ public class TreeApp implements EntryPoint {
         label.addStyleName(STYLE_HEADING);
         nodeTableContainer.add(label);
 
-        refreshButton = new Button(LABEL_REFRESH);
-        nodeTableContainer.add(refreshButton);
-
         nodeTableWidget = new NodeTableWidget(nodeRpcService);
         nodeTableContainer.add(nodeTableWidget);
     }
 
     private void bind() {
-        refreshButton.addClickHandler(new ClickHandler() {
+        nodeTreeWidget.setHandler(new NodeSelectHandler() {
             @Override
-            public void onClick(ClickEvent event) {
-                nodeTableWidget.refreshTable();
+            public void onNodeSelect(Long selectedNodeId) {
+                uiPanelWidget.setSelectedNodeId(selectedNodeId);
+            }
+        });
+
+        uiPanelWidget.setHandler(new RefreshHandler() {
+            @Override
+            public void onRefresh() {
+                update();
             }
         });
     }
 
     private void update() {
         nodeTableWidget.refreshTable();
-        nodeTreeWidget.refreshList();
+        nodeTreeWidget.refreshTree();
     }
 }
