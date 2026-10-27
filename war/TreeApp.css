@@ -58,11 +58,11 @@
     background-color: var(--color-hover);
 }
 
-.tree-row_active {
+.tree-row-active {
     background-color: var(--color-active);
 }
 
-.tree-row_active:hover {
+.tree-row-active:hover {
     background-color: var(--color-active-hover);
 }
 

@@ -8,85 +8,66 @@ import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.example.myapp.shared.bean.NodeTreeBean;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.FocusPanel;
 
 public class NodeTreeWidget extends Composite {
 
-    private static final String ATTRIBUTE_NODE_ID = "node-id";
-
     private static final String STYLE_TREE = "tree";
-    private static final String STYLE_NODE_CONTAINER = "node-container";
-    private static final String STYLE_CHILDREN_CONTAINER = "children-container";
-    private static final String STYLE_INDENT = "indent";
-    private static final String STYLE_CHILDREN_WRAPPER = "children-wrapper";
 
-    private FocusPanel root;
     private FlowPanel main;
 
     private NodeRpcServiceAsync nodeRpcService;
 
     private NodeSelectHandler onNodeSelect;
 
-    private NodeTreeRowWidget previousSelectedNode;
-
     public NodeTreeWidget(NodeRpcServiceAsync refreshService) {
         nodeRpcService = refreshService;
         build();
-        initWidget(root);
+        initWidget(main);
     }
 
     private void build() {
-        root = new FocusPanel();
         main = new FlowPanel();
         main.addStyleName(STYLE_TREE);
-        root.add(main);
     }
 
     public void setNodeSelectHandler(NodeSelectHandler handler) {
         this.onNodeSelect = handler;
-        if (handler != null) {
-            root.addClickHandler(new ClickHandler() {
-                @Override
-                public void onClick(ClickEvent event) {
-                    Element element = Element.as(event.getNativeEvent().getEventTarget());
+        setChildrenHandler();
+    }
 
-                    while (element != null && !element.hasAttribute(ATTRIBUTE_NODE_ID)) {
-                        element = element.getParentElement();
-                    }
-
-                    if (element == null) {
-                        return;
-                    }
-
-                    if (element.hasAttribute(ATTRIBUTE_NODE_ID)) {
-                        String selectedNodeId = element.getAttribute(ATTRIBUTE_NODE_ID);
-                        handler.onNodeSelect(Long.parseLong(selectedNodeId));
-                        setSelectedNodeRow(element);
-                    }
-                }
-            });
+    private void setChildrenHandler() {
+        if (onNodeSelect != null) {
+            Element root = main.getElement();
+            for (int i = 0; i < root.getChildCount(); i++) {
+                Element child = (Element) root.getChild(i);
+                setChildrenHandlerIterative(child);
+            }
         }
     }
 
-    private void setSelectedNodeRow(Element element) {
-        EventListener listener = DOM.getEventListener(element);
+    private void setChildrenHandlerIterative(Element node) {
+        final NodeSelectHandler handler = this.onNodeSelect;
+        EventListener listener = (EventListener) DOM.getEventListener(node);
 
         if (listener instanceof NodeTreeRowWidget) {
             NodeTreeRowWidget widget = (NodeTreeRowWidget) listener;
+            widget.setNodeSelectHandler(new NodeSelectHandler() {
+                @Override
+                public void onNodeSelect(Long selectedNodeId) {
+                    setOtherNodesUnselected(selectedNodeId);
+                    handler.onNodeSelect(selectedNodeId);
+                }
+            });
+        }
 
-            if (previousSelectedNode != null && previousSelectedNode != widget) {
-                previousSelectedNode.setSelected(false);
-            }
-
-            widget.setSelected(true);
-            previousSelectedNode = widget;
+        for (int i = 0; i < node.getChildCount(); i++) {
+            Element child = (Element) node.getChild(i);
+            setChildrenHandlerIterative(child);
         }
     }
 
@@ -99,7 +80,6 @@ public class NodeTreeWidget extends Composite {
 
             @Override
             public void onSuccess(NodeTreeBean result) {
-                previousSelectedNode = null;
                 NodeViewData convertedTree = convertTree(result);
                 setNodeList(convertedTree);
             }
@@ -137,55 +117,35 @@ public class NodeTreeWidget extends Composite {
 
         for (NodeViewData node : rootNodes) {
             if (node != null) {
-                main.add(createNodeContainer(node));
+                NodeTreeRowWidget nodeRow = new NodeTreeRowWidget(node);
+                main.add(nodeRow);
             }
         }
+
+        setChildrenHandler();
     }
 
-    private FlowPanel createNodeContainer(NodeViewData node) {
-        if (node == null) {
-            return null;
+    private void setOtherNodesUnselected(Long selectedNodeId) {
+        Element root = main.getElement();
+        for (int i = 0; i < root.getChildCount(); i++) {
+            Element child = (Element) root.getChild(i);
+            setOtherNodesIterative(selectedNodeId, child);
         }
-
-        FlowPanel nodeContainer = new FlowPanel();
-        nodeContainer.addStyleName(STYLE_NODE_CONTAINER);
-
-        NodeTreeRowWidget nodeRow = new NodeTreeRowWidget(node);
-        nodeContainer.add(nodeRow);
-
-        if (node.isLeaf()) {
-            return nodeContainer;
-        }
-
-        FlowPanel children = createChildrenContainer(node);
-        nodeContainer.add(children);
-
-        return nodeContainer;
     }
 
-    private FlowPanel createChildrenContainer(NodeViewData node) {
-        if (node == null || node.isLeaf()) {
-            return null;
+    private void setOtherNodesIterative(Long selectedNodeId, Element node) {
+        EventListener listener = (EventListener) DOM.getEventListener(node);
+
+        if (listener instanceof NodeTreeRowWidget) {
+            NodeTreeRowWidget widget = (NodeTreeRowWidget) listener;
+            if (widget.getId() != selectedNodeId) {
+                widget.setSelected(false);
+            }
         }
 
-        List<NodeViewData> children = node.getChildren();
-
-        FlowPanel childrenWrapper = new FlowPanel();
-        childrenWrapper.addStyleName(STYLE_CHILDREN_WRAPPER);
-
-        FlowPanel indent = new FlowPanel();
-        indent.addStyleName(STYLE_INDENT);
-
-        FlowPanel childrenContainer = new FlowPanel();
-        childrenContainer.addStyleName(STYLE_CHILDREN_CONTAINER);
-
-        childrenWrapper.add(indent);
-        childrenWrapper.add(childrenContainer);
-
-        for (NodeViewData child : children) {
-            childrenContainer.add(createNodeContainer(child));
+        for (int i = 0; i < node.getChildCount(); i++) {
+            Element child = (Element) node.getChild(i);
+            setOtherNodesIterative(selectedNodeId, child);
         }
-
-        return childrenWrapper;
     }
 }

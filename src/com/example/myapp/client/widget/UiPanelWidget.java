@@ -3,6 +3,7 @@ package com.example.myapp.client.widget;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -19,6 +20,7 @@ public class UiPanelWidget extends Composite {
     private Label selectedNode;
 
     private RefreshHandler onRefresh;
+    private HandlerRegistration clickRegistration;
 
     public UiPanelWidget() {
         build();
@@ -37,15 +39,17 @@ public class UiPanelWidget extends Composite {
 
     public void setRefreshHandler(RefreshHandler handler) {
         this.onRefresh = handler;
-        if (onRefresh != null) {
-            refreshButton.addClickHandler(new ClickHandler() {
-                @Override
-                public void onClick(ClickEvent event) {
-                    onRefresh.onRefresh();
-                    setSelectedNodeId(null);
-                }
-            });
+
+        if (onRefresh == null && clickRegistration != null) {
+            clickRegistration.removeHandler();
         }
+
+        clickRegistration = refreshButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                onRefresh.onRefresh();
+            }
+        });
     }
 
     public void setSelectedNodeId(Long id) {

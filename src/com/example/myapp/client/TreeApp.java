@@ -76,7 +76,7 @@ public class TreeApp implements EntryPoint {
         uiPanelWidget.setRefreshHandler(new RefreshHandler() {
             @Override
             public void onRefresh() {
-                update();
+                nodeTableWidget.refreshTable();
             }
         });
     }
