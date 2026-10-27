@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.example.myapp.client.bean.NodeViewData;
 import com.example.myapp.client.handler.NodeSelectHandler;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -34,6 +36,7 @@ public class NodeTreeRowWidget extends Composite {
     private FlowPanel main;
     private FlowPanel nodeRow;
     private FocusPanel wrapper;
+    private FlowPanel childrenContainer;
 
     final private Long id;
 
@@ -115,6 +118,7 @@ public class NodeTreeRowWidget extends Composite {
         nodeContainer.add(nodeRow);
 
         if (node.isEmpty()) {
+            childrenContainer = null;
             return nodeContainer;
         }
 
@@ -137,7 +141,7 @@ public class NodeTreeRowWidget extends Composite {
         FlowPanel indent = new FlowPanel();
         indent.addStyleName(STYLE_INDENT);
 
-        FlowPanel childrenContainer = new FlowPanel();
+        childrenContainer = new FlowPanel();
         childrenContainer.addStyleName(STYLE_CHILDREN_CONTAINER);
 
         childrenWrapper.add(indent);
@@ -149,5 +153,20 @@ public class NodeTreeRowWidget extends Composite {
         }
 
         return childrenWrapper;
+    }
+
+    public void setOtherNodesUnselected(Long selectedNodeId) {
+        if (id != selectedNodeId) {
+            setSelected(false);
+        }
+
+        if (childrenContainer != null) {
+            Element children = childrenContainer.getElement();
+            for (int i = 0; i < children.getChildCount(); i++) {
+                Element childElement = (Element) children.getChild(i);
+                NodeTreeRowWidget widget = (NodeTreeRowWidget) DOM.getEventListener(childElement);
+                widget.setOtherNodesUnselected(selectedNodeId);
+            }
+        }
     }
 }

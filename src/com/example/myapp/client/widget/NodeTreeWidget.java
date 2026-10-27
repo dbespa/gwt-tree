@@ -129,23 +129,8 @@ public class NodeTreeWidget extends Composite {
         Element root = main.getElement();
         for (int i = 0; i < root.getChildCount(); i++) {
             Element child = (Element) root.getChild(i);
-            setOtherNodesIterative(selectedNodeId, child);
-        }
-    }
-
-    private void setOtherNodesIterative(Long selectedNodeId, Element node) {
-        EventListener listener = (EventListener) DOM.getEventListener(node);
-
-        if (listener instanceof NodeTreeRowWidget) {
-            NodeTreeRowWidget widget = (NodeTreeRowWidget) listener;
-            if (widget.getId() != selectedNodeId) {
-                widget.setSelected(false);
-            }
-        }
-
-        for (int i = 0; i < node.getChildCount(); i++) {
-            Element child = (Element) node.getChild(i);
-            setOtherNodesIterative(selectedNodeId, child);
+            NodeTreeRowWidget treeRow = (NodeTreeRowWidget) DOM.getEventListener(child);
+            treeRow.setOtherNodesUnselected(selectedNodeId);
         }
     }
 }
