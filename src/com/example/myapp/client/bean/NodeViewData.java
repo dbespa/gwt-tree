@@ -42,7 +42,7 @@ public class NodeViewData {
         children.add(child);
     }
 
-    public Boolean isLeaf() {
+    public Boolean isEmpty() {
         return children.isEmpty();
     }
 

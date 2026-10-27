@@ -50,7 +50,7 @@ public class NodeTreeBean implements Serializable {
         children.add(child);
     }
 
-    public Boolean isLeaf() {
+    public Boolean isEmpty() {
         return children.isEmpty();
     }
 

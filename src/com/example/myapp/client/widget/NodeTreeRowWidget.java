@@ -96,7 +96,7 @@ public class NodeTreeRowWidget extends Composite {
 
         nodeRow.add(new Label(node.getName()));
 
-        String strNodeType = node.isLeaf() ? LABEL_LEAF : LABEL_NODE;
+        String strNodeType = node.isEmpty() ? LABEL_LEAF : LABEL_NODE;
         Label nodeType = new Label(strNodeType);
         nodeRow.add(nodeType);
         wrapper.add(nodeRow);
@@ -114,7 +114,7 @@ public class NodeTreeRowWidget extends Composite {
         FocusPanel nodeRow = createNodeRow(node);
         nodeContainer.add(nodeRow);
 
-        if (node.isLeaf()) {
+        if (node.isEmpty()) {
             return nodeContainer;
         }
 
@@ -125,7 +125,7 @@ public class NodeTreeRowWidget extends Composite {
     }
 
     private FlowPanel createChildrenContainer(NodeViewData node) {
-        if (node == null || node.isLeaf()) {
+        if (node == null || node.isEmpty()) {
             return null;
         }
 

@@ -93,7 +93,7 @@ public class NodeTreeWidget extends Composite {
     private NodeViewData convertTree(NodeTreeBean node) {
         NodeViewData convertedNode = convertToNodeViewData(node);
 
-        if (node.isLeaf()) {
+        if (node.isEmpty()) {
             return convertedNode;
         }
 
@@ -109,7 +109,7 @@ public class NodeTreeWidget extends Composite {
     private void setNodeList(NodeViewData tree) {
         main.clear();
 
-        if (tree == null || tree.isLeaf()) {
+        if (tree == null || tree.isEmpty()) {
             return;
         }
 
