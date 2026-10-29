@@ -16,11 +16,12 @@ public class NodeTreeWidget extends Composite {
     private static final String STYLE_TREE = "tree";
 
     private FlowPanel main;
-    private UniversalRoot universalRoot;
 
     private NodeRpcServiceAsync nodeRpcService;
 
     private NodeSelectHandler onNodeSelect;
+
+    private NodeTreeRowWidget virtualRoot;
 
     public NodeTreeWidget(NodeRpcServiceAsync refreshService) {
         nodeRpcService = refreshService;
@@ -31,7 +32,6 @@ public class NodeTreeWidget extends Composite {
     private void build() {
         main = new FlowPanel();
         main.addStyleName(STYLE_TREE);
-        universalRoot = new UniversalRoot(main);
     }
 
     public void setNodeSelectHandler(NodeSelectHandler handler) {
@@ -78,31 +78,25 @@ public class NodeTreeWidget extends Composite {
             return;
         }
 
-        List<NodeViewData> rootNodes = tree.getChildren();
+        virtualRoot = new NodeTreeRowWidget(tree);
 
         NodeSelectHandler onSelect = new NodeSelectHandler() {
             @Override
             public void onNodeSelect(Long selectedNodeId) {
                 NodeSelectHandler handler = NodeTreeWidget.this.onNodeSelect;
-                setOtherNodesUnselected(selectedNodeId);
+                unselectOtherNodes(selectedNodeId);
                 if (handler != null) {
                     handler.onNodeSelect(selectedNodeId);
                 }
             }
         };
 
-        for (NodeViewData node : rootNodes) {
-            if (node != null) {
-                NodeTreeRowWidget nodeRow = new NodeTreeRowWidget(node);
-                universalRoot.add(nodeRow);
-                if (this.onNodeSelect != null) {
-                    nodeRow.setNodeSelectHandler(onSelect);
-                }
-            }
-        }
+        virtualRoot.setNodeSelectHandler(onSelect);
+        virtualRoot.setCaptionVisible(false);
+        main.add(virtualRoot);
     }
 
-    private void setOtherNodesUnselected(Long selectedNodeId) {
-        universalRoot.setOtherNodesUnselected(selectedNodeId);
+    private void unselectOtherNodes(Long selectedNodeId) {
+        virtualRoot.unselectOtherNodes(selectedNodeId);
     }
 }

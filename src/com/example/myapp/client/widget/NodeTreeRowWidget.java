@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 
 public class NodeTreeRowWidget extends Composite {
 
@@ -24,16 +25,13 @@ public class NodeTreeRowWidget extends Composite {
 
     private static final String BUTTON_COLLAPSE = "-";
 
-    private static final String LABEL_NODE = "(.)";
-    private static final String LABEL_LEAF = "(*)";
-
     private NodeSelectHandler onNodeSelect;
     private HandlerRegistration clickRegistration;
 
     private FlowPanel main;
     private FlowPanel nodeRow;
     private FlowPanel childrenContainer;
-    private UniversalRoot childrenRoot;
+    private FlowPanel indent;
 
     private Long id;
 
@@ -42,9 +40,9 @@ public class NodeTreeRowWidget extends Composite {
             throw new NullPointerException("Node is null!");
         }
 
-        childrenRoot = null;
         id = node.getId();
         build(node);
+        fillChildrenWidgets(node);
         initWidget(main);
     }
 
@@ -52,78 +50,77 @@ public class NodeTreeRowWidget extends Composite {
         return id;
     }
 
-    private FlowPanel build(NodeViewData node) {
-        if (node == null) {
-            return null;
-        }
-
-        main = createNodeContainer(node);
-        return main;
+    public void setCaptionVisible(Boolean isCaptionVisible) {
+        nodeRow.setVisible(isCaptionVisible);
+        indent.setVisible(isCaptionVisible);
     }
 
-    private FlowPanel createNodeContainer(NodeViewData node) {
-        if (node == null) {
-            return null;
-        }
+    private void build(NodeViewData node) {
+        main = new FlowPanel();
+        main.addStyleName(STYLE_NODE_CONTAINER);
 
-        FlowPanel nodeContainer = new FlowPanel();
-        nodeContainer.addStyleName(STYLE_NODE_CONTAINER);
-
-        FlowPanel nodeRow = createNodeRow(node);
-        nodeContainer.add(nodeRow);
+        nodeRow = createNodeRow(node);
+        main.add(nodeRow);
 
         if (node.isEmpty()) {
-            return nodeContainer;
+            return;
         }
 
-        FlowPanel children = createChildrenContainer(node);
-        nodeContainer.add(children);
+        FlowPanel children = createChildrenPanel(node);
+        main.add(children);
+    }
 
-        return nodeContainer;
+    private void fillChildrenWidgets(NodeViewData node) {
+        List<NodeViewData> children = node.getChildren();
+        for (NodeViewData child : children) {
+            NodeTreeRowWidget childWidget = new NodeTreeRowWidget(child);
+            childrenContainer.add(childWidget);
+        }
     }
 
     private FlowPanel createNodeRow(NodeViewData node) {
-        nodeRow = new FlowPanel();
-        nodeRow.addStyleName(STYLE_TREE_ROW);
+        FlowPanel resultNodeRow = new FlowPanel();
+        resultNodeRow.addStyleName(STYLE_TREE_ROW);
 
         Button toggleButton = new Button(BUTTON_COLLAPSE);
         toggleButton.addStyleName(STYLE_TOGGLE_BUTTON);
-        nodeRow.add(toggleButton);
+        resultNodeRow.add(toggleButton);
 
-        nodeRow.add(new Label(node.getName()));
+        resultNodeRow.add(new Label(node.getName()));
 
-        String strNodeType = node.isEmpty() ? LABEL_LEAF : LABEL_NODE;
-        Label nodeType = new Label(strNodeType);
-        nodeRow.add(nodeType);
-        return nodeRow;
+        return resultNodeRow;
     }
 
-    private FlowPanel createChildrenContainer(NodeViewData node) {
+    private FlowPanel createChildrenPanel(NodeViewData node) {
         if (node == null || node.isEmpty()) {
             return null;
         }
 
-        List<NodeViewData> children = node.getChildren();
+        FlowPanel panel = new FlowPanel();
+        panel.addStyleName(STYLE_CHILDREN_WRAPPER);
 
-        FlowPanel childrenWrapper = new FlowPanel();
-        childrenWrapper.addStyleName(STYLE_CHILDREN_WRAPPER);
-
-        FlowPanel indent = new FlowPanel();
+        indent = new FlowPanel();
         indent.addStyleName(STYLE_INDENT);
 
         childrenContainer = new FlowPanel();
         childrenContainer.addStyleName(STYLE_CHILDREN_CONTAINER);
-        childrenRoot = new UniversalRoot(childrenContainer);
 
-        childrenWrapper.add(indent);
-        childrenWrapper.add(childrenContainer);
+        panel.add(indent);
+        panel.add(childrenContainer);
 
-        for (NodeViewData child : children) {
-            NodeTreeRowWidget childWidget = new NodeTreeRowWidget(child);
-            childrenRoot.add(childWidget);
+        return panel;
+    }
+
+    private void traversal(NodeAction action) {
+        if (childrenContainer != null) {
+            for (int i = 0; i < childrenContainer.getWidgetCount(); i++) {
+                Widget widget = childrenContainer.getWidget(i);
+                if (widget instanceof NodeTreeRowWidget) {
+                    NodeTreeRowWidget nodeRowWidget = (NodeTreeRowWidget) widget;
+                    action.function(nodeRowWidget);
+                }
+            }
         }
-
-        return childrenWrapper;
     }
 
     public void setNodeSelectHandler(NodeSelectHandler onSelect) {
@@ -133,24 +130,28 @@ public class NodeTreeRowWidget extends Composite {
 
         this.onNodeSelect = onSelect;
 
-        if (childrenRoot != null) {
-            childrenRoot.setNodeSelectHandler(onSelect);
+        if (childrenContainer != null) {
+            setChildrenNodeSelectHandler(onSelect);
         }
 
-        if (onSelect != null) {
-            ClickHandler onClick = new ClickHandler() {
-                @Override
-                public void onClick(ClickEvent event) {
-                    Long id = NodeTreeRowWidget.this.id;
-                    NodeSelectHandler nodeSelectHandler = NodeTreeRowWidget.this.onNodeSelect;
-                    if (nodeSelectHandler != null) {
-                        setSelected(true);
-                        nodeSelectHandler.onNodeSelect(id);
-                    }
+        clickRegistration = nodeRow.addDomHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                setSelected(true);
+                if (onNodeSelect != null) {
+                    onNodeSelect.onNodeSelect(id);
                 }
-            };
-            clickRegistration = nodeRow.addDomHandler(onClick, ClickEvent.getType());
-        }
+            }
+        }, ClickEvent.getType());
+    }
+
+    private void setChildrenNodeSelectHandler(final NodeSelectHandler onSelect) {
+        traversal(new NodeAction() {
+            @Override
+            public void function(NodeTreeRowWidget treeRowWidget) {
+                treeRowWidget.setNodeSelectHandler(onSelect);
+            }
+        });
     }
 
     public void setSelected(Boolean isSelected) {
@@ -161,13 +162,21 @@ public class NodeTreeRowWidget extends Composite {
         }
     }
 
-    public void setOtherNodesUnselected(Long selectedNodeId) {
+    public void unselectOtherNodes(Long selectedNodeId) {
         if (!id.equals(selectedNodeId)) {
             setSelected(false);
         }
-
         if (childrenContainer != null) {
-            childrenRoot.setOtherNodesUnselected(selectedNodeId);
+            unselectChildren(selectedNodeId);
         }
+    }
+
+    private void unselectChildren(final Long selectedNodeId) {
+        traversal(new NodeAction() {
+            @Override
+            public void function(NodeTreeRowWidget treeRowWidget) {
+                treeRowWidget.unselectOtherNodes(selectedNodeId);
+            }
+        });
     }
 }
