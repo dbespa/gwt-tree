@@ -2,7 +2,6 @@ package com.example.myapp.client.widget;
 
 import java.util.List;
 
-import com.example.myapp.client.UniversalRoot;
 import com.example.myapp.client.bean.NodeViewData;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
@@ -24,7 +23,6 @@ public class NodeTreeWidget extends Composite {
     private NodeSelectHandler onNodeSelect;
 
     public NodeTreeWidget(NodeRpcServiceAsync refreshService) {
-        universalRoot = null;
         nodeRpcService = refreshService;
         build();
         initWidget(main);
@@ -82,19 +80,24 @@ public class NodeTreeWidget extends Composite {
 
         List<NodeViewData> rootNodes = tree.getChildren();
 
+        NodeSelectHandler onSelect = new NodeSelectHandler() {
+            @Override
+            public void onNodeSelect(Long selectedNodeId) {
+                NodeSelectHandler handler = NodeTreeWidget.this.onNodeSelect;
+                setOtherNodesUnselected(selectedNodeId);
+                if (handler != null) {
+                    handler.onNodeSelect(selectedNodeId);
+                }
+            }
+        };
+
         for (NodeViewData node : rootNodes) {
             if (node != null) {
                 NodeTreeRowWidget nodeRow = new NodeTreeRowWidget(node);
                 universalRoot.add(nodeRow);
-
-                universalRoot.setNodeSelectHandler(new NodeSelectHandler() {
-                    @Override
-                    public void onNodeSelect(Long selectedNodeId) {
-                        setOtherNodesUnselected(selectedNodeId);
-                        NodeTreeWidget.this.onNodeSelect.onNodeSelect(selectedNodeId);
-                    }
-                });
-                universalRoot.add(nodeRow);
+                if (this.onNodeSelect != null) {
+                    nodeRow.setNodeSelectHandler(onSelect);
+                }
             }
         }
     }

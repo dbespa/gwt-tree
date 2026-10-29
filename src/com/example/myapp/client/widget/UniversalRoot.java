@@ -1,8 +1,8 @@
-package com.example.myapp.client;
+package com.example.myapp.client.widget;
 
 import com.example.myapp.client.handler.NodeSelectHandler;
-import com.example.myapp.client.widget.NodeTreeRowWidget;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class UniversalRoot {
 
@@ -13,14 +13,19 @@ public class UniversalRoot {
     }
 
     public void add(NodeTreeRowWidget nodeWidget) {
-        root.add(nodeWidget);
+        if (root != null) {
+            root.add(nodeWidget);
+        }
     }
 
-    public void traversal(NodeAction action) {
+    private void traversal(NodeAction action) {
         if (root != null) {
             for (int i = 0; i < root.getWidgetCount(); i++) {
-                NodeTreeRowWidget widget = (NodeTreeRowWidget) root.getWidget(i);
-                action.function(widget);
+                Widget widget = root.getWidget(i);
+                if (widget instanceof NodeTreeRowWidget) {
+                    NodeTreeRowWidget treeWidget = (NodeTreeRowWidget) widget;
+                    action.function(treeWidget);
+                }
             }
         }
     }

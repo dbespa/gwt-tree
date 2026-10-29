@@ -37,19 +37,21 @@ public class UiPanelWidget extends Composite {
         main.add(selectedNode);
     }
 
-    public void setRefreshHandler(RefreshHandler handler) {
-        this.onRefresh = handler;
-
-        if (onRefresh == null && clickRegistration != null) {
+    public void setRefreshHandler(RefreshHandler refreshHandler) {
+        if (clickRegistration != null) {
             clickRegistration.removeHandler();
         }
 
-        clickRegistration = refreshButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                onRefresh.onRefresh();
-            }
-        });
+        this.onRefresh = refreshHandler;
+
+        if (refreshHandler != null) {
+            clickRegistration = refreshButton.addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(ClickEvent event) {
+                    onRefresh.onRefresh();
+                }
+            });
+        }
     }
 
     public void setSelectedNodeId(Long id) {

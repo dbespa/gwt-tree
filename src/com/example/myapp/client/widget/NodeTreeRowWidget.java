@@ -2,7 +2,6 @@ package com.example.myapp.client.widget;
 
 import java.util.List;
 
-import com.example.myapp.client.UniversalRoot;
 import com.example.myapp.client.bean.NodeViewData;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -40,7 +39,7 @@ public class NodeTreeRowWidget extends Composite {
 
     public NodeTreeRowWidget(NodeViewData node) {
         if (node == null) {
-            return;
+            throw new NullPointerException("Node is null!");
         }
 
         childrenRoot = null;
@@ -74,7 +73,6 @@ public class NodeTreeRowWidget extends Composite {
         nodeContainer.add(nodeRow);
 
         if (node.isEmpty()) {
-            childrenContainer = null;
             return nodeContainer;
         }
 
@@ -102,7 +100,6 @@ public class NodeTreeRowWidget extends Composite {
 
     private FlowPanel createChildrenContainer(NodeViewData node) {
         if (node == null || node.isEmpty()) {
-            childrenRoot = null;
             return null;
         }
 
