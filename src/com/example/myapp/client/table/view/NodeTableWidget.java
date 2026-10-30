@@ -1,16 +1,15 @@
-package com.example.myapp.client.widget;
+package com.example.myapp.client.table.view;
 
 import java.util.List;
 
-import com.example.myapp.client.rpc.NodeRpcServiceAsync;
+import com.example.myapp.client.table.presenter.NodeTablePresenter;
 import com.example.myapp.shared.bean.NodeBean;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 
-public class NodeTableWidget extends Composite {
+public class NodeTableWidget extends Composite implements NodeTablePresenter.Display {
 
     private static final String NULL_PARENT_ID_PLACEHOLDER = "-";
 
@@ -29,10 +28,7 @@ public class NodeTableWidget extends Composite {
     private FlowPanel headerRow;
     private FlowPanel table;
 
-    private NodeRpcServiceAsync nodeRpsService;
-
-    public NodeTableWidget(NodeRpcServiceAsync refreshService) {
-        nodeRpsService = refreshService;
+    public NodeTableWidget() {
         build();
         initWidget(main);
     }
@@ -46,20 +42,6 @@ public class NodeTableWidget extends Composite {
 
         main.add(headerRow);
         main.add(table);
-    }
-
-    public void refreshTable() {
-        nodeRpsService.getAllNodes(new AsyncCallback<List<NodeBean>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                GWT.log("Ошибка получения данных с сервера: " + caught.getLocalizedMessage());
-            }
-
-            @Override
-            public void onSuccess(List<NodeBean> result) {
-                setNodeList(result);
-            }
-        });
     }
 
     public void setNodeList(List<NodeBean> newNodeList) {
@@ -114,5 +96,9 @@ public class NodeTableWidget extends Composite {
         row.add(createCell(String.valueOf(node.getPort())));
 
         return row;
+    }
+
+    public Widget asWidget() {
+        return this;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.myapp.client.widget;
+package com.example.myapp.client.tree;
 
 import com.example.myapp.client.tree.view.NodeTreeRowWidget;
 
