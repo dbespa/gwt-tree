@@ -1,9 +1,10 @@
-package com.example.myapp.client.widget;
+package com.example.myapp.client.tree.view;
 
 import java.util.List;
 
 import com.example.myapp.client.bean.NodeViewData;
 import com.example.myapp.client.handler.NodeSelectHandler;
+import com.example.myapp.client.widget.NodeAction;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;

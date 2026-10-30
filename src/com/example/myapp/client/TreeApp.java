@@ -4,8 +4,9 @@ import com.example.myapp.client.handler.NodeSelectHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.example.myapp.client.rpc.NodeRpcService;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
+import com.example.myapp.client.tree.presenter.NodeTreePresenter;
+import com.example.myapp.client.tree.view.NodeTreeWidget;
 import com.example.myapp.client.widget.NodeTableWidget;
-import com.example.myapp.client.widget.NodeTreeWidget;
 import com.example.myapp.client.widget.UiPanelWidget;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -24,6 +25,7 @@ public class TreeApp implements EntryPoint {
     private static final String LABEL_TREE = "Tree:";
 
     private NodeRpcServiceAsync nodeRpcService;
+    private NodeTreePresenter nodeTreePresenter;
 
     private NodeTableWidget nodeTableWidget;
     private NodeTreeWidget nodeTreeWidget;
@@ -54,8 +56,9 @@ public class TreeApp implements EntryPoint {
         label.addStyleName(STYLE_HEADING);
         treeContainer.add(label);
 
-        nodeTreeWidget = new NodeTreeWidget(nodeRpcService);
-        treeContainer.add(nodeTreeWidget);
+        nodeTreeWidget = new NodeTreeWidget();
+        nodeTreePresenter = new NodeTreePresenter(nodeRpcService, nodeTreeWidget);
+        nodeTreePresenter.go(treeContainer);
 
         label = new Label(LABEL_ALL_NODES);
         label.addStyleName(STYLE_HEADING);
@@ -66,7 +69,7 @@ public class TreeApp implements EntryPoint {
     }
 
     private void bind() {
-        nodeTreeWidget.setNodeSelectHandler(new NodeSelectHandler() {
+        nodeTreePresenter.setNodeSelectHandler(new NodeSelectHandler() {
             @Override
             public void onNodeSelect(Long selectedNodeId) {
                 uiPanelWidget.setSelectedNodeId(selectedNodeId);
@@ -83,6 +86,6 @@ public class TreeApp implements EntryPoint {
 
     private void update() {
         nodeTableWidget.refreshTable();
-        nodeTreeWidget.refreshTree();
+        nodeTreePresenter.getTree();
     }
 }
