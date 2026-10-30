@@ -8,7 +8,8 @@ import com.example.myapp.client.table.presenter.NodeTablePresenter;
 import com.example.myapp.client.table.view.NodeTableWidget;
 import com.example.myapp.client.tree.presenter.NodeTreePresenter;
 import com.example.myapp.client.tree.view.NodeTreeWidget;
-import com.example.myapp.client.widget.UiPanelWidget;
+import com.example.myapp.client.uipanel.presenter.UiPanelPresenter;
+import com.example.myapp.client.uipanel.view.UiPanelWidget;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -28,6 +29,7 @@ public class TreeApp implements EntryPoint {
     private NodeRpcServiceAsync nodeRpcService;
     private NodeTreePresenter nodeTreePresenter;
     private NodeTablePresenter nodeTablePresenter;
+    private UiPanelPresenter uiPanelPresenter;
 
     private NodeTableWidget nodeTableWidget;
     private NodeTreeWidget nodeTreeWidget;
@@ -41,32 +43,48 @@ public class TreeApp implements EntryPoint {
 
     private void build() {
         nodeRpcService = (NodeRpcServiceAsync) GWT.create(NodeRpcService.class);
+        buildTree();
+        buildUiPanel();
+        buildTable();
+    }
+
+    private void buildTree() {
+        nodeTreeWidget = new NodeTreeWidget();
 
         FlowPanel treeContainer = new FlowPanel();
         treeContainer.addStyleName(STYLE_TREE_CONTAINER);
         RootPanel.get().add(treeContainer);
 
+        Label label = new Label(LABEL_TREE);
+        label.addStyleName(STYLE_HEADING);
+        treeContainer.add(label);
+
+        nodeTreePresenter = new NodeTreePresenter(nodeRpcService, nodeTreeWidget);
+        nodeTreePresenter.go(treeContainer);
+    }
+
+    private void buildUiPanel() {
         uiPanelWidget = new UiPanelWidget();
+
         uiPanelWidget.addStyleName(STYLE_UI_PANEL);
-        RootPanel.get().add(uiPanelWidget);
+        FlowPanel uiPanel = new FlowPanel();
+        RootPanel.get().add(uiPanel);
+
+        uiPanelPresenter = new UiPanelPresenter(uiPanelWidget);
+        uiPanelPresenter.go(uiPanel);
+    }
+
+    private void buildTable() {
+        nodeTableWidget = new NodeTableWidget();
 
         FlowPanel tableContainer = new FlowPanel();
         tableContainer.addStyleName(STYLE_NODE_TABLE_CONTAINER);
         RootPanel.get().add(tableContainer);
 
-        Label label = new Label(LABEL_TREE);
-        label.addStyleName(STYLE_HEADING);
-        treeContainer.add(label);
-
-        nodeTreeWidget = new NodeTreeWidget();
-        nodeTreePresenter = new NodeTreePresenter(nodeRpcService, nodeTreeWidget);
-        nodeTreePresenter.go(treeContainer);
-
-        label = new Label(LABEL_ALL_NODES);
+        Label label = new Label(LABEL_ALL_NODES);
         label.addStyleName(STYLE_HEADING);
         tableContainer.add(label);
 
-        nodeTableWidget = new NodeTableWidget();
         nodeTablePresenter = new NodeTablePresenter(nodeRpcService, nodeTableWidget);
         nodeTablePresenter.go(tableContainer);
     }
@@ -75,11 +93,11 @@ public class TreeApp implements EntryPoint {
         nodeTreePresenter.setNodeSelectHandler(new NodeSelectHandler() {
             @Override
             public void onNodeSelect(Long selectedNodeId) {
-                uiPanelWidget.setSelectedNodeId(selectedNodeId);
+                uiPanelPresenter.setSelectedNodeId(selectedNodeId);
             }
         });
 
-        uiPanelWidget.setRefreshHandler(new RefreshHandler() {
+        uiPanelPresenter.setRefreshHandler(new RefreshHandler() {
             @Override
             public void onRefresh() {
                 nodeTablePresenter.getTable();
