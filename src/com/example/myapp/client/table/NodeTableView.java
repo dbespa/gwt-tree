@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 
-public class NodeTableWidget extends Composite implements NodeTablePresenter.Display {
+public class NodeTableView extends Composite implements NodeTableDisplay {
 
     private static final String NULL_PARENT_ID_PLACEHOLDER = "-";
 
@@ -25,7 +25,7 @@ public class NodeTableWidget extends Composite implements NodeTablePresenter.Dis
     private FlowPanel main;
     private FlowPanel table;
 
-    public NodeTableWidget() {
+    public NodeTableView() {
         build();
         initWidget(main);
     }

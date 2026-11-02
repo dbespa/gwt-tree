@@ -9,37 +9,26 @@ import com.example.myapp.shared.bean.NodeTreeBean;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Widget;
 
 public class NodeTreePresenter {
 
     private NodeRpcServiceAsync nodeRpcService;
-    private Display display;
+    private NodeTreeDisplay view;
 
-    public interface Display {
-        void setTree(NodeViewData tree);
-
-        void setNodeSelectHandler(NodeSelectHandler onSelect);
-
-        void unselectOtherNodes(Long selectedNodeId);
-
-        Widget asWidget();
-    }
-
-    public NodeTreePresenter(NodeRpcServiceAsync nodeRpcService, Display view) {
+    public NodeTreePresenter(NodeRpcServiceAsync nodeRpcService, NodeTreeDisplay view) {
         this.nodeRpcService = nodeRpcService;
-        this.display = view;
+        this.view = view;
     }
 
     public void go(HasWidgets container) {
-        container.add(display.asWidget());
+        container.add(view.asWidget());
     }
 
     public void setNodeSelectHandler(final NodeSelectHandler onSelect) {
-        display.setNodeSelectHandler(new NodeSelectHandler() {
+        view.setNodeSelectHandler(new NodeSelectHandler() {
             @Override
             public void onNodeSelect(Long selectedNodeId) {
-                display.unselectOtherNodes(selectedNodeId);
+                view.unselectOtherNodes(selectedNodeId);
                 if (onSelect != null) {
                     onSelect.onNodeSelect(selectedNodeId);
                 }
@@ -47,7 +36,7 @@ public class NodeTreePresenter {
         });
     }
 
-    public void getTree() {
+    public void updateTree() {
         nodeRpcService.getTree(new AsyncCallback<NodeTreeBean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -57,7 +46,7 @@ public class NodeTreePresenter {
             @Override
             public void onSuccess(NodeTreeBean result) {
                 NodeViewData convertedTree = convertTree(result);
-                display.setTree(convertedTree);
+                view.setTree(convertedTree);
             }
         });
     }

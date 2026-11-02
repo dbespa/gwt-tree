@@ -7,29 +7,22 @@ import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Widget;
 
 public class NodeTablePresenter {
 
     private NodeRpcServiceAsync nodeRpcService;
-    private Display display;
+    private NodeTableDisplay view;
 
-    public interface Display {
-        void setNodeList(List<NodeBean> newNodeList);
-
-        Widget asWidget();
-    }
-
-    public NodeTablePresenter(NodeRpcServiceAsync nodeRpcService, Display view) {
+    public NodeTablePresenter(NodeRpcServiceAsync nodeRpcService, NodeTableDisplay view) {
         this.nodeRpcService = nodeRpcService;
-        this.display = view;
+        this.view = view;
     }
 
     public void go(HasWidgets container) {
-        container.add(display.asWidget());
+        container.add(view.asWidget());
     }
 
-    public void getTable() {
+    public void updateTable() {
         nodeRpcService.getAllNodes(new AsyncCallback<List<NodeBean>>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -38,7 +31,7 @@ public class NodeTablePresenter {
 
             @Override
             public void onSuccess(List<NodeBean> result) {
-                display.setNodeList(result);
+                view.setNodeList(result);
             }
         });
     }

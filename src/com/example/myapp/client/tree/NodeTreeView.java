@@ -5,7 +5,7 @@ import com.example.myapp.client.handler.NodeSelectHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-public class NodeTreeWidget extends Composite implements NodeTreePresenter.Display {
+public class NodeTreeView extends Composite implements NodeTreeDisplay {
 
     private static final String STYLE_TREE = "tree";
 
@@ -14,7 +14,7 @@ public class NodeTreeWidget extends Composite implements NodeTreePresenter.Displ
 
     private NodeSelectHandler onNodeSelect;
 
-    public NodeTreeWidget() {
+    public NodeTreeView() {
         build();
         initWidget(main);
     }

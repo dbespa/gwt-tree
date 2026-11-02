@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 
-public class UiPanelWidget extends Composite implements UiPanelPresenter.Display {
+public class UiPanelView extends Composite implements UiPanelDisplay {
 
     private static final String STYLE_UI_PANEL = "ui-panel";
 
@@ -16,11 +16,11 @@ public class UiPanelWidget extends Composite implements UiPanelPresenter.Display
 
     private FlowPanel main;
     private Button refreshButton;
-    private Label selectedNode;
+    private Label selectedNodeLabel;
 
     private HandlerRegistration clickRegistration;
 
-    public UiPanelWidget() {
+    public UiPanelView() {
         build();
         initWidget(main);
     }
@@ -30,15 +30,15 @@ public class UiPanelWidget extends Composite implements UiPanelPresenter.Display
         main.addStyleName(STYLE_UI_PANEL);
 
         refreshButton = new Button(LABEL_REFRESH);
-        selectedNode = new Label(LABEL_SELECTED_ID);
+        selectedNodeLabel = new Label(LABEL_SELECTED_ID);
 
         main.add(refreshButton);
-        main.add(selectedNode);
+        main.add(selectedNodeLabel);
     }
 
     public void setSelectedNodeId(Long id) {
-        String selectedId = id == null ? "" : String.valueOf(id);
-        selectedNode.setText(LABEL_SELECTED_ID + selectedId);
+        String selectedNodeId = id == null ? "" : String.valueOf(id);
+        selectedNodeLabel.setText(LABEL_SELECTED_ID + selectedNodeId);
     }
 
     public void setClickHandler(ClickHandler onClick) {
