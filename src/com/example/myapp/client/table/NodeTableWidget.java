@@ -1,8 +1,7 @@
-package com.example.myapp.client.table.view;
+package com.example.myapp.client.table;
 
 import java.util.List;
 
-import com.example.myapp.client.table.presenter.NodeTablePresenter;
 import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;

@@ -1,4 +1,4 @@
-package com.example.myapp.client.uipanel.presenter;
+package com.example.myapp.client.uipanel;
 
 import com.example.myapp.client.handler.RefreshHandler;
 import com.google.gwt.event.dom.client.ClickEvent;

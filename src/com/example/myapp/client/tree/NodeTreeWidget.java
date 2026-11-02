@@ -1,8 +1,7 @@
-package com.example.myapp.client.tree.view;
+package com.example.myapp.client.tree;
 
 import com.example.myapp.client.bean.NodeViewData;
 import com.example.myapp.client.handler.NodeSelectHandler;
-import com.example.myapp.client.tree.presenter.NodeTreePresenter;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 

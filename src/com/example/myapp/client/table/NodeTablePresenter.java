@@ -1,4 +1,4 @@
-package com.example.myapp.client.table.presenter;
+package com.example.myapp.client.table;
 
 import java.util.List;
 

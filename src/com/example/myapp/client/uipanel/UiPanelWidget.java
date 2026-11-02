@@ -1,6 +1,5 @@
-package com.example.myapp.client.uipanel.view;
+package com.example.myapp.client.uipanel;
 
-import com.example.myapp.client.uipanel.presenter.UiPanelPresenter;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Button;

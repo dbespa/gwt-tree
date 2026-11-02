@@ -1,4 +1,4 @@
-package com.example.myapp.client.tree.presenter;
+package com.example.myapp.client.tree;
 
 import java.util.List;
 
