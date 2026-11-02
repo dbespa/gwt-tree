@@ -7,9 +7,10 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Widget;
 
 public class UiPanelWidget extends Composite implements UiPanelPresenter.Display {
+
+    private static final String STYLE_UI_PANEL = "ui-panel";
 
     private static final String LABEL_REFRESH = "Refresh";
     private static final String LABEL_SELECTED_ID = "selected node id = ";
@@ -27,6 +28,7 @@ public class UiPanelWidget extends Composite implements UiPanelPresenter.Display
 
     private void build() {
         main = new FlowPanel();
+        main.addStyleName(STYLE_UI_PANEL);
 
         refreshButton = new Button(LABEL_REFRESH);
         selectedNode = new Label(LABEL_SELECTED_ID);
@@ -45,9 +47,5 @@ public class UiPanelWidget extends Composite implements UiPanelPresenter.Display
             clickRegistration.removeHandler();
         }
         clickRegistration = refreshButton.addClickHandler(onClick);
-    }
-
-    public Widget asWidget() {
-        return this;
     }
 }

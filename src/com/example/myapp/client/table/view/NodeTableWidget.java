@@ -7,7 +7,6 @@ import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Widget;
 
 public class NodeTableWidget extends Composite implements NodeTablePresenter.Display {
 
@@ -25,7 +24,6 @@ public class NodeTableWidget extends Composite implements NodeTablePresenter.Dis
     private static final String PORT_TO_STRING = "port";
 
     private FlowPanel main;
-    private FlowPanel headerRow;
     private FlowPanel table;
 
     public NodeTableWidget() {
@@ -38,7 +36,7 @@ public class NodeTableWidget extends Composite implements NodeTablePresenter.Dis
         table = new FlowPanel();
         table.addStyleName(STYLE_TABLE);
 
-        headerRow = createHeaderRow();
+        FlowPanel headerRow = createHeaderRow();
 
         main.add(headerRow);
         main.add(table);
@@ -68,7 +66,6 @@ public class NodeTableWidget extends Composite implements NodeTablePresenter.Dis
         headerRow.add(createCell(NAME_TO_STRING));
         headerRow.add(createCell(IP_TO_STRING));
         headerRow.add(createCell(PORT_TO_STRING));
-
         return headerRow;
     }
 
@@ -94,11 +91,6 @@ public class NodeTableWidget extends Composite implements NodeTablePresenter.Dis
         row.add(createCell(node.getName()));
         row.add(createCell(node.getIp()));
         row.add(createCell(String.valueOf(node.getPort())));
-
         return row;
-    }
-
-    public Widget asWidget() {
-        return this;
     }
 }

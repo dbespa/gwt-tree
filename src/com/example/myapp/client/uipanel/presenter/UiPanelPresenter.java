@@ -22,8 +22,8 @@ public class UiPanelPresenter {
         this.display = view;
     }
 
-    public void go(HasWidgets widget) {
-        widget.add(display.asWidget());
+    public void go(HasWidgets container) {
+        container.add(display.asWidget());
     }
 
     public void setSelectedNodeId(Long id) {

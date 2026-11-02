@@ -31,8 +31,20 @@ public class NodeTreePresenter {
         this.display = view;
     }
 
-    public void go(HasWidgets widget) {
-        widget.add(display.asWidget());
+    public void go(HasWidgets container) {
+        container.add(display.asWidget());
+    }
+
+    public void setNodeSelectHandler(final NodeSelectHandler onSelect) {
+        display.setNodeSelectHandler(new NodeSelectHandler() {
+            @Override
+            public void onNodeSelect(Long selectedNodeId) {
+                display.unselectOtherNodes(selectedNodeId);
+                if (onSelect != null) {
+                    onSelect.onNodeSelect(selectedNodeId);
+                }
+            }
+        });
     }
 
     public void getTree() {
@@ -46,18 +58,6 @@ public class NodeTreePresenter {
             public void onSuccess(NodeTreeBean result) {
                 NodeViewData convertedTree = convertTree(result);
                 display.setTree(convertedTree);
-            }
-        });
-    }
-
-    public void setNodeSelectHandler(final NodeSelectHandler onSelect) {
-        display.setNodeSelectHandler(new NodeSelectHandler() {
-            @Override
-            public void onNodeSelect(Long selectedNodeId) {
-                display.unselectOtherNodes(selectedNodeId);
-                if (onSelect != null) {
-                    onSelect.onNodeSelect(selectedNodeId);
-                }
             }
         });
     }

@@ -20,7 +20,7 @@ public class TreeApp implements EntryPoint {
 
     private static final String STYLE_HEADING = "heading";
     private static final String STYLE_TREE_CONTAINER = "tree-container";
-    private static final String STYLE_UI_PANEL = "ui-panel";
+    private static final String STYLE_UI_PANEL_CONTAINER = "ui-panel-container";
     private static final String STYLE_NODE_TABLE_CONTAINER = "node-table-container";
 
     private static final String LABEL_ALL_NODES = "All nodes:";
@@ -66,8 +66,8 @@ public class TreeApp implements EntryPoint {
     private void buildUiPanel() {
         uiPanelWidget = new UiPanelWidget();
 
-        uiPanelWidget.addStyleName(STYLE_UI_PANEL);
         FlowPanel uiPanel = new FlowPanel();
+        uiPanel.addStyleName(STYLE_UI_PANEL_CONTAINER);
         RootPanel.get().add(uiPanel);
 
         uiPanelPresenter = new UiPanelPresenter(uiPanelWidget);

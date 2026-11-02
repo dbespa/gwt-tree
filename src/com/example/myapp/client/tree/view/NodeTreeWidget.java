@@ -5,7 +5,6 @@ import com.example.myapp.client.handler.NodeSelectHandler;
 import com.example.myapp.client.tree.presenter.NodeTreePresenter;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 public class NodeTreeWidget extends Composite implements NodeTreePresenter.Display {
 
@@ -39,15 +38,14 @@ public class NodeTreeWidget extends Composite implements NodeTreePresenter.Displ
 
         virtualRoot = new NodeTreeRowWidget(tree);
         virtualRoot.setNodeSelectHandler(onNodeSelect);
-        virtualRoot.setCaptionVisible(false);
+        virtualRoot.removeCaption();
         main.add(virtualRoot);
     }
 
     public void unselectOtherNodes(Long selectedNodeId) {
+        if (virtualRoot == null) {
+            return;
+        }
         virtualRoot.unselectOtherNodes(selectedNodeId);
-    }
-
-    public Widget asWidget() {
-        return this;
     }
 }

@@ -25,8 +25,8 @@ public class NodeTablePresenter {
         this.display = view;
     }
 
-    public void go(HasWidgets widget) {
-        widget.add(display.asWidget());
+    public void go(HasWidgets container) {
+        container.add(display.asWidget());
     }
 
     public void getTable() {

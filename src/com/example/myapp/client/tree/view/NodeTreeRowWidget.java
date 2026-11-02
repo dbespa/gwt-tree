@@ -32,15 +32,10 @@ public class NodeTreeRowWidget extends Composite {
     private FlowPanel main;
     private FlowPanel nodeRow;
     private FlowPanel childrenContainer;
-    private FlowPanel indent;
 
     private Long id;
 
     public NodeTreeRowWidget(NodeViewData node) {
-        if (node == null) {
-            throw new NullPointerException("Node is null!");
-        }
-
         id = node.getId();
         build(node);
         fillChildrenWidgets(node);
@@ -51,9 +46,9 @@ public class NodeTreeRowWidget extends Composite {
         return id;
     }
 
-    public void setCaptionVisible(Boolean isCaptionVisible) {
-        nodeRow.setVisible(isCaptionVisible);
-        indent.setVisible(isCaptionVisible);
+    public void removeCaption() {
+        main.clear();
+        main.add(childrenContainer);
     }
 
     private void build(NodeViewData node) {
@@ -71,36 +66,27 @@ public class NodeTreeRowWidget extends Composite {
         main.add(children);
     }
 
-    private void fillChildrenWidgets(NodeViewData node) {
-        List<NodeViewData> children = node.getChildren();
-        for (NodeViewData child : children) {
-            NodeTreeRowWidget childWidget = new NodeTreeRowWidget(child);
-            childrenContainer.add(childWidget);
-        }
-    }
-
     private FlowPanel createNodeRow(NodeViewData node) {
         FlowPanel resultNodeRow = new FlowPanel();
         resultNodeRow.addStyleName(STYLE_TREE_ROW);
 
         Button toggleButton = new Button(BUTTON_COLLAPSE);
         toggleButton.addStyleName(STYLE_TOGGLE_BUTTON);
+
         resultNodeRow.add(toggleButton);
-
         resultNodeRow.add(new Label(node.getName()));
-
         return resultNodeRow;
     }
 
     private FlowPanel createChildrenPanel(NodeViewData node) {
-        if (node == null || node.isEmpty()) {
+        if (node.isEmpty()) {
             return null;
         }
 
         FlowPanel panel = new FlowPanel();
         panel.addStyleName(STYLE_CHILDREN_WRAPPER);
 
-        indent = new FlowPanel();
+        FlowPanel indent = new FlowPanel();
         indent.addStyleName(STYLE_INDENT);
 
         childrenContainer = new FlowPanel();
@@ -110,6 +96,14 @@ public class NodeTreeRowWidget extends Composite {
         panel.add(childrenContainer);
 
         return panel;
+    }
+
+    private void fillChildrenWidgets(NodeViewData node) {
+        List<NodeViewData> children = node.getChildren();
+        for (NodeViewData child : children) {
+            NodeTreeRowWidget childWidget = new NodeTreeRowWidget(child);
+            childrenContainer.add(childWidget);
+        }
     }
 
     private void traversal(NodeAction action) {
