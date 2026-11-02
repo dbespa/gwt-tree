@@ -25,6 +25,7 @@ public class NodeTreeRowWidget extends Composite {
     private static final String STYLE_TREE_ROW_ACTIVE = STYLE_TREE_ROW + "-active";
 
     private static final String BUTTON_COLLAPSE = "-";
+    private static final String BUTTON_EXPAND = "+";
 
     private NodeSelectHandler onNodeSelect;
     private HandlerRegistration clickRegistration;
@@ -32,12 +33,14 @@ public class NodeTreeRowWidget extends Composite {
     private FlowPanel main;
     private FlowPanel nodeRow;
     private FlowPanel childrenContainer;
+    private Button toggleButton;
 
     private Long id;
 
     public NodeTreeRowWidget(NodeViewData node) {
         id = node.getId();
         build(node);
+        bind();
         fillChildrenWidgets(node);
         initWidget(main);
     }
@@ -62,11 +65,32 @@ public class NodeTreeRowWidget extends Composite {
         main.add(children);
     }
 
+    private void bind() {
+        toggleButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                toggleChildren();
+            }
+        });
+    }
+
+    private void toggleChildren() {
+        if (childrenContainer == null) {
+            return;
+        }
+
+        Boolean childrenIsVisible = childrenContainer.isVisible();
+        String toggleIcon = childrenIsVisible ? BUTTON_EXPAND : BUTTON_COLLAPSE;
+        toggleButton.setText(toggleIcon);
+
+        childrenContainer.setVisible(!childrenIsVisible);
+    }
+
     private FlowPanel createNodeRow(NodeViewData node) {
         FlowPanel resultNodeRow = new FlowPanel();
         resultNodeRow.addStyleName(STYLE_TREE_ROW);
 
-        Button toggleButton = new Button(BUTTON_COLLAPSE);
+        toggleButton = new Button(BUTTON_COLLAPSE);
         toggleButton.addStyleName(STYLE_TOGGLE_BUTTON);
 
         resultNodeRow.add(toggleButton);
