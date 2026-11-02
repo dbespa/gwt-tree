@@ -1,11 +1,11 @@
 package com.example.myapp.client.uipanel;
 
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.example.myapp.client.handler.RefreshHandler;
 import com.google.gwt.user.client.ui.IsWidget;
 
 public interface UiPanelDisplay extends IsWidget {
 
-    void setClickHandler(ClickHandler onClick);
+    void setRefreshHandler(RefreshHandler onRefresh);
 
     void setSelectedNodeId(Long id);
 }

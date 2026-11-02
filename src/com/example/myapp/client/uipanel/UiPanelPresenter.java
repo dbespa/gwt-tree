@@ -1,8 +1,6 @@
 package com.example.myapp.client.uipanel;
 
 import com.example.myapp.client.handler.RefreshHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 public class UiPanelPresenter {
@@ -22,11 +20,6 @@ public class UiPanelPresenter {
     }
 
     public void setRefreshHandler(final RefreshHandler onRefresh) {
-        view.setClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                onRefresh.onRefresh();
-            }
-        });
+        view.setRefreshHandler(onRefresh);
     }
 }

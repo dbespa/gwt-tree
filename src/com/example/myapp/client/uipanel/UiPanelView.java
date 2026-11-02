@@ -1,5 +1,7 @@
 package com.example.myapp.client.uipanel;
 
+import com.example.myapp.client.handler.RefreshHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Button;
@@ -41,10 +43,15 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         selectedNodeLabel.setText(LABEL_SELECTED_ID + selectedNodeId);
     }
 
-    public void setClickHandler(ClickHandler onClick) {
+    public void setRefreshHandler(final RefreshHandler onRefresh) {
         if (clickRegistration != null) {
             clickRegistration.removeHandler();
         }
-        clickRegistration = refreshButton.addClickHandler(onClick);
+        clickRegistration = refreshButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                onRefresh.onRefresh();
+            }
+        });
     }
 }
