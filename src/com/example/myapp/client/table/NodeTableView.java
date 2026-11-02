@@ -11,10 +11,11 @@ public class NodeTableView extends Composite implements NodeTableDisplay {
 
     private static final String NULL_PARENT_ID_PLACEHOLDER = "-";
 
-    private static final String STYLE_TABLE = "table";
-    private static final String STYLE_HEADER_ROW = "header-row";
-    private static final String STYLE_ROW = "row";
-    private static final String STYLE_CELL = "cell";
+    private static final String STYLE_MAIN = "NodeTableView";
+    private static final String STYLE_TABLE = STYLE_MAIN + "-table";
+    private static final String STYLE_HEADER_ROW = STYLE_MAIN + "-header-row";
+    private static final String STYLE_ROW = STYLE_MAIN + "-row";
+    private static final String STYLE_CELL = STYLE_MAIN + "-cell";
 
     private static final String ID_TO_STRING = "id";
     private static final String PARENT_ID_TO_STRING = "parentId";

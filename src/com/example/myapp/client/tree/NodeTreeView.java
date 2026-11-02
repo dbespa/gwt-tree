@@ -7,7 +7,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public class NodeTreeView extends Composite implements NodeTreeDisplay {
 
-    private static final String STYLE_TREE = "tree";
+    private static final String STYLE_MAIN = "NodeTreeView";
+    private static final String STYLE_TREE = STYLE_MAIN + "-tree";
 
     private FlowPanel main;
     private NodeTreeRowWidget virtualRoot;

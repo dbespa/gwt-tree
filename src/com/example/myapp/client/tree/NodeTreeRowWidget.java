@@ -15,12 +15,13 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class NodeTreeRowWidget extends Composite {
 
-    private static final String STYLE_NODE_CONTAINER = "node-container";
-    private static final String STYLE_CHILDREN_CONTAINER = "children-container";
-    private static final String STYLE_INDENT = "indent";
-    private static final String STYLE_CHILDREN_WRAPPER = "children-wrapper";
-    private static final String STYLE_TOGGLE_BUTTON = "toggle-button";
-    private static final String STYLE_TREE_ROW = "tree-row";
+    private static final String STYLE_MAIN = "NodeTreeRowWidget";
+    private static final String STYLE_NODE_CONTAINER = STYLE_MAIN + "-node-container";
+    private static final String STYLE_CHILDREN_CONTAINER = STYLE_MAIN + "-children-container";
+    private static final String STYLE_INDENT = STYLE_MAIN + "-indent";
+    private static final String STYLE_CHILDREN_WRAPPER = STYLE_MAIN + "-children-wrapper";
+    private static final String STYLE_TOGGLE_BUTTON = STYLE_MAIN + "-toggle-button";
+    private static final String STYLE_TREE_ROW = STYLE_MAIN + "-tree-row";
     private static final String STYLE_TREE_ROW_ACTIVE = STYLE_TREE_ROW + "-active";
 
     private static final String BUTTON_COLLAPSE = "-";
@@ -39,10 +40,6 @@ public class NodeTreeRowWidget extends Composite {
         build(node);
         fillChildrenWidgets(node);
         initWidget(main);
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public void removeCaption() {
@@ -93,7 +90,6 @@ public class NodeTreeRowWidget extends Composite {
 
         panel.add(indent);
         panel.add(childrenContainer);
-
         return panel;
     }
 
@@ -106,13 +102,15 @@ public class NodeTreeRowWidget extends Composite {
     }
 
     private void traversal(NodeAction action) {
-        if (childrenContainer != null) {
-            for (int i = 0; i < childrenContainer.getWidgetCount(); i++) {
-                Widget widget = childrenContainer.getWidget(i);
-                if (widget instanceof NodeTreeRowWidget) {
-                    NodeTreeRowWidget nodeRowWidget = (NodeTreeRowWidget) widget;
-                    action.function(nodeRowWidget);
-                }
+        if (childrenContainer == null) {
+            return;
+        }
+
+        for (int i = 0; i < childrenContainer.getWidgetCount(); i++) {
+            Widget widget = childrenContainer.getWidget(i);
+            if (widget instanceof NodeTreeRowWidget) {
+                NodeTreeRowWidget nodeRowWidget = (NodeTreeRowWidget) widget;
+                action.action(nodeRowWidget);
             }
         }
     }
@@ -142,7 +140,7 @@ public class NodeTreeRowWidget extends Composite {
     private void setChildrenNodeSelectHandler(final NodeSelectHandler onSelect) {
         traversal(new NodeAction() {
             @Override
-            public void function(NodeTreeRowWidget treeRowWidget) {
+            public void action(NodeTreeRowWidget treeRowWidget) {
                 treeRowWidget.setNodeSelectHandler(onSelect);
             }
         });
@@ -160,17 +158,17 @@ public class NodeTreeRowWidget extends Composite {
         if (!id.equals(selectedNodeId)) {
             setSelected(false);
         }
-        if (childrenContainer != null) {
-            unselectChildren(selectedNodeId);
-        }
+        unselectChildren(selectedNodeId);
     }
 
     private void unselectChildren(final Long selectedNodeId) {
-        traversal(new NodeAction() {
-            @Override
-            public void function(NodeTreeRowWidget treeRowWidget) {
-                treeRowWidget.unselectOtherNodes(selectedNodeId);
-            }
-        });
+        if (childrenContainer != null) {
+            traversal(new NodeAction() {
+                @Override
+                public void action(NodeTreeRowWidget treeRowWidget) {
+                    treeRowWidget.unselectOtherNodes(selectedNodeId);
+                }
+            });
+        }
     }
 }

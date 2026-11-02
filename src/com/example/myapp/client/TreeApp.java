@@ -18,10 +18,11 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 public class TreeApp implements EntryPoint {
 
-    private static final String STYLE_HEADING = "heading";
-    private static final String STYLE_TREE_CONTAINER = "tree-container";
-    private static final String STYLE_UI_PANEL_CONTAINER = "ui-panel-container";
-    private static final String STYLE_NODE_TABLE_CONTAINER = "node-table-container";
+    private static final String STYLE_MAIN = "TreeApp";
+    private static final String STYLE_HEADING = STYLE_MAIN + "-heading";
+    private static final String STYLE_TREE_CONTAINER = STYLE_MAIN + "-tree-container";
+    private static final String STYLE_UI_PANEL_CONTAINER = STYLE_MAIN + "-ui-panel-container";
+    private static final String STYLE_NODE_TABLE_CONTAINER = STYLE_MAIN + "-node-table-container";
 
     private static final String LABEL_ALL_NODES = "All nodes:";
     private static final String LABEL_TREE = "Tree:";

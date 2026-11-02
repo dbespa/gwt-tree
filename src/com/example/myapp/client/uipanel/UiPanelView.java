@@ -11,7 +11,8 @@ import com.google.gwt.user.client.ui.Label;
 
 public class UiPanelView extends Composite implements UiPanelDisplay {
 
-    private static final String STYLE_UI_PANEL = "ui-panel";
+    private static final String STYLE_MAIN = "UiPanelView";
+    private static final String STYLE_UI_PANEL = STYLE_MAIN + "-ui-panel";
 
     private static final String LABEL_REFRESH = "Refresh";
     private static final String LABEL_SELECTED_ID = "selected node id = ";

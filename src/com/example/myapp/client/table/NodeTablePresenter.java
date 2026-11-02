@@ -19,6 +19,9 @@ public class NodeTablePresenter {
     }
 
     public void go(HasWidgets container) {
+        if (container == null) {
+            return;
+        }
         container.add(view.asWidget());
     }
 

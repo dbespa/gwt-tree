@@ -21,6 +21,9 @@ public class NodeTreePresenter {
     }
 
     public void go(HasWidgets container) {
+        if (container == null) {
+            return;
+        }
         container.add(view.asWidget());
     }
 
@@ -52,10 +55,17 @@ public class NodeTreePresenter {
     }
 
     private NodeViewData convertToNodeViewData(NodeTreeBean node) {
+        if (node == null) {
+            return null;
+        }
         return new NodeViewData(node.getId(), node.getName());
     }
 
     private NodeViewData convertTree(NodeTreeBean node) {
+        if (node == null) {
+            return null;
+        }
+
         NodeViewData convertedNode = convertToNodeViewData(node);
 
         if (node.isEmpty()) {
