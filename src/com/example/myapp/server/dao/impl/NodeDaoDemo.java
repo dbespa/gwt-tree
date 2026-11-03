@@ -35,4 +35,14 @@ public class NodeDaoDemo implements NodeDao {
     public List<NodeEntity> getAllNodes() {
         return new ArrayList<NodeEntity>(demoNodes);
     }
+
+    @Override
+    public NodeEntity getNodeById(Long id) {
+        for (NodeEntity node : demoNodes) {
+            if (node.getId().equals(id)) {
+                return node;
+            }
+        }
+        return null;
+    }
 }

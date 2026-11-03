@@ -146,9 +146,7 @@ public class NodeTreeRowWidget extends Composite {
 
         this.onNodeSelect = onSelect;
 
-        if (childrenContainer != null) {
-            setChildrenNodeSelectHandler(onSelect);
-        }
+        setChildrenNodeSelectHandler(onSelect);
 
         clickRegistration = nodeRow.addDomHandler(new ClickHandler() {
             @Override
@@ -162,6 +160,9 @@ public class NodeTreeRowWidget extends Composite {
     }
 
     private void setChildrenNodeSelectHandler(final NodeSelectHandler onSelect) {
+        if (childrenContainer == null) {
+            return;
+        }
         traversal(new NodeAction() {
             @Override
             public void action(NodeTreeRowWidget treeRowWidget) {
@@ -186,13 +187,14 @@ public class NodeTreeRowWidget extends Composite {
     }
 
     private void unselectChildren(final Long selectedNodeId) {
-        if (childrenContainer != null) {
-            traversal(new NodeAction() {
-                @Override
-                public void action(NodeTreeRowWidget treeRowWidget) {
-                    treeRowWidget.unselectOtherNodes(selectedNodeId);
-                }
-            });
+        if (childrenContainer == null) {
+            return;
         }
+        traversal(new NodeAction() {
+            @Override
+            public void action(NodeTreeRowWidget treeRowWidget) {
+                treeRowWidget.unselectOtherNodes(selectedNodeId);
+            }
+        });
     }
 }

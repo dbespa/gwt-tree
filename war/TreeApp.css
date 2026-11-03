@@ -6,6 +6,7 @@
 
 * {
     font-size: 14px;
+    box-sizing: border-box;
 }
 
 .TreeApp-heading {
@@ -14,10 +15,21 @@
     margin-bottom: 10px;
 }
 
+.TreeApp-ui-panel-container {
+    margin-bottom: 20px;
+}
+
+.TreeApp-tree-container {
+    margin-bottom: 20px;
+}
+
+.TreeApp-selected-node-form-container {
+    margin-bottom: 20px;
+}
+
 .UiPanelView-ui-panel {
     width: max-content;
     padding: 10px;
-    margin-bottom: 20px;
     border: 1px solid black;
     border-radius: 10px;
     display: flex;
@@ -30,13 +42,13 @@
 .NodeTreeView-tree {
     width: max-content;
     padding: 10px;
-    margin-bottom: 20px;
     border: 1px solid black;
     border-radius: 10px;
 }
 
 .NodeTreeRowWidget-children-wrapper {
     display: flex;
+    flex-direction: row;
 }
 
 .NodeTreeRowWidget-tree-row {
@@ -79,6 +91,36 @@
     align-items: center;
 }
 
+.SelectedNodeFormView-form {
+    width: max-content;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.SelectedNodeFormView-column {
+    border: 1px solid black;
+}
+
+.SelectedNodeFormView-column+.SelectedNodeFormView-column {
+    border-left: none;
+}
+
+.SelectedNodeFormView-cell {
+    min-width: 90px;
+    padding: 5px;
+}
+
+.SelectedNodeFormView-cell+.SelectedNodeFormView-cell {
+    border-top: 1px solid black;
+}
+
+.SelectedNodeFormView-cell+.SelectedNodeFormView-cell {
+    border-left: none;
+}
+
 .NodeTableView-table {
     width: max-content;
     border: 1px solid black;
@@ -100,6 +142,46 @@
 }
 
 .NodeTableView-cell {
-    width: 80px;
+    width: 90px;
     padding: 20px;
+}
+
+.TreeApp-node-edit-form .NodeEditFormView {
+    width: max-content;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.NodeEditFormView-form {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.NodeEditFormView-column {
+    width: max-content;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.NodeEditFormView-column+.NodeEditFormView-column {
+    border-left: none;
+}
+
+.NodeEditFormView-column .NodeEditFormView-cell {
+    width: 150px;
+    padding: 5px;
+    border: none;
+    font-size: 14px;
+}
+
+.NodeEditFormView-cell + .NodeEditFormView-cell {
+    border-top: 1px solid black;
+}
+
+.NodeEditFormView-button-panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

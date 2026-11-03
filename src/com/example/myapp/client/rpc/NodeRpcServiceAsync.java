@@ -11,4 +11,6 @@ public interface NodeRpcServiceAsync {
     void getAllNodes(AsyncCallback<List<NodeBean>> callback);
 
     void getTree(AsyncCallback<NodeTreeBean> callback);
+    
+    void getNodeById(Long id, AsyncCallback<NodeBean> callback);
 }

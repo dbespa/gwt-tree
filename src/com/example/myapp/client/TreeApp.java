@@ -1,9 +1,13 @@
 package com.example.myapp.client;
 
+import com.example.myapp.client.editform.NodeEditFormPresenter;
+import com.example.myapp.client.editform.NodeEditFormView;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.example.myapp.client.rpc.NodeRpcService;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
+import com.example.myapp.client.selectednodeform.SelectedNodeFormPresenter;
+import com.example.myapp.client.selectednodeform.SelectedNodeFormView;
 import com.example.myapp.client.table.NodeTablePresenter;
 import com.example.myapp.client.table.NodeTableView;
 import com.example.myapp.client.tree.NodeTreePresenter;
@@ -21,20 +25,27 @@ public class TreeApp implements EntryPoint {
     private static final String STYLE_MAIN = "TreeApp";
     private static final String STYLE_HEADING = STYLE_MAIN + "-heading";
     private static final String STYLE_TREE_CONTAINER = STYLE_MAIN + "-tree-container";
+    private static final String STYLE_SELECTED_NODE_FORM_CONTAINER = STYLE_MAIN + "-selected-node-form-container";
+    private static final String STYLE_NODE_EDIT_FORM = STYLE_MAIN + "-node-edit-form";
     private static final String STYLE_UI_PANEL_CONTAINER = STYLE_MAIN + "-ui-panel-container";
     private static final String STYLE_NODE_TABLE_CONTAINER = STYLE_MAIN + "-node-table-container";
 
     private static final String LABEL_ALL_NODES = "All nodes:";
     private static final String LABEL_TREE = "Tree:";
+    private static final String LABEL_SELECTED = "Selected:";
 
     private NodeRpcServiceAsync nodeRpcService;
     private NodeTreePresenter nodeTreePresenter;
+    private SelectedNodeFormPresenter selectedNodeFormPresenter;
     private NodeTablePresenter nodeTablePresenter;
     private UiPanelPresenter uiPanelPresenter;
+    private NodeEditFormPresenter nodeEditFormPresenter;
 
-    private NodeTableView nodeTableWidget;
-    private NodeTreeView nodeTreeWidget;
-    private UiPanelView uiPanelWidget;
+    private NodeTableView nodeTableView;
+    private NodeTreeView nodeTreeView;
+    private SelectedNodeFormView selectedNodeFormView;
+    private UiPanelView uiPanelView;
+    private NodeEditFormView nodeEditFormView;
 
     public void onModuleLoad() {
         build();
@@ -45,12 +56,14 @@ public class TreeApp implements EntryPoint {
     private void build() {
         nodeRpcService = (NodeRpcServiceAsync) GWT.create(NodeRpcService.class);
         buildTree();
+        buildSelectedNodeForm();
         buildUiPanel();
         buildTable();
+        buildEditForm();
     }
 
     private void buildTree() {
-        nodeTreeWidget = new NodeTreeView();
+        nodeTreeView = new NodeTreeView();
 
         FlowPanel treeContainer = new FlowPanel();
         treeContainer.addStyleName(STYLE_TREE_CONTAINER);
@@ -60,23 +73,38 @@ public class TreeApp implements EntryPoint {
         label.addStyleName(STYLE_HEADING);
         treeContainer.add(label);
 
-        nodeTreePresenter = new NodeTreePresenter(nodeRpcService, nodeTreeWidget);
+        nodeTreePresenter = new NodeTreePresenter(nodeRpcService, nodeTreeView);
         nodeTreePresenter.go(treeContainer);
     }
 
+    private void buildSelectedNodeForm() {
+        selectedNodeFormView = new SelectedNodeFormView();
+
+        FlowPanel selectedNodeFormContainer = new FlowPanel();
+        selectedNodeFormContainer.addStyleName(STYLE_SELECTED_NODE_FORM_CONTAINER);
+        RootPanel.get().add(selectedNodeFormContainer);
+
+        Label label = new Label(LABEL_SELECTED);
+        label.addStyleName(STYLE_HEADING);
+        selectedNodeFormContainer.add(label);
+
+        selectedNodeFormPresenter = new SelectedNodeFormPresenter(nodeRpcService, selectedNodeFormView);
+        selectedNodeFormPresenter.go(selectedNodeFormContainer);
+    }
+
     private void buildUiPanel() {
-        uiPanelWidget = new UiPanelView();
+        uiPanelView = new UiPanelView();
 
         FlowPanel uiPanel = new FlowPanel();
         uiPanel.addStyleName(STYLE_UI_PANEL_CONTAINER);
         RootPanel.get().add(uiPanel);
 
-        uiPanelPresenter = new UiPanelPresenter(uiPanelWidget);
+        uiPanelPresenter = new UiPanelPresenter(uiPanelView);
         uiPanelPresenter.go(uiPanel);
     }
 
     private void buildTable() {
-        nodeTableWidget = new NodeTableView();
+        nodeTableView = new NodeTableView();
 
         FlowPanel tableContainer = new FlowPanel();
         tableContainer.addStyleName(STYLE_NODE_TABLE_CONTAINER);
@@ -86,8 +114,19 @@ public class TreeApp implements EntryPoint {
         label.addStyleName(STYLE_HEADING);
         tableContainer.add(label);
 
-        nodeTablePresenter = new NodeTablePresenter(nodeRpcService, nodeTableWidget);
+        nodeTablePresenter = new NodeTablePresenter(nodeRpcService, nodeTableView);
         nodeTablePresenter.go(tableContainer);
+    }
+
+    private void buildEditForm() {
+        nodeEditFormView = new NodeEditFormView(null);
+
+        FlowPanel editFormContainer = new FlowPanel();
+        editFormContainer.addStyleName(STYLE_NODE_EDIT_FORM);
+        RootPanel.get().add(editFormContainer);
+
+        nodeEditFormPresenter = new NodeEditFormPresenter(nodeRpcService, nodeEditFormView);
+        nodeEditFormPresenter.go(editFormContainer);
     }
 
     private void bind() {
@@ -95,6 +134,8 @@ public class TreeApp implements EntryPoint {
             @Override
             public void onNodeSelect(Long selectedNodeId) {
                 uiPanelPresenter.setSelectedNodeId(selectedNodeId);
+                selectedNodeFormPresenter.setSelectedNode(selectedNodeId);
+                nodeEditFormPresenter.setSelectedNode(selectedNodeId);
             }
         });
 
@@ -109,5 +150,6 @@ public class TreeApp implements EntryPoint {
     private void update() {
         nodeTreePresenter.updateTree();
         nodeTablePresenter.updateTable();
+        nodeEditFormView.show();
     }
 }

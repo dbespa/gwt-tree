@@ -38,4 +38,10 @@ public class NodeRpcServiceImpl extends RemoteServiceServlet implements NodeRpcS
         List<NodeEntity> allNodes = nodeDao.getAllNodes();
         return nodeTreeBuilder.getTree(allNodes);
     }
+
+    @Override
+    public NodeBean getNodeById(Long id) {
+        NodeEntity node = nodeDao.getNodeById(id);
+        return nodeConverter.convertToNodeBean(node);
+    }
 }

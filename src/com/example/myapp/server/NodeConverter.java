@@ -22,11 +22,10 @@ public class NodeConverter {
         for (NodeEntity nodeEntity : allNodes) {
             convertedNodes.add(convertToNodeBean(nodeEntity));
         }
-
         return convertedNodes;
     }
 
-    private NodeBean convertToNodeBean(NodeEntity nodeEntity) {
+    public NodeBean convertToNodeBean(NodeEntity nodeEntity) {
         if (nodeEntity == null) {
             return null;
         }

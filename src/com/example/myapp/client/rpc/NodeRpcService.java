@@ -13,4 +13,6 @@ public interface NodeRpcService extends RemoteService {
     public List<NodeBean> getAllNodes();
 
     public NodeTreeBean getTree();
+    
+    public NodeBean getNodeById(Long id);
 }
