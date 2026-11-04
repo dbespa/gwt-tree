@@ -1,10 +1,10 @@
 package com.example.myapp.client.editform;
 
+import com.example.myapp.client.handler.CancelHandler;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HasWidgets;
 
 public class NodeEditFormPresenter {
 
@@ -14,13 +14,12 @@ public class NodeEditFormPresenter {
     public NodeEditFormPresenter(NodeRpcServiceAsync nodeRpcService, NodeEditFormDisplay view) {
         this.nodeRpcService = nodeRpcService;
         this.view = view;
-    }
 
-    public void go(HasWidgets container) {
-        if (container == null) {
+        if (view == null) {
             return;
         }
-        container.add(view.asWidget());
+
+        setCancelHandler();
     }
 
     public void setSelectedNode(Long selectedNodeId) {
@@ -33,6 +32,22 @@ public class NodeEditFormPresenter {
             @Override
             public void onSuccess(NodeBean result) {
                 view.setSelectedNode(result);
+            }
+        });
+    }
+
+    public void showCreateForm() {
+        view.setCreateHeader();
+        view.setEmpty();
+        view.show();
+    }
+
+    public void setCancelHandler() {
+        view.setCancelHandler(new CancelHandler() {
+            @Override
+            public void onCancel() {
+                view.setEmpty();
+                view.hide();
             }
         });
     }

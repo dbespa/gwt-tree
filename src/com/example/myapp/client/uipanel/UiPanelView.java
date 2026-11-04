@@ -1,5 +1,6 @@
 package com.example.myapp.client.uipanel;
 
+import com.example.myapp.client.handler.AddRootHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -15,10 +16,18 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
     private static final String STYLE_UI_PANEL = STYLE_MAIN + "-ui-panel";
 
     private static final String LABEL_REFRESH = "Refresh";
+    private static final String LABEL_ADD_ROOT_NODE = "Add root node";
+    private static final String LABEL_ADD_CHILD = "Add child";
+    private static final String LABEL_EDIT = "Edit";
+    private static final String LABEL_DELETE = "Delete";
     private static final String LABEL_SELECTED_ID = "selected node id = ";
 
     private FlowPanel main;
     private Button refreshButton;
+    private Button addRootButton;
+    private Button addChildButton;
+    private Button editButton;
+    private Button deleteButton;
     private Label selectedNodeLabel;
 
     private HandlerRegistration clickRegistration;
@@ -33,9 +42,17 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         main.addStyleName(STYLE_UI_PANEL);
 
         refreshButton = new Button(LABEL_REFRESH);
+        addRootButton = new Button(LABEL_ADD_ROOT_NODE);
+        addChildButton = new Button(LABEL_ADD_CHILD);
+        editButton = new Button(LABEL_EDIT);
+        deleteButton = new Button(LABEL_DELETE);
         selectedNodeLabel = new Label(LABEL_SELECTED_ID);
 
         main.add(refreshButton);
+        main.add(addRootButton);
+        main.add(addChildButton);
+        main.add(editButton);
+        main.add(deleteButton);
         main.add(selectedNodeLabel);
     }
 
@@ -52,6 +69,16 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
             @Override
             public void onClick(ClickEvent event) {
                 onRefresh.onRefresh();
+            }
+        });
+    }
+
+    @Override
+    public void setAddRootHandler(final AddRootHandler onAddRoot) {
+        addRootButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                onAddRoot.onAddRoot();
             }
         });
     }

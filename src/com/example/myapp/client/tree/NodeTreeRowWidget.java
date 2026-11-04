@@ -47,6 +47,7 @@ public class NodeTreeRowWidget extends Composite {
 
     public void removeCaption() {
         main.clear();
+        nodeRow = null;
         main.add(childrenContainer);
     }
 
@@ -148,6 +149,10 @@ public class NodeTreeRowWidget extends Composite {
 
         setChildrenNodeSelectHandler(onSelect);
 
+        if (nodeRow == null) {
+            return;
+        }
+
         clickRegistration = nodeRow.addDomHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -172,6 +177,10 @@ public class NodeTreeRowWidget extends Composite {
     }
 
     public void setSelected(Boolean isSelected) {
+        if (nodeRow == null) {
+            return;
+        }
+
         if (isSelected) {
             nodeRow.addStyleName(STYLE_TREE_ROW_ACTIVE);
         } else {

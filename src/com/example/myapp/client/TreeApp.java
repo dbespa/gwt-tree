@@ -2,6 +2,7 @@ package com.example.myapp.client;
 
 import com.example.myapp.client.editform.NodeEditFormPresenter;
 import com.example.myapp.client.editform.NodeEditFormView;
+import com.example.myapp.client.handler.AddRootHandler;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.example.myapp.client.rpc.NodeRpcService;
@@ -26,7 +27,6 @@ public class TreeApp implements EntryPoint {
     private static final String STYLE_HEADING = STYLE_MAIN + "-heading";
     private static final String STYLE_TREE_CONTAINER = STYLE_MAIN + "-tree-container";
     private static final String STYLE_SELECTED_NODE_FORM_CONTAINER = STYLE_MAIN + "-selected-node-form-container";
-    private static final String STYLE_NODE_EDIT_FORM = STYLE_MAIN + "-node-edit-form";
     private static final String STYLE_UI_PANEL_CONTAINER = STYLE_MAIN + "-ui-panel-container";
     private static final String STYLE_NODE_TABLE_CONTAINER = STYLE_MAIN + "-node-table-container";
 
@@ -119,14 +119,8 @@ public class TreeApp implements EntryPoint {
     }
 
     private void buildEditForm() {
-        nodeEditFormView = new NodeEditFormView(null);
-
-        FlowPanel editFormContainer = new FlowPanel();
-        editFormContainer.addStyleName(STYLE_NODE_EDIT_FORM);
-        RootPanel.get().add(editFormContainer);
-
+        nodeEditFormView = new NodeEditFormView();
         nodeEditFormPresenter = new NodeEditFormPresenter(nodeRpcService, nodeEditFormView);
-        nodeEditFormPresenter.go(editFormContainer);
     }
 
     private void bind() {
@@ -145,11 +139,17 @@ public class TreeApp implements EntryPoint {
                 nodeTablePresenter.updateTable();
             }
         });
+
+        uiPanelPresenter.setAddRootNodeHandler(new AddRootHandler() {
+            @Override
+            public void onAddRoot() {
+                nodeEditFormPresenter.showCreateForm();
+            }
+        });
     }
 
     private void update() {
         nodeTreePresenter.updateTree();
         nodeTablePresenter.updateTable();
-        nodeEditFormView.show();
     }
 }

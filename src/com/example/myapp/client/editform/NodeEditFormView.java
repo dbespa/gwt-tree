@@ -1,6 +1,9 @@
 package com.example.myapp.client.editform;
 
+import com.example.myapp.client.handler.CancelHandler;
 import com.example.myapp.shared.bean.NodeBean;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -15,19 +18,26 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
     private static final String STYLE_COLUMN = STYLE_MAIN + "-column";
     private static final String STYLE_CELL = STYLE_MAIN + "-cell";
     private static final String STYLE_BUTTON_PANEL = STYLE_MAIN + "-button-panel";
+    private static final String STYLE_HEADER = STYLE_MAIN + "-header";
 
-    private static final String LABEL_SAVE = "Сохранить";
-    private static final String LABEL_CANCEL = "Отменить";
+    private static final String LABEL_SAVE = "Save";
+    private static final String LABEL_CANCEL = "Cancel";
+    private static final String LABEL_EDIT_NODE = "Edit node";
+    private static final String LABEL_CREATE_NODE = "Create node";
     private static final String LABEL_PORT = "port";
     private static final String LABEL_IP = "ip";
     private static final String LABEL_NAME = "name";
     private static final String LABEL_PARENT_ID = "parentId";
     private static final String LABEL_ID = "id";
 
-    private static final String EMPTY_DATA = "-";
+    private static final String EMPTY_DATA = "";
 
     private PopupPanel main;
     private FlowPanel dataColumn;
+    private FlowPanel wrapper;
+    private Label header;
+    private Button cancelButton;
+    private Button saveButton;
 
     private TextBox id;
     private TextBox parentId;
@@ -35,17 +45,15 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
     private TextBox ip;
     private TextBox port;
 
-    public NodeEditFormView(NodeBean node) {
-        build();
-        main.show();
-        initWidget(main);
-    }
-
-    private void build() {
+    public NodeEditFormView() {
         main = new PopupPanel();
-        main.addStyleName(STYLE_MAIN);
 
-        FlowPanel wrapper = new FlowPanel();
+        wrapper = new FlowPanel();
+        wrapper.addStyleName(STYLE_MAIN);
+
+        header = new Label("");
+        header.addStyleName(STYLE_HEADER);
+
         FlowPanel form = new FlowPanel();
         form.addStyleName(STYLE_FORM);
 
@@ -55,8 +63,8 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         FlowPanel buttonPanel = new FlowPanel();
         buttonPanel.addStyleName(STYLE_BUTTON_PANEL);
 
-        Button cancelButton = new Button(LABEL_CANCEL);
-        Button saveButton = new Button(LABEL_SAVE);
+        cancelButton = new Button(LABEL_CANCEL);
+        saveButton = new Button(LABEL_SAVE);
 
         form.add(fieldNameColumn);
         form.add(dataColumn);
@@ -64,14 +72,12 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         buttonPanel.add(cancelButton);
         buttonPanel.add(saveButton);
 
+        wrapper.add(header);
         wrapper.add(form);
         wrapper.add(buttonPanel);
 
-        main.add(wrapper);
-    }
-
-    public void show() {
-        main.show();
+        main.setWidget(wrapper);
+        main.setGlassEnabled(true);
     }
 
     private FlowPanel createNameColumn() {
@@ -125,5 +131,39 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         name.setValue(node.getName());
         ip.setValue(node.getIp());
         port.setValue(node.getPort().toString());
+    }
+
+    public void setEmpty() {
+        id.setValue(EMPTY_DATA);
+        parentId.setValue(EMPTY_DATA);
+        name.setValue(EMPTY_DATA);
+        ip.setValue(EMPTY_DATA);
+        port.setValue(EMPTY_DATA);
+    }
+
+    public void setCreateHeader() {
+        header.setText(LABEL_CREATE_NODE);
+    }
+
+    public void setEditHeader() {
+        header.setText(LABEL_EDIT_NODE);
+    }
+
+    public void show() {
+        main.center();
+        main.show();
+    }
+
+    public void hide() {
+        main.hide();
+    }
+
+    public void setCancelHandler(final CancelHandler onCancel) {
+        cancelButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                onCancel.onCancel();
+            }
+        });
     }
 }
