@@ -1,6 +1,7 @@
 package com.example.myapp.client.editform;
 
 import com.example.myapp.client.handler.CancelHandler;
+import com.example.myapp.client.handler.SaveHandler;
 import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -27,8 +28,6 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
     private static final String LABEL_PORT = "port";
     private static final String LABEL_IP = "ip";
     private static final String LABEL_NAME = "name";
-    private static final String LABEL_PARENT_ID = "parentId";
-    private static final String LABEL_ID = "id";
 
     private static final String EMPTY_DATA = "";
 
@@ -39,8 +38,6 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
     private Button cancelButton;
     private Button saveButton;
 
-    private TextBox id;
-    private TextBox parentId;
     private TextBox name;
     private TextBox ip;
     private TextBox port;
@@ -84,8 +81,6 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         FlowPanel nameColumn = new FlowPanel();
         nameColumn.addStyleName(STYLE_COLUMN);
 
-        nameColumn.add(createCell(LABEL_ID));
-        nameColumn.add(createCell(LABEL_PARENT_ID));
         nameColumn.add(createCell(LABEL_NAME));
         nameColumn.add(createCell(LABEL_IP));
         nameColumn.add(createCell(LABEL_PORT));
@@ -96,14 +91,10 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         FlowPanel dataColumn = new FlowPanel();
         dataColumn.addStyleName(STYLE_COLUMN);
 
-        id = createTextBoxCell();
-        parentId = createTextBoxCell();
         name = createTextBoxCell();
         ip = createTextBoxCell();
         port = createTextBoxCell();
 
-        dataColumn.add(id);
-        dataColumn.add(parentId);
         dataColumn.add(name);
         dataColumn.add(ip);
         dataColumn.add(port);
@@ -123,19 +114,12 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
     }
 
     public void setSelectedNode(NodeBean node) {
-        Long parentIdValue = node.getParentId();
-        String parentIdStr = parentIdValue == null ? EMPTY_DATA : parentIdValue.toString();
-
-        id.setValue(node.getId().toString());
-        parentId.setValue(parentIdStr);
         name.setValue(node.getName());
         ip.setValue(node.getIp());
         port.setValue(node.getPort().toString());
     }
 
     public void setEmpty() {
-        id.setValue(EMPTY_DATA);
-        parentId.setValue(EMPTY_DATA);
         name.setValue(EMPTY_DATA);
         ip.setValue(EMPTY_DATA);
         port.setValue(EMPTY_DATA);
@@ -158,11 +142,30 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         main.hide();
     }
 
+    private NodeDto getFormData() {
+        String nameStr = name.getValue();
+        String ipStr = ip.getValue();
+        String portStr = port.getValue();
+
+        NodeDto temp = new NodeDto(null, nameStr, ipStr, portStr);
+        return temp;
+    }
+
     public void setCancelHandler(final CancelHandler onCancel) {
         cancelButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onCancel.onCancel();
+            }
+        });
+    }
+
+    @Override
+    public void setSaveHandler(final SaveHandler onSave) {
+        saveButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                onSave.onSave(getFormData());
             }
         });
     }

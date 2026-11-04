@@ -36,4 +36,16 @@ public class NodeConverter {
                 nodeEntity.getIp(),
                 nodeEntity.getPort());
     }
+
+    public NodeEntity convertToNodeEntity(NodeBean nodeBean) {
+        if (nodeBean == null) {
+            return null;
+        }
+
+        return new NodeEntity(nodeBean.getId(),
+                nodeBean.getParentId(),
+                nodeBean.getName(),
+                nodeBean.getIp(),
+                nodeBean.getPort());
+    }
 }

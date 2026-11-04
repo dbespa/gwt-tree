@@ -146,6 +146,13 @@ public class TreeApp implements EntryPoint {
                 nodeEditFormPresenter.showCreateForm();
             }
         });
+
+        nodeEditFormPresenter.setRefreshHandler(new RefreshHandler() {
+            @Override
+            public void onRefresh() {
+                nodeTreePresenter.updateTree();
+            }
+        });
     }
 
     private void update() {

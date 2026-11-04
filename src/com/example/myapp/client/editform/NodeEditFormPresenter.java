@@ -1,6 +1,8 @@
 package com.example.myapp.client.editform;
 
 import com.example.myapp.client.handler.CancelHandler;
+import com.example.myapp.client.handler.RefreshHandler;
+import com.example.myapp.client.handler.SaveHandler;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.core.client.GWT;
@@ -10,6 +12,7 @@ public class NodeEditFormPresenter {
 
     private NodeRpcServiceAsync nodeRpcService;
     private NodeEditFormDisplay view;
+    private RefreshHandler onRefresh;
 
     public NodeEditFormPresenter(NodeRpcServiceAsync nodeRpcService, NodeEditFormDisplay view) {
         this.nodeRpcService = nodeRpcService;
@@ -20,6 +23,7 @@ public class NodeEditFormPresenter {
         }
 
         setCancelHandler();
+        setSaveHandler();
     }
 
     public void setSelectedNode(Long selectedNodeId) {
@@ -50,5 +54,44 @@ public class NodeEditFormPresenter {
                 view.hide();
             }
         });
+    }
+
+    public void setSaveHandler() {
+        view.setSaveHandler(new SaveHandler() {
+            @Override
+            public void onSave(NodeDto node) {
+                NodeBean nodeBean = toNodeBean(node);
+                nodeRpcService.send(nodeBean, new AsyncCallback<Void>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        GWT.log("Ошибка отправки данных на сервер: " + caught.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(Void result) {
+                        onRefresh.onRefresh();
+                    }
+                });
+                view.hide();
+            }
+        });
+    }
+
+    private NodeBean toNodeBean(NodeDto nodeDto) {
+        Long parentId = null;
+
+        if (nodeDto.getParentId() != null) {
+            parentId = Long.parseLong(nodeDto.getParentId());
+        }
+
+        String name = nodeDto.getName();
+        String ip = nodeDto.getIp();
+        Integer port = Integer.parseInt(nodeDto.getPort());
+
+        return new NodeBean(null, parentId, name, ip, port);
+    }
+
+    public void setRefreshHandler(RefreshHandler onRefresh) {
+        this.onRefresh = onRefresh;
     }
 }

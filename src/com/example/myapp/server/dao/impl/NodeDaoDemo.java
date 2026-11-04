@@ -22,13 +22,20 @@ public class NodeDaoDemo implements NodeDao {
 
     private final List<NodeEntity> demoNodes;
 
+    private Long idCounter;
+
     public NodeDaoDemo() {
+        idCounter = 0L;
         demoNodes = new ArrayList<>(Arrays.asList(
-                new NodeEntity(0L, null, ROOT_NODE_NAME, ROOT_NODE_IP, 1111),
-                new NodeEntity(1L, 0L, NODE_1_NAME, NODE_1_IP, 11),
-                new NodeEntity(2L, 0L, NODE_2_NAME, NODE_2_IP, 12),
-                new NodeEntity(3L, 2L, NODE_3_NAME, NODE_3_IP, 121),
-                new NodeEntity(4L, 1L, NODE_4_NAME, NODE_4_IP, 111)));
+                new NodeEntity(nextId(), null, ROOT_NODE_NAME, ROOT_NODE_IP, 1111),
+                new NodeEntity(nextId(), 0L, NODE_1_NAME, NODE_1_IP, 11),
+                new NodeEntity(nextId(), 0L, NODE_2_NAME, NODE_2_IP, 12),
+                new NodeEntity(nextId(), 2L, NODE_3_NAME, NODE_3_IP, 121),
+                new NodeEntity(nextId(), 1L, NODE_4_NAME, NODE_4_IP, 111)));
+    }
+
+    public Long nextId() {
+        return idCounter++;
     }
 
     @Override
@@ -44,5 +51,11 @@ public class NodeDaoDemo implements NodeDao {
             }
         }
         return null;
+    }
+
+    @Override
+    public void addNode(NodeEntity node) {
+        node.setId(nextId());
+        demoNodes.add(node);
     }
 }

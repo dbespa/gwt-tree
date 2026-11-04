@@ -44,4 +44,10 @@ public class NodeRpcServiceImpl extends RemoteServiceServlet implements NodeRpcS
         NodeEntity node = nodeDao.getNodeById(id);
         return nodeConverter.convertToNodeBean(node);
     }
+
+    @Override
+    public void send(NodeBean node) {
+        NodeEntity nodeEntity = nodeConverter.convertToNodeEntity(node);
+        nodeDao.addNode(nodeEntity);
+    }
 }

@@ -7,6 +7,8 @@ import com.example.myapp.server.entity.NodeEntity;
 public interface NodeDao {
 
     public List<NodeEntity> getAllNodes();
-    
+
     public NodeEntity getNodeById(Long id);
+
+    public void addNode(NodeEntity node);
 }
