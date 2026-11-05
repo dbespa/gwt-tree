@@ -4,6 +4,8 @@ import com.example.myapp.client.editform.NodeEditFormPresenter;
 import com.example.myapp.client.editform.NodeEditFormView;
 import com.example.myapp.client.handler.AddChildHandler;
 import com.example.myapp.client.handler.AddRootHandler;
+import com.example.myapp.client.handler.DeleteHandler;
+import com.example.myapp.client.handler.EditHandler;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.example.myapp.client.rpc.NodeRpcService;
@@ -100,7 +102,7 @@ public class TreeApp implements EntryPoint {
         uiPanel.addStyleName(STYLE_UI_PANEL_CONTAINER);
         RootPanel.get().add(uiPanel);
 
-        uiPanelPresenter = new UiPanelPresenter(uiPanelView);
+        uiPanelPresenter = new UiPanelPresenter(nodeRpcService, uiPanelView);
         uiPanelPresenter.go(uiPanel);
     }
 
@@ -144,17 +146,32 @@ public class TreeApp implements EntryPoint {
         uiPanelPresenter.setAddRootNodeHandler(new AddRootHandler() {
             @Override
             public void onAddRoot() {
-                uiPanelPresenter.setSelectedNodeId(null);
                 nodeTreePresenter.setAllNodesUnselected();
                 nodeEditFormPresenter.setSelectedNode(null);
-                nodeEditFormPresenter.showCreateForm();
+                nodeEditFormPresenter.createRoot();
             }
         });
 
         uiPanelPresenter.setAddChildNodeHandler(new AddChildHandler() {
             @Override
             public void onAddChild() {
-                nodeEditFormPresenter.showCreateForm();
+                nodeEditFormPresenter.createChildren();
+            }
+        });
+
+        uiPanelPresenter.setEditHandler(new EditHandler() {
+            @Override
+            public void onEdit() {
+                nodeEditFormPresenter.editNode();
+                uiPanelPresenter.setSelectedNodeId(null);
+                selectedNodeFormPresenter.setEmpty();
+            }
+        });
+
+        uiPanelPresenter.setDeleteHandler(new DeleteHandler() {
+            @Override
+            public void onDelete() {
+                nodeTreePresenter.updateTree();
             }
         });
 

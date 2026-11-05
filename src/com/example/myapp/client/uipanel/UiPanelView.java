@@ -2,6 +2,8 @@ package com.example.myapp.client.uipanel;
 
 import com.example.myapp.client.handler.AddChildHandler;
 import com.example.myapp.client.handler.AddRootHandler;
+import com.example.myapp.client.handler.DeleteHandler;
+import com.example.myapp.client.handler.EditHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -90,6 +92,26 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
             @Override
             public void onClick(ClickEvent event) {
                 onAddChild.onAddChild();
+            }
+        });
+    }
+
+    @Override
+    public void setEditHandler(final EditHandler onEdit) {
+        editButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                onEdit.onEdit();
+            }
+        });
+    }
+
+    @Override
+    public void setDeleteHandler(final DeleteHandler onDelete) {
+        deleteButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                onDelete.onDelete();
             }
         });
     }

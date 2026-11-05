@@ -2,7 +2,6 @@ package com.example.myapp.client.editform;
 
 import com.example.myapp.client.handler.CancelHandler;
 import com.example.myapp.client.handler.SaveHandler;
-import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -113,7 +112,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         return textBox;
     }
 
-    public void setSelectedNode(NodeBean node) {
+    public void setSelectedNode(NodeDto node) {
         name.setValue(node.getName());
         ip.setValue(node.getIp());
         port.setValue(node.getPort().toString());
@@ -147,8 +146,8 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         String ipStr = ip.getValue();
         String portStr = port.getValue();
 
-        NodeDto temp = new NodeDto(nameStr, ipStr, portStr);
-        return temp;
+        NodeDto formData = new NodeDto(nameStr, ipStr, portStr);
+        return formData;
     }
 
     public void setCancelHandler(final CancelHandler onCancel) {

@@ -14,7 +14,8 @@ public class NodeEditFormPresenter {
     private NodeEditFormDisplay view;
     private RefreshHandler onRefresh;
 
-    private Long parentId;
+    private Long currentNodeParentId;
+    private Long currentNodeId;
 
     public NodeEditFormPresenter(NodeRpcServiceAsync nodeRpcService, NodeEditFormDisplay view) {
         this.nodeRpcService = nodeRpcService;
@@ -30,7 +31,8 @@ public class NodeEditFormPresenter {
 
     public void setSelectedNode(Long selectedNodeId) {
         if (selectedNodeId == null) {
-            this.parentId = null;
+            currentNodeParentId = null;
+            currentNodeId = null;
             return;
         }
 
@@ -42,15 +44,36 @@ public class NodeEditFormPresenter {
 
             @Override
             public void onSuccess(NodeBean result) {
-                parentId = result.getId();
-                view.setSelectedNode(result);
+                if (result == null) {
+                    return;
+                }
+                currentNodeId = result.getId();
+                currentNodeParentId = result.getParentId();
+                view.setSelectedNode(toNodeDto(result));
             }
         });
     }
 
-    public void showCreateForm() {
+    public void createRoot() {
+        currentNodeParentId = null;
+        currentNodeId = null;
+
         view.setCreateHeader();
         view.setEmpty();
+        view.show();
+    }
+
+    public void createChildren() {
+        currentNodeParentId = currentNodeId;
+        currentNodeId = null;
+
+        view.setCreateHeader();
+        view.setEmpty();
+        view.show();
+    }
+
+    public void editNode() {
+        view.setEditHeader();
         view.show();
     }
 
@@ -68,8 +91,8 @@ public class NodeEditFormPresenter {
         view.setSaveHandler(new SaveHandler() {
             @Override
             public void onSave(NodeDto node) {
-                NodeBean nodeBean = toNodeBean(node);
-                nodeRpcService.send(nodeBean, new AsyncCallback<Void>() {
+                NodeBean nodeBean = toNodeBean(currentNodeId, currentNodeParentId, node);
+                nodeRpcService.save(nodeBean, new AsyncCallback<Void>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         GWT.log("Ошибка отправки данных на сервер: " + caught.getLocalizedMessage());
@@ -85,14 +108,18 @@ public class NodeEditFormPresenter {
         });
     }
 
-    private NodeBean toNodeBean(NodeDto nodeDto) {
-        Long parentId = this.parentId;
-
+    private NodeBean toNodeBean(Long id, Long parentId, NodeDto nodeDto) {
         String name = nodeDto.getName();
         String ip = nodeDto.getIp();
         Integer port = Integer.parseInt(nodeDto.getPort());
+        return new NodeBean(id, parentId, name, ip, port);
+    }
 
-        return new NodeBean(null, parentId, name, ip, port);
+    private NodeDto toNodeDto(NodeBean nodeBean) {
+        String name = nodeBean.getName();
+        String ip = nodeBean.getIp();
+        String port = nodeBean.getPort().toString();
+        return new NodeDto(name, ip, port);
     }
 
     public void setRefreshHandler(RefreshHandler onRefresh) {

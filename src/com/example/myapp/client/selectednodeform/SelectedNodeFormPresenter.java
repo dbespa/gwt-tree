@@ -38,4 +38,8 @@ public class SelectedNodeFormPresenter {
             }
         });
     }
+
+    public void setEmpty() {
+        view.setEmpty();
+    }
 }

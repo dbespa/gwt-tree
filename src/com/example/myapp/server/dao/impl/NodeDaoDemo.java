@@ -54,8 +54,26 @@ public class NodeDaoDemo implements NodeDao {
     }
 
     @Override
-    public void addNode(NodeEntity node) {
-        node.setId(nextId());
-        demoNodes.add(node);
+    public void deleteNode(Long id) {
+        // TODO
+    }
+
+    @Override
+    public void save(NodeEntity node) {
+        Long nodeId = node.getId();
+        if (node.getId() == null) {
+            node.setId(nextId());
+            demoNodes.add(node);
+            return;
+        }
+
+        for (NodeEntity nodeItem : demoNodes) {
+            if (nodeItem.getId().equals(nodeId)) {
+                nodeItem.setName(node.getName());
+                nodeItem.setIp(node.getIp());
+                nodeItem.setPort(node.getPort());
+                return;
+            }
+        }
     }
 }

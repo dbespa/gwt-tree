@@ -5,6 +5,10 @@ public class NodeDto {
     private String ip;
     private String port;
 
+    public NodeDto() {
+        // do nothing
+    }
+
     public NodeDto(String name, String ip, String port) {
         this.name = name;
         this.ip = ip;

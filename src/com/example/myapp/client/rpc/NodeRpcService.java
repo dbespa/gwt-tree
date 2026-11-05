@@ -16,5 +16,7 @@ public interface NodeRpcService extends RemoteService {
 
     public NodeBean getNodeById(Long id);
 
-    public void send(NodeBean node);
+    public void save(NodeBean node);
+
+    public void deleteNode(Long id);
 }

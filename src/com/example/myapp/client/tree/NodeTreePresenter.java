@@ -49,6 +49,7 @@ public class NodeTreePresenter {
             @Override
             public void onSuccess(NodeTreeBean result) {
                 if (result == null) {
+                    view.setTree(null);
                     return;
                 }
                 NodeViewData convertedTree = convertTree(result);
@@ -81,7 +82,7 @@ public class NodeTreePresenter {
         }
         return convertedNode;
     }
-    
+
     public void setAllNodesUnselected() {
         view.unselectOtherNodes(null);
     }

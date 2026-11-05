@@ -46,8 +46,13 @@ public class NodeRpcServiceImpl extends RemoteServiceServlet implements NodeRpcS
     }
 
     @Override
-    public void send(NodeBean node) {
+    public void deleteNode(Long id) {
+        nodeDao.deleteNode(id);
+    }
+
+    @Override
+    public void save(NodeBean node) {
         NodeEntity nodeEntity = nodeConverter.convertToNodeEntity(node);
-        nodeDao.addNode(nodeEntity);
+        nodeDao.save(nodeEntity);
     }
 }

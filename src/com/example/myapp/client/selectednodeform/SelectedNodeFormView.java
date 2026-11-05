@@ -90,4 +90,12 @@ public class SelectedNodeFormView extends Composite implements SelectedNodeFormD
         ip.setText(node.getIp());
         port.setText(node.getPort().toString());
     }
+
+    public void setEmpty() {
+        id.setText(EMPTY_DATA);
+        parentId.setText(EMPTY_DATA);
+        name.setText(EMPTY_DATA);
+        ip.setText(EMPTY_DATA);
+        port.setText(EMPTY_DATA);
+    }
 }
