@@ -1,24 +1,14 @@
 package com.example.myapp.client.editform;
 
 public class NodeDto {
-    private String parentId;
     private String name;
     private String ip;
     private String port;
 
-    public NodeDto(String parentId, String name, String ip, String port) {
-        this.parentId = parentId;
+    public NodeDto(String name, String ip, String port) {
         this.name = name;
         this.ip = ip;
         this.port = port;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
     }
 
     public String getName() {
@@ -47,6 +37,6 @@ public class NodeDto {
 
     @Override
     public String toString() {
-        return "NodeDto [parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + "]";
+        return "NodeDto [name=" + name + ", ip=" + ip + ", port=" + port + "]";
     }
 }

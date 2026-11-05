@@ -81,4 +81,8 @@ public class NodeTreePresenter {
         }
         return convertedNode;
     }
+    
+    public void setAllNodesUnselected() {
+        view.unselectOtherNodes(null);
+    }
 }

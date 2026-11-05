@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 public interface NodeEditFormDisplay extends IsWidget {
 
     void setCancelHandler(CancelHandler onCancel);
-    
+
     void setSaveHandler(SaveHandler onSave);
 
     void setSelectedNode(NodeBean node);

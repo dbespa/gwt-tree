@@ -1,5 +1,6 @@
 package com.example.myapp.client.uipanel;
 
+import com.example.myapp.client.handler.AddChildHandler;
 import com.example.myapp.client.handler.AddRootHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -79,6 +80,16 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
             @Override
             public void onClick(ClickEvent event) {
                 onAddRoot.onAddRoot();
+            }
+        });
+    }
+
+    @Override
+    public void setAddChildHandler(final AddChildHandler onAddChild) {
+        addChildButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                onAddChild.onAddChild();
             }
         });
     }

@@ -2,6 +2,7 @@ package com.example.myapp.client;
 
 import com.example.myapp.client.editform.NodeEditFormPresenter;
 import com.example.myapp.client.editform.NodeEditFormView;
+import com.example.myapp.client.handler.AddChildHandler;
 import com.example.myapp.client.handler.AddRootHandler;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.example.myapp.client.handler.RefreshHandler;
@@ -143,6 +144,16 @@ public class TreeApp implements EntryPoint {
         uiPanelPresenter.setAddRootNodeHandler(new AddRootHandler() {
             @Override
             public void onAddRoot() {
+                uiPanelPresenter.setSelectedNodeId(null);
+                nodeTreePresenter.setAllNodesUnselected();
+                nodeEditFormPresenter.setSelectedNode(null);
+                nodeEditFormPresenter.showCreateForm();
+            }
+        });
+
+        uiPanelPresenter.setAddChildNodeHandler(new AddChildHandler() {
+            @Override
+            public void onAddChild() {
                 nodeEditFormPresenter.showCreateForm();
             }
         });

@@ -147,7 +147,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         String ipStr = ip.getValue();
         String portStr = port.getValue();
 
-        NodeDto temp = new NodeDto(null, nameStr, ipStr, portStr);
+        NodeDto temp = new NodeDto(nameStr, ipStr, portStr);
         return temp;
     }
 

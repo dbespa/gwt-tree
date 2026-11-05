@@ -14,6 +14,8 @@ public class NodeEditFormPresenter {
     private NodeEditFormDisplay view;
     private RefreshHandler onRefresh;
 
+    private Long parentId;
+
     public NodeEditFormPresenter(NodeRpcServiceAsync nodeRpcService, NodeEditFormDisplay view) {
         this.nodeRpcService = nodeRpcService;
         this.view = view;
@@ -27,6 +29,11 @@ public class NodeEditFormPresenter {
     }
 
     public void setSelectedNode(Long selectedNodeId) {
+        if (selectedNodeId == null) {
+            this.parentId = null;
+            return;
+        }
+
         nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -35,6 +42,7 @@ public class NodeEditFormPresenter {
 
             @Override
             public void onSuccess(NodeBean result) {
+                parentId = result.getId();
                 view.setSelectedNode(result);
             }
         });
@@ -78,11 +86,7 @@ public class NodeEditFormPresenter {
     }
 
     private NodeBean toNodeBean(NodeDto nodeDto) {
-        Long parentId = null;
-
-        if (nodeDto.getParentId() != null) {
-            parentId = Long.parseLong(nodeDto.getParentId());
-        }
+        Long parentId = this.parentId;
 
         String name = nodeDto.getName();
         String ip = nodeDto.getIp();
