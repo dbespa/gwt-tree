@@ -1,5 +1,6 @@
 package com.example.myapp.client.uipanel;
 
+import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.handler.AddChildHandler;
 import com.example.myapp.client.handler.AddRootHandler;
 import com.example.myapp.client.handler.DeleteHandler;
@@ -17,8 +18,8 @@ public class UiPanelPresenter {
 
     private Long selectedId;
 
-    public UiPanelPresenter(NodeRpcServiceAsync nodeRpcService, UiPanelDisplay view) {
-        this.nodeRpcService = nodeRpcService;
+    public UiPanelPresenter(UiPanelDisplay view) {
+        this.nodeRpcService = TreeApp.getRpcService();
         this.view = view;
     }
 

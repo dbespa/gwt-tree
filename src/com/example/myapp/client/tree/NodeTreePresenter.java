@@ -2,6 +2,7 @@ package com.example.myapp.client.tree;
 
 import java.util.List;
 
+import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.bean.NodeViewData;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
@@ -16,7 +17,7 @@ public class NodeTreePresenter {
     private NodeTreeDisplay view;
 
     public NodeTreePresenter(NodeRpcServiceAsync nodeRpcService, NodeTreeDisplay view) {
-        this.nodeRpcService = nodeRpcService;
+        this.nodeRpcService = TreeApp.getRpcService();
         this.view = view;
     }
 

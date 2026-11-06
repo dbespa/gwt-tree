@@ -68,13 +68,21 @@ public class NodeDaoDemo implements NodeDao {
             return;
         }
 
-        Long nodeId = node.getId();
         if (node.getId() == null) {
-            node.setId(nextId());
-            demoNodes.add(node);
+            addNew(node);
             return;
         }
 
+        editNode(node);
+    }
+
+    private void addNew(NodeEntity node) {
+        node.setId(nextId());
+        demoNodes.add(node);
+    }
+
+    private void editNode(NodeEntity node) {
+        Long nodeId = node.getId();
         for (NodeEntity nodeItem : demoNodes) {
             if (nodeItem.getId().equals(nodeId)) {
                 nodeItem.setName(node.getName());

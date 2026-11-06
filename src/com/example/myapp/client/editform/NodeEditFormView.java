@@ -112,7 +112,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         return textBox;
     }
 
-    public void setSelectedNode(NodeDto node) {
+    public void setSelectedNode(NodeViewData node) {
         if (node == null) {
             return;
         }
@@ -145,12 +145,12 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         main.hide();
     }
 
-    private NodeDto getFormData() {
+    private NodeViewData getFormData() {
         String nameStr = name.getValue();
         String ipStr = ip.getValue();
         String portStr = port.getValue();
 
-        NodeDto formData = new NodeDto(nameStr, ipStr, portStr);
+        NodeViewData formData = new NodeViewData(nameStr, ipStr, portStr);
         return formData;
     }
 

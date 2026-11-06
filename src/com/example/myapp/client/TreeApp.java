@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 public class TreeApp implements EntryPoint {
 
-    private NodeRpcServiceAsync nodeRpcService;
+    private static NodeRpcServiceAsync nodeRpcService;
     private NodeTreePresenter nodeTreePresenter;
     private SelectedNodeFormPresenter selectedNodeFormPresenter;
     private NodeTablePresenter nodeTablePresenter;
@@ -59,6 +59,10 @@ public class TreeApp implements EntryPoint {
         buildEditForm();
     }
 
+    public static NodeRpcServiceAsync getRpcService() {
+        return nodeRpcService;
+    }
+
     private void buildTree() {
         nodeTreeView = new NodeTreeView();
         FlowPanel treeContainer = mainWidget.getTreeContainer();
@@ -71,7 +75,7 @@ public class TreeApp implements EntryPoint {
         selectedNodeFormView = new SelectedNodeFormView();
         FlowPanel selectedNodeFormContainer = mainWidget.getSelectedNodeFormContainer();
 
-        selectedNodeFormPresenter = new SelectedNodeFormPresenter(nodeRpcService, selectedNodeFormView);
+        selectedNodeFormPresenter = new SelectedNodeFormPresenter(selectedNodeFormView);
         selectedNodeFormPresenter.go(selectedNodeFormContainer);
     }
 
@@ -79,7 +83,7 @@ public class TreeApp implements EntryPoint {
         uiPanelView = new UiPanelView();
         FlowPanel uiPanelContainer = mainWidget.getUiPanelContainer();
 
-        uiPanelPresenter = new UiPanelPresenter(nodeRpcService, uiPanelView);
+        uiPanelPresenter = new UiPanelPresenter(uiPanelView);
         uiPanelPresenter.go(uiPanelContainer);
     }
 
@@ -87,13 +91,13 @@ public class TreeApp implements EntryPoint {
         nodeTableView = new NodeTableView();
         FlowPanel tableContainer = mainWidget.getTableContainer();
 
-        nodeTablePresenter = new NodeTablePresenter(nodeRpcService, nodeTableView);
+        nodeTablePresenter = new NodeTablePresenter(nodeTableView);
         nodeTablePresenter.go(tableContainer);
     }
 
     private void buildEditForm() {
         nodeEditFormView = new NodeEditFormView();
-        nodeEditFormPresenter = new NodeEditFormPresenter(nodeRpcService, nodeEditFormView);
+        nodeEditFormPresenter = new NodeEditFormPresenter(nodeEditFormView);
     }
 
     private void bind() {

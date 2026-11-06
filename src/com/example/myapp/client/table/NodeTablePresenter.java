@@ -2,6 +2,7 @@ package com.example.myapp.client.table;
 
 import java.util.List;
 
+import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.core.client.GWT;
@@ -13,8 +14,8 @@ public class NodeTablePresenter {
     private NodeRpcServiceAsync nodeRpcService;
     private NodeTableDisplay view;
 
-    public NodeTablePresenter(NodeRpcServiceAsync nodeRpcService, NodeTableDisplay view) {
-        this.nodeRpcService = nodeRpcService;
+    public NodeTablePresenter(NodeTableDisplay view) {
+        this.nodeRpcService = TreeApp.getRpcService();
         this.view = view;
     }
 

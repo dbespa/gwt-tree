@@ -1,5 +1,6 @@
 package com.example.myapp.client.selectednodeform;
 
+import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.core.client.GWT;
@@ -11,8 +12,8 @@ public class SelectedNodeFormPresenter {
     private NodeRpcServiceAsync nodeRpcService;
     private SelectedNodeFormDisplay view;
 
-    public SelectedNodeFormPresenter(NodeRpcServiceAsync nodeRpcService, SelectedNodeFormDisplay view) {
-        this.nodeRpcService = nodeRpcService;
+    public SelectedNodeFormPresenter(SelectedNodeFormDisplay view) {
+        this.nodeRpcService = TreeApp.getRpcService();
         this.view = view;
     }
 

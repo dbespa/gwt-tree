@@ -1,5 +1,6 @@
 package com.example.myapp.client.editform;
 
+import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.handler.CancelHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.example.myapp.client.handler.SaveHandler;
@@ -17,8 +18,8 @@ public class NodeEditFormPresenter {
     private Long currentNodeParentId;
     private Long currentNodeId;
 
-    public NodeEditFormPresenter(NodeRpcServiceAsync nodeRpcService, NodeEditFormDisplay view) {
-        this.nodeRpcService = nodeRpcService;
+    public NodeEditFormPresenter(NodeEditFormDisplay view) {
+        this.nodeRpcService = TreeApp.getRpcService();
         this.view = view;
 
         if (view == null) {
@@ -78,7 +79,7 @@ public class NodeEditFormPresenter {
         view.show();
     }
 
-    private NodeBean toNodeBean(Long id, Long parentId, NodeDto nodeDto) {
+    private NodeBean toNodeBean(Long id, Long parentId, NodeViewData nodeDto) {
         if (nodeDto == null) {
             return null;
         }
@@ -89,7 +90,7 @@ public class NodeEditFormPresenter {
         return new NodeBean(id, parentId, name, ip, port);
     }
 
-    private NodeDto toNodeDto(NodeBean nodeBean) {
+    private NodeViewData toNodeDto(NodeBean nodeBean) {
         if (nodeBean == null) {
             return null;
         }
@@ -97,7 +98,7 @@ public class NodeEditFormPresenter {
         String name = nodeBean.getName();
         String ip = nodeBean.getIp();
         String port = nodeBean.getPort().toString();
-        return new NodeDto(name, ip, port);
+        return new NodeViewData(name, ip, port);
     }
 
     public void setCancelHandler() {
@@ -113,7 +114,7 @@ public class NodeEditFormPresenter {
     public void setSaveHandler() {
         view.setSaveHandler(new SaveHandler() {
             @Override
-            public void onSave(NodeDto node) {
+            public void onSave(NodeViewData node) {
                 NodeBean nodeBean = toNodeBean(currentNodeId, currentNodeParentId, node);
                 nodeRpcService.save(nodeBean, new AsyncCallback<Void>() {
                     @Override
@@ -124,6 +125,9 @@ public class NodeEditFormPresenter {
                     @Override
                     public void onSuccess(Void result) {
                         view.hide();
+                        if (onRefresh == null) {
+                            return;
+                        }
                         onRefresh.onRefresh();
                     }
                 });
