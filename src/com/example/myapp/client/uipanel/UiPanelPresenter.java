@@ -39,7 +39,6 @@ public class UiPanelPresenter {
     }
 
     public void setAddRootNodeHandler(final AddRootHandler onAddRoot) {
-        view.setSelectedNodeId(null);
         view.setAddRootHandler(onAddRoot);
     }
 
@@ -52,6 +51,10 @@ public class UiPanelPresenter {
     }
 
     public void setDeleteHandler(final DeleteHandler onDelete) {
+        if (selectedId == null) {
+            return;
+        }
+
         view.setDeleteHandler(new DeleteHandler() {
             @Override
             public void onDelete() {

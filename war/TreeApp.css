@@ -9,22 +9,28 @@
     box-sizing: border-box;
 }
 
-.TreeApp-heading {
+.MainWidget-heading {
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 10px;
 }
 
-.TreeApp-ui-panel-container {
+.MainWidget-ui-panel-container {
     margin-bottom: 20px;
 }
 
-.TreeApp-tree-container {
+.MainWidget-tree-container {
     margin-bottom: 20px;
 }
 
-.TreeApp-selected-node-form-container {
+.MainWidget-selected-node-form-container {
     margin-bottom: 20px;
+}
+
+.MainWidget-node-edit-form .NodeEditFormView {
+    width: max-content;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .UiPanelView-ui-panel {
@@ -144,12 +150,6 @@
 .NodeTableView-cell {
     width: 90px;
     padding: 20px;
-}
-
-.TreeApp-node-edit-form .NodeEditFormView {
-    width: max-content;
-    padding: 10px;
-    border-radius: 10px;
 }
 
 .NodeEditFormView {

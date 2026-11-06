@@ -45,6 +45,10 @@ public class NodeDaoDemo implements NodeDao {
 
     @Override
     public NodeEntity getNodeById(Long id) {
+        if (id == null) {
+            return null;
+        }
+
         for (NodeEntity node : demoNodes) {
             if (node.getId().equals(id)) {
                 return node;
@@ -60,6 +64,10 @@ public class NodeDaoDemo implements NodeDao {
 
     @Override
     public void save(NodeEntity node) {
+        if (node == null) {
+            return;
+        }
+
         Long nodeId = node.getId();
         if (node.getId() == null) {
             node.setId(nextId());

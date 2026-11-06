@@ -81,6 +81,10 @@ public class SelectedNodeFormView extends Composite implements SelectedNodeFormD
     }
 
     public void setSelectedNode(NodeBean node) {
+        if (node == null) {
+            return;
+        }
+
         Long parentIdValue = node.getParentId();
         String parentIdStr = parentIdValue == null ? EMPTY_DATA : parentIdValue.toString();
 

@@ -113,6 +113,10 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
     }
 
     public void setSelectedNode(NodeDto node) {
+        if (node == null) {
+            return;
+        }
+
         name.setValue(node.getName());
         ip.setValue(node.getIp());
         port.setValue(node.getPort().toString());
@@ -151,6 +155,10 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
     }
 
     public void setCancelHandler(final CancelHandler onCancel) {
+        if (onCancel == null) {
+            return;
+        }
+
         cancelButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -161,6 +169,10 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
 
     @Override
     public void setSaveHandler(final SaveHandler onSave) {
+        if (onSave == null) {
+            return;
+        }
+
         saveButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {

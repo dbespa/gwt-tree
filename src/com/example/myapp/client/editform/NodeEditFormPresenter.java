@@ -47,6 +47,7 @@ public class NodeEditFormPresenter {
                 if (result == null) {
                     return;
                 }
+
                 currentNodeId = result.getId();
                 currentNodeParentId = result.getParentId();
                 view.setSelectedNode(toNodeDto(result));
@@ -77,6 +78,28 @@ public class NodeEditFormPresenter {
         view.show();
     }
 
+    private NodeBean toNodeBean(Long id, Long parentId, NodeDto nodeDto) {
+        if (nodeDto == null) {
+            return null;
+        }
+
+        String name = nodeDto.getName();
+        String ip = nodeDto.getIp();
+        Integer port = Integer.parseInt(nodeDto.getPort());
+        return new NodeBean(id, parentId, name, ip, port);
+    }
+
+    private NodeDto toNodeDto(NodeBean nodeBean) {
+        if (nodeBean == null) {
+            return null;
+        }
+
+        String name = nodeBean.getName();
+        String ip = nodeBean.getIp();
+        String port = nodeBean.getPort().toString();
+        return new NodeDto(name, ip, port);
+    }
+
     public void setCancelHandler() {
         view.setCancelHandler(new CancelHandler() {
             @Override
@@ -100,26 +123,12 @@ public class NodeEditFormPresenter {
 
                     @Override
                     public void onSuccess(Void result) {
+                        view.hide();
                         onRefresh.onRefresh();
                     }
                 });
-                view.hide();
             }
         });
-    }
-
-    private NodeBean toNodeBean(Long id, Long parentId, NodeDto nodeDto) {
-        String name = nodeDto.getName();
-        String ip = nodeDto.getIp();
-        Integer port = Integer.parseInt(nodeDto.getPort());
-        return new NodeBean(id, parentId, name, ip, port);
-    }
-
-    private NodeDto toNodeDto(NodeBean nodeBean) {
-        String name = nodeBean.getName();
-        String ip = nodeBean.getIp();
-        String port = nodeBean.getPort().toString();
-        return new NodeDto(name, ip, port);
     }
 
     public void setRefreshHandler(RefreshHandler onRefresh) {

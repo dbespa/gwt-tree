@@ -7,7 +7,6 @@ import com.example.myapp.client.handler.EditHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -32,8 +31,6 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
     private Button editButton;
     private Button deleteButton;
     private Label selectedNodeLabel;
-
-    private HandlerRegistration clickRegistration;
 
     public UiPanelView() {
         build();
@@ -65,10 +62,7 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
     }
 
     public void setRefreshHandler(final RefreshHandler onRefresh) {
-        if (clickRegistration != null) {
-            clickRegistration.removeHandler();
-        }
-        clickRegistration = refreshButton.addClickHandler(new ClickHandler() {
+        refreshButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 onRefresh.onRefresh();
