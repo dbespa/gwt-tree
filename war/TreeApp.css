@@ -33,6 +33,13 @@
     border-radius: 10px;
 }
 
+.MainWidget-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+    align-items: center;
+}
+
 .UiPanelView-ui-panel {
     width: max-content;
     padding: 10px;

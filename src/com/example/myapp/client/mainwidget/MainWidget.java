@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class MainWidget extends Composite {
 
     private static final String STYLE_MAIN = "MainWidget";
+    private static final String STYLE_WRAPPER = STYLE_MAIN + "-wrapper";
     private static final String STYLE_HEADING = STYLE_MAIN + "-heading";
     private static final String STYLE_TREE_CONTAINER = STYLE_MAIN + "-tree-container";
     private static final String STYLE_SELECTED_NODE_FORM_CONTAINER = STYLE_MAIN + "-selected-node-form-container";
@@ -32,13 +33,18 @@ public class MainWidget extends Composite {
     private void build() {
         main = new FlowPanel();
 
+        FlowPanel wrapper = new FlowPanel();
+        wrapper.addStyleName(STYLE_WRAPPER);
+
         treeContainer = createTreeContainer();
         selectedNodeFormContainer = createSelectedNodeFormContainer();
         uiPanelContainer = createUiPanel();
         tableContainer = createTableContainer();
 
-        main.add(treeContainer);
-        main.add(selectedNodeFormContainer);
+        wrapper.add(treeContainer);
+        wrapper.add(selectedNodeFormContainer);
+
+        main.add(wrapper);
         main.add(uiPanelContainer);
         main.add(tableContainer);
     }
