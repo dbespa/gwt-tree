@@ -21,4 +21,12 @@ public interface NodeEditFormDisplay extends IsWidget {
     void show();
 
     void hide();
+
+    void setNameFieldInvalid();
+
+    void setIpFieldInvalid();
+
+    void setPortFieldInvalid();
+
+    void setAllFieldsValid();
 }

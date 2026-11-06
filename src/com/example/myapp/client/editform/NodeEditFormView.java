@@ -19,6 +19,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
     private static final String STYLE_CELL = STYLE_MAIN + "-cell";
     private static final String STYLE_BUTTON_PANEL = STYLE_MAIN + "-button-panel";
     private static final String STYLE_HEADER = STYLE_MAIN + "-header";
+    private static final String STYLE_CELL_INVALID = STYLE_CELL + "-invalid";
 
     private static final String LABEL_SAVE = "Save";
     private static final String LABEL_CANCEL = "Cancel";
@@ -179,5 +180,31 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
                 onSave.onSave(getFormData());
             }
         });
+    }
+
+    public void setNameFieldInvalid() {
+        name.addStyleName(STYLE_CELL_INVALID);
+        name.setFocus(true);
+    }
+
+    public void setIpFieldInvalid() {
+        ip.addStyleName(STYLE_CELL_INVALID);
+        ip.setFocus(true);
+    }
+
+    public void setPortFieldInvalid() {
+        port.addStyleName(STYLE_CELL_INVALID);
+        port.setFocus(true);
+    }
+
+    public void setAllFieldsValid() {
+        name.removeStyleName(STYLE_CELL_INVALID);
+        name.setFocus(false);
+
+        ip.removeStyleName(STYLE_CELL_INVALID);
+        ip.setFocus(false);
+
+        port.removeStyleName(STYLE_CELL_INVALID);
+        port.setFocus(false);
     }
 }

@@ -115,6 +115,9 @@ public class NodeEditFormPresenter {
         view.setSaveHandler(new SaveHandler() {
             @Override
             public void onSave(NodeViewData node) {
+                //TODO
+                validate(node);
+
                 NodeBean nodeBean = toNodeBean(currentNodeId, currentNodeParentId, node);
                 nodeRpcService.save(nodeBean, new AsyncCallback<Void>() {
                     @Override
@@ -133,6 +136,27 @@ public class NodeEditFormPresenter {
                 });
             }
         });
+    }
+
+    private Boolean validate(NodeViewData node) {
+        view.setAllFieldsValid();
+
+        if (node.getName() == null || node.getName().isEmpty()) {
+            view.setNameFieldInvalid();
+            return false;
+        }
+
+        if (node.getIp() == null || node.getIp() == "") {
+            view.setNameFieldInvalid();
+            return false;
+        }
+
+        if (node.getPort() == null || node.getPort() == "") {
+            view.setPortFieldInvalid();
+            return false;
+        }
+
+        return true;
     }
 
     public void setRefreshHandler(RefreshHandler onRefresh) {

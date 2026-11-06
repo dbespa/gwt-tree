@@ -198,6 +198,11 @@
     border-top: 1px solid black;
 }
 
+.NodeEditFormView-cell-invalid:focus {
+    outline: none;
+    border: 2px solid red;
+}
+
 .NodeEditFormView-button-panel {
     display: flex;
     flex-direction: row;
