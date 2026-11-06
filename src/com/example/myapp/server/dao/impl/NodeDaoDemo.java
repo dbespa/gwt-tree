@@ -2,6 +2,7 @@ package com.example.myapp.server.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import com.example.myapp.server.dao.NodeDao;
@@ -59,7 +60,19 @@ public class NodeDaoDemo implements NodeDao {
 
     @Override
     public void deleteNode(Long id) {
-        // TODO
+        // TODO fix
+        Iterator<NodeEntity> iterator = demoNodes.iterator();
+
+        while (iterator.hasNext()) {
+            NodeEntity node = iterator.next();
+            Long parentId = node.getParentId();
+            if (node.getId().equals(id)) {
+                iterator.remove();
+            }
+            if (parentId != null && parentId.equals(id)) {
+                deleteNode(node.getId());
+            }
+        }
     }
 
     @Override

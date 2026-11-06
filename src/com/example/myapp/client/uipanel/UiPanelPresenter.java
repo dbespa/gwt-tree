@@ -52,10 +52,7 @@ public class UiPanelPresenter {
     }
 
     public void setDeleteHandler(final DeleteHandler onDelete) {
-        if (selectedId == null) {
-            return;
-        }
-
+        //TODO fix
         view.setDeleteHandler(new DeleteHandler() {
             @Override
             public void onDelete() {
@@ -63,6 +60,7 @@ public class UiPanelPresenter {
                     @Override
                     public void onFailure(Throwable caught) {
                         GWT.log("Ошибка сервера: " + caught.getLocalizedMessage());
+                        onDelete.onDelete();
                     }
 
                     @Override
