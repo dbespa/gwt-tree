@@ -21,6 +21,7 @@ public class UiPanelPresenter {
     public UiPanelPresenter(UiPanelDisplay view) {
         this.nodeRpcService = TreeApp.getRpcService();
         this.view = view;
+        view.setButtonsActive(false);
     }
 
     public void go(HasWidgets container) {
@@ -33,6 +34,7 @@ public class UiPanelPresenter {
     public void setSelectedNodeId(Long id) {
         selectedId = id;
         view.setSelectedNodeId(id);
+        setButtonsActive(id != null);
     }
 
     public void setRefreshHandler(final RefreshHandler onRefresh) {
@@ -52,7 +54,6 @@ public class UiPanelPresenter {
     }
 
     public void setDeleteHandler(final DeleteHandler onDelete) {
-        //TODO fix
         view.setDeleteHandler(new DeleteHandler() {
             @Override
             public void onDelete() {
@@ -71,5 +72,9 @@ public class UiPanelPresenter {
                 });
             }
         });
+    }
+
+    public void setButtonsActive(Boolean isActive) {
+        view.setButtonsActive(isActive);
     }
 }

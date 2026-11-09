@@ -109,4 +109,10 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
             }
         });
     }
+
+    public void setButtonsActive(Boolean isActive) {
+        addChildButton.setEnabled(isActive);
+        editButton.setEnabled(isActive);
+        deleteButton.setEnabled(isActive);
+    }
 }

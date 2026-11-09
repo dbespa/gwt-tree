@@ -20,4 +20,6 @@ public interface UiPanelDisplay extends IsWidget {
     void setEditHandler(EditHandler onEdit);
 
     void setDeleteHandler(DeleteHandler onDelete);
+
+    void setButtonsActive(Boolean isActive);
 }
