@@ -138,9 +138,7 @@ public class TreeApp implements EntryPoint {
         uiPanelPresenter.setEditHandler(new EditHandler() {
             @Override
             public void onEdit() {
-                uiPanelPresenter.setSelectedNodeId(null);
                 nodeEditFormPresenter.editNode();
-                selectedNodeFormPresenter.setEmpty();
             }
         });
 
@@ -157,6 +155,7 @@ public class TreeApp implements EntryPoint {
         nodeEditFormPresenter.setRefreshHandler(new RefreshHandler() {
             @Override
             public void onRefresh() {
+                selectedNodeFormPresenter.updateSelectedNode();
                 nodeTreePresenter.updateTree();
             }
         });

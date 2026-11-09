@@ -12,6 +12,8 @@ public class SelectedNodeFormPresenter {
     private NodeRpcServiceAsync nodeRpcService;
     private SelectedNodeFormDisplay view;
 
+    private Long selectedNodeId;
+
     public SelectedNodeFormPresenter(SelectedNodeFormDisplay view) {
         this.nodeRpcService = TreeApp.getRpcService();
         this.view = view;
@@ -25,6 +27,24 @@ public class SelectedNodeFormPresenter {
     }
 
     public void setSelectedNode(Long selectedNodeId) {
+        this.selectedNodeId = selectedNodeId;
+        nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                GWT.log("Ошибка получения данных с сервера: " + caught.getLocalizedMessage());
+                view.setEmpty();
+            }
+
+            @Override
+            public void onSuccess(NodeBean result) {
+                if (result != null) {
+                    view.setSelectedNode(result);
+                }
+            }
+        });
+    }
+
+    public void updateSelectedNode() {
         nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
             @Override
             public void onFailure(Throwable caught) {

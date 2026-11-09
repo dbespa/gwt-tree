@@ -16,6 +16,8 @@ public class NodeTreePresenter {
     private NodeRpcServiceAsync nodeRpcService;
     private NodeTreeDisplay view;
 
+    private Long selectedNodeId;
+
     public NodeTreePresenter(NodeRpcServiceAsync nodeRpcService, NodeTreeDisplay view) {
         this.nodeRpcService = TreeApp.getRpcService();
         this.view = view;
@@ -32,6 +34,7 @@ public class NodeTreePresenter {
         view.setNodeSelectHandler(new NodeSelectHandler() {
             @Override
             public void onNodeSelect(Long selectedNodeId) {
+                NodeTreePresenter.this.selectedNodeId = selectedNodeId;
                 view.unselectOtherNodes(selectedNodeId);
                 if (onSelect != null) {
                     onSelect.onNodeSelect(selectedNodeId);
@@ -55,6 +58,7 @@ public class NodeTreePresenter {
                 }
                 NodeViewData convertedTree = convertTree(result);
                 view.setTree(convertedTree);
+                view.setNodeSelected(selectedNodeId);
             }
         });
     }

@@ -206,4 +206,25 @@ public class NodeTreeRowWidget extends Composite {
             }
         });
     }
+
+    public void setNodeSelected(Long selectedNodeId) {
+        if (id.equals(selectedNodeId)) {
+            setSelected(true);
+            return;
+        }
+        setNodeSelectedIterative(selectedNodeId);
+    }
+
+    public void setNodeSelectedIterative(final Long selectedNodeId) {
+        if (childrenContainer == null) {
+            return;
+        }
+        traversal(new NodeAction() {
+            @Override
+            public void action(NodeTreeRowWidget treeRowWidget) {
+                treeRowWidget.setNodeSelected(selectedNodeId);
+            }
+        });
+
+    }
 }
