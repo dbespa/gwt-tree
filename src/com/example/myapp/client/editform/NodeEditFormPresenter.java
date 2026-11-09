@@ -51,7 +51,7 @@ public class NodeEditFormPresenter {
 
                 currentNodeId = result.getId();
                 currentNodeParentId = result.getParentId();
-                view.setSelectedNode(toNodeDto(result));
+                view.setSelectedNode(toNodeViewData(result));
             }
         });
     }
@@ -79,25 +79,25 @@ public class NodeEditFormPresenter {
         view.show();
     }
 
-    private NodeBean toNodeBean(Long id, Long parentId, NodeViewData nodeDto) {
-        if (nodeDto == null) {
+    private NodeBean toNodeBean(Long id, Long parentId, NodeViewData node) {
+        if (node == null) {
             return null;
         }
 
-        String name = nodeDto.getName();
-        String ip = nodeDto.getIp();
-        Integer port = Integer.parseInt(nodeDto.getPort());
+        String name = node.getName();
+        String ip = node.getIp();
+        Integer port = Integer.parseInt(node.getPort());
         return new NodeBean(id, parentId, name, ip, port);
     }
 
-    private NodeViewData toNodeDto(NodeBean nodeBean) {
-        if (nodeBean == null) {
+    private NodeViewData toNodeViewData(NodeBean node) {
+        if (node == null) {
             return null;
         }
 
-        String name = nodeBean.getName();
-        String ip = nodeBean.getIp();
-        String port = nodeBean.getPort().toString();
+        String name = node.getName();
+        String ip = node.getIp();
+        String port = node.getPort().toString();
         return new NodeViewData(name, ip, port);
     }
 
@@ -115,8 +115,14 @@ public class NodeEditFormPresenter {
         view.setSaveHandler(new SaveHandler() {
             @Override
             public void onSave(NodeViewData node) {
-                //TODO
-                validate(node);
+                if (node == null) {
+                    return;
+                }
+
+                if (!isValid(node)) {
+                    focusInvalidField(node);
+                    return;
+                }
 
                 NodeBean nodeBean = toNodeBean(currentNodeId, currentNodeParentId, node);
                 nodeRpcService.save(nodeBean, new AsyncCallback<Void>() {
@@ -138,21 +144,74 @@ public class NodeEditFormPresenter {
         });
     }
 
-    private Boolean validate(NodeViewData node) {
+    private Boolean isValid(NodeViewData node) {
+        return nameIsValid(node.getName())
+                && ipIsValid(node.getIp())
+                && portIsValid(node.getPort());
+    }
+
+    void focusInvalidField(NodeViewData node) {
         view.setAllFieldsValid();
 
-        if (node.getName() == null || node.getName().isEmpty()) {
+        if (!nameIsValid(node.getName())) {
             view.setNameFieldInvalid();
-            return false;
+            return;
         }
 
-        if (node.getIp() == null || node.getIp() == "") {
-            view.setNameFieldInvalid();
-            return false;
+        if (!ipIsValid(node.getIp())) {
+            view.setIpFieldInvalid();
+            return;
         }
 
-        if (node.getPort() == null || node.getPort() == "") {
+        if (!portIsValid(node.getPort())) {
             view.setPortFieldInvalid();
+            return;
+        }
+    }
+
+    private Boolean nameIsValid(String name) {
+        return name != null && !name.trim().isEmpty();
+    }
+
+    private Boolean ipIsValid(String ip) {
+        if (ip == null || ip.trim().isEmpty()) {
+            return false;
+        }
+
+        String[] parts = ip.trim().split("\\.");
+
+        if (parts.length != 4) {
+            return false;
+        }
+
+        for (int i = 0; i < parts.length; i++) {
+            try {
+                Integer part = Integer.parseInt(parts[i]);
+                if (part < 0 || part > 255) {
+                    return false;
+                }
+
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private Boolean portIsValid(String port) {
+        if (port == null || port.trim().isEmpty()) {
+            return false;
+        }
+
+        Integer portInt = null;
+        try {
+            portInt = Integer.parseInt(port.trim());
+
+            if (portInt < 0 || portInt > 65535) {
+                return false;
+            }
+
+        } catch (Exception e) {
             return false;
         }
 

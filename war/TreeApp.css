@@ -199,8 +199,8 @@
 }
 
 .NodeEditFormView-cell-invalid:focus {
-    outline: none;
-    border: 2px solid red;
+    outline: 1px solid red;
+    border-radius: 5px;
 }
 
 .NodeEditFormView-button-panel {

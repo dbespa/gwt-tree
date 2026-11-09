@@ -29,6 +29,15 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
     private static final String LABEL_IP = "ip";
     private static final String LABEL_NAME = "name";
 
+    private static final String ATTRIBUTE_TYPE = "type";
+    private static final String ATTRIBUTE_PLACEHOLDER = "placeholder";
+
+    private static final String TYPE_NUMBER = "number";
+
+    private static final String PLACEHOLDER_PORT = "3000";
+    private static final String PLACEHOLDER_IP = "192.168.1.1";
+    private static final String PLACEHOLDER_NAME = "node";
+
     private static final String EMPTY_DATA = "";
 
     private PopupPanel main;
@@ -92,8 +101,14 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         dataColumn.addStyleName(STYLE_COLUMN);
 
         name = createTextBoxCell();
+        name.getElement().setAttribute(ATTRIBUTE_PLACEHOLDER, PLACEHOLDER_NAME);
+
         ip = createTextBoxCell();
+        ip.getElement().setAttribute(ATTRIBUTE_PLACEHOLDER, PLACEHOLDER_IP);
+
         port = createTextBoxCell();
+        port.getElement().setAttribute(ATTRIBUTE_TYPE, TYPE_NUMBER);
+        port.getElement().setAttribute(ATTRIBUTE_PLACEHOLDER, PLACEHOLDER_PORT);
 
         dataColumn.add(name);
         dataColumn.add(ip);
