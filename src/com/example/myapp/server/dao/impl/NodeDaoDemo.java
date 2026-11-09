@@ -2,7 +2,6 @@ package com.example.myapp.server.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import com.example.myapp.server.dao.NodeDao;
@@ -60,19 +59,24 @@ public class NodeDaoDemo implements NodeDao {
 
     @Override
     public void deleteNode(Long id) {
-        // TODO fix
-        Iterator<NodeEntity> iterator = demoNodes.iterator();
+        List<Long> nodesToDelete = new ArrayList<>();
+        nodesToDelete.add(id);
+        nodesToDelete.addAll(collectChildrenId(id));
 
-        while (iterator.hasNext()) {
-            NodeEntity node = iterator.next();
+        demoNodes.removeIf(item -> nodesToDelete.contains(item.getId()));
+    }
+
+    private List<Long> collectChildrenId(Long id) {
+        List<Long> childrenId = new ArrayList<>();
+
+        for (NodeEntity node : demoNodes) {
             Long parentId = node.getParentId();
-            if (node.getId().equals(id)) {
-                iterator.remove();
-            }
             if (parentId != null && parentId.equals(id)) {
-                deleteNode(node.getId());
+                childrenId.add(node.getId());
+                childrenId.addAll(collectChildrenId(node.getId()));
             }
         }
+        return childrenId;
     }
 
     @Override
