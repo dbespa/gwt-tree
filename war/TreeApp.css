@@ -1,12 +1,21 @@
 :root {
-    --color-active: rgb(96, 159, 234);
-    --color-hover: rgb(144, 184, 232);
-    --color-active-hover: rgb(68, 142, 231);
+    --color-active: rgb(128 177 235);
+    --color-hover: rgb(175 203 236);
+    --color-active-hover: rgb(90 156 235);
+    --max-width: 1200px;
 }
 
 * {
     font-size: 14px;
     box-sizing: border-box;
+}
+
+.MainWidget {
+    display: flex;
+    flex-direction: column;
+    max-width: var(--max-width);
+    margin: 75px auto;
+    align-items: center;
 }
 
 .MainWidget-heading {

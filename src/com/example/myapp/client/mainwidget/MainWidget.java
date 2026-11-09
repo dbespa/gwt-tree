@@ -32,6 +32,7 @@ public class MainWidget extends Composite {
 
     private void build() {
         main = new FlowPanel();
+        main.addStyleName(STYLE_MAIN);
 
         FlowPanel wrapper = new FlowPanel();
         wrapper.addStyleName(STYLE_WRAPPER);
