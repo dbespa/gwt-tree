@@ -83,6 +83,7 @@ public class MainWidget extends Composite {
 
         Label label = new Label(LABEL_ALL_NODES);
         label.addStyleName(STYLE_HEADING);
+        tableContainer.add(label);
         return tableContainer;
     }
 
