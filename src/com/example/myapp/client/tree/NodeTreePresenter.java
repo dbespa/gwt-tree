@@ -58,7 +58,7 @@ public class NodeTreePresenter {
                 }
                 NodeViewData convertedTree = convertTree(result);
                 view.setTree(convertedTree);
-                view.setNodeSelected(selectedNodeId);
+                view.unselectOtherNodes(selectedNodeId);
             }
         });
     }

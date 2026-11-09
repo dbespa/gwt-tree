@@ -48,11 +48,4 @@ public class NodeTreeView extends Composite implements NodeTreeDisplay {
         }
         virtualRoot.unselectOtherNodes(selectedNodeId);
     }
-
-    public void setNodeSelected(Long id) {
-        if (virtualRoot == null) {
-            return;
-        }
-        virtualRoot.setNodeSelected(id);
-    }
 }

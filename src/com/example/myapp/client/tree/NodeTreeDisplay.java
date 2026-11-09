@@ -11,6 +11,4 @@ public interface NodeTreeDisplay extends IsWidget {
     void setNodeSelectHandler(NodeSelectHandler onSelect);
 
     void unselectOtherNodes(Long selectedNodeId);
-
-    void setNodeSelected(Long id);
 }
