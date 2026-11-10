@@ -183,7 +183,6 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         });
     }
 
-    @Override
     public void setSaveHandler(final SaveHandler onSave) {
         if (onSave == null) {
             return;
@@ -214,12 +213,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
 
     public void setAllFieldsValid() {
         name.removeStyleName(STYLE_CELL_INVALID);
-        name.setFocus(false);
-
         ip.removeStyleName(STYLE_CELL_INVALID);
-        ip.setFocus(false);
-
         port.removeStyleName(STYLE_CELL_INVALID);
-        port.setFocus(false);
     }
 }

@@ -70,7 +70,6 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         });
     }
 
-    @Override
     public void setAddRootHandler(final AddRootHandler onAddRoot) {
         addRootButton.addClickHandler(new ClickHandler() {
             @Override
@@ -80,7 +79,6 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         });
     }
 
-    @Override
     public void setAddChildHandler(final AddChildHandler onAddChild) {
         addChildButton.addClickHandler(new ClickHandler() {
             @Override
@@ -90,7 +88,6 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         });
     }
 
-    @Override
     public void setEditHandler(final EditHandler onEdit) {
         editButton.addClickHandler(new ClickHandler() {
             @Override
@@ -100,7 +97,6 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         });
     }
 
-    @Override
     public void setDeleteHandler(final DeleteHandler onDelete) {
         deleteButton.addClickHandler(new ClickHandler() {
             @Override

@@ -25,16 +25,6 @@ public class NodeEditFormPresenter {
         setSaveHandler();
     }
 
-    public void setSelectedNode(Long selectedNodeId) {
-        if (selectedNodeId == null) {
-            currentNodeParentId = null;
-            currentNodeId = null;
-            return;
-        }
-
-        currentNodeId = selectedNodeId;
-    }
-
     public void createRoot() {
         currentNodeParentId = null;
         currentNodeId = null;
@@ -44,8 +34,8 @@ public class NodeEditFormPresenter {
         view.show();
     }
 
-    public void createChildren() {
-        currentNodeParentId = currentNodeId;
+    public void createChildren(Long selectedNodeId) {
+        currentNodeParentId = selectedNodeId;
         currentNodeId = null;
 
         view.setCreateHeader();
@@ -53,8 +43,8 @@ public class NodeEditFormPresenter {
         view.show();
     }
 
-    public void editNode() {
-        nodeRpcService.getNodeById(currentNodeId, new AsyncCallback<NodeBean>() {
+    public void editNode(final Long selectedNodeId) {
+        nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
             @Override
             public void onFailure(Throwable caught) {
                 GWT.log("Ошибка получения данных с сервера: " + caught.getLocalizedMessage());
@@ -67,6 +57,7 @@ public class NodeEditFormPresenter {
                 }
 
                 currentNodeParentId = result.getParentId();
+                currentNodeId = selectedNodeId;
                 view.setSelectedNode(toNodeViewData(result));
                 view.setEditHeader();
                 view.show();
@@ -78,17 +69,18 @@ public class NodeEditFormPresenter {
         this.onRefresh = onRefresh;
     }
 
-    public void setCancelHandler() {
+    private void setCancelHandler() {
         view.setCancelHandler(new CancelHandler() {
             @Override
             public void onCancel() {
+                view.setAllFieldsValid();
                 view.setEmpty();
                 view.hide();
             }
         });
     }
 
-    public void setSaveHandler() {
+    private void setSaveHandler() {
         view.setSaveHandler(new SaveHandler() {
             @Override
             public void onSave(NodeViewData node) {
@@ -111,6 +103,7 @@ public class NodeEditFormPresenter {
                     @Override
                     public void onSuccess(Void result) {
                         view.hide();
+                        view.setAllFieldsValid();
                         if (onRefresh == null) {
                             return;
                         }
@@ -206,7 +199,7 @@ public class NodeEditFormPresenter {
         return true;
     }
 
-    void focusInvalidField(NodeViewData node) {
+    private void focusInvalidField(NodeViewData node) {
         view.setAllFieldsValid();
 
         if (!nameIsValid(node.getName())) {

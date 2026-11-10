@@ -12,8 +12,6 @@ public class SelectedNodeFormPresenter {
     private NodeRpcServiceAsync nodeRpcService;
     private SelectedNodeFormDisplay view;
 
-    private Long selectedNodeId;
-
     public SelectedNodeFormPresenter(SelectedNodeFormDisplay view) {
         this.nodeRpcService = TreeApp.getRpcService();
         this.view = view;
@@ -27,11 +25,6 @@ public class SelectedNodeFormPresenter {
     }
 
     public void setSelectedNode(Long selectedNodeId) {
-        this.selectedNodeId = selectedNodeId;
-        updateSelectedNode();
-    }
-
-    public void updateSelectedNode() {
         nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -49,7 +42,6 @@ public class SelectedNodeFormPresenter {
     }
 
     public void setEmpty() {
-        selectedNodeId = null;
         view.setEmpty();
     }
 }

@@ -34,18 +34,18 @@ public class UiPanelPresenter {
     public void setSelectedNodeId(Long id) {
         selectedId = id;
         view.setSelectedNodeId(id);
-        setButtonsActive(id != null);
+        view.setButtonsActive(id != null);
     }
 
     public void setRefreshHandler(final RefreshHandler onRefresh) {
         view.setRefreshHandler(onRefresh);
     }
 
-    public void setAddRootNodeHandler(final AddRootHandler onAddRoot) {
+    public void setAddRootHandler(final AddRootHandler onAddRoot) {
         view.setAddRootHandler(onAddRoot);
     }
 
-    public void setAddChildNodeHandler(final AddChildHandler onAddChild) {
+    public void setAddChildHandler(final AddChildHandler onAddChild) {
         view.setAddChildHandler(onAddChild);
     }
 
@@ -61,7 +61,6 @@ public class UiPanelPresenter {
                     @Override
                     public void onFailure(Throwable caught) {
                         GWT.log("Ошибка сервера: " + caught.getLocalizedMessage());
-                        onDelete.onDelete();
                     }
 
                     @Override
@@ -72,9 +71,5 @@ public class UiPanelPresenter {
                 });
             }
         });
-    }
-
-    public void setButtonsActive(Boolean isActive) {
-        view.setButtonsActive(isActive);
     }
 }

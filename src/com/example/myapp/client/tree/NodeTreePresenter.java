@@ -36,6 +36,7 @@ public class NodeTreePresenter {
             public void onNodeSelect(Long selectedNodeId) {
                 NodeTreePresenter.this.selectedNodeId = selectedNodeId;
                 view.unselectOtherNodes(selectedNodeId);
+
                 if (onSelect != null) {
                     onSelect.onNodeSelect(selectedNodeId);
                 }

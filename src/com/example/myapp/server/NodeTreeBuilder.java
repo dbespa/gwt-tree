@@ -14,7 +14,7 @@ public class NodeTreeBuilder {
         //do nothing
     }
 
-    private NodeTreeBean convertToNodeDto(NodeEntity nodeEntity) {
+    private NodeTreeBean convertToNodeTreeBean(NodeEntity nodeEntity) {
         if (nodeEntity == null) {
             return null;
         }
@@ -31,7 +31,7 @@ public class NodeTreeBuilder {
 
         for (NodeEntity node : nodeEntityList) {
             if (node != null) {
-                NodeTreeBean convertedNode = convertToNodeDto(node);
+                NodeTreeBean convertedNode = convertToNodeTreeBean(node);
                 tree.put(node.getId(), convertedNode);
 
                 Long id = node.getId();

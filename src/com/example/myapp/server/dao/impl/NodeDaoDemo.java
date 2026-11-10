@@ -34,7 +34,7 @@ public class NodeDaoDemo implements NodeDao {
                 new NodeEntity(nextId(), 1L, NODE_4_NAME, NODE_4_IP, 111)));
     }
 
-    public Long nextId() {
+    private Long nextId() {
         return idCounter++;
     }
 

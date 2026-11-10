@@ -109,40 +109,38 @@ public class TreeApp implements EntryPoint {
                 TreeApp.this.selectedNodeId = selectedNodeId;
                 uiPanelPresenter.setSelectedNodeId(selectedNodeId);
                 selectedNodeFormPresenter.setSelectedNode(selectedNodeId);
-                nodeEditFormPresenter.setSelectedNode(selectedNodeId);
             }
         });
 
         uiPanelPresenter.setRefreshHandler(new RefreshHandler() {
             @Override
             public void onRefresh() {
-                nodeTablePresenter.updateTable();
+                update();
             }
         });
 
-        uiPanelPresenter.setAddRootNodeHandler(new AddRootHandler() {
+        uiPanelPresenter.setAddRootHandler(new AddRootHandler() {
             @Override
             public void onAddRoot() {
+                TreeApp.this.selectedNodeId = null;
                 uiPanelPresenter.setSelectedNodeId(null);
                 selectedNodeFormPresenter.setEmpty();
                 nodeTreePresenter.setAllNodesUnselected();
-                nodeEditFormPresenter.setSelectedNode(null);
                 nodeEditFormPresenter.createRoot();
             }
         });
 
-        uiPanelPresenter.setAddChildNodeHandler(new AddChildHandler() {
+        uiPanelPresenter.setAddChildHandler(new AddChildHandler() {
             @Override
             public void onAddChild() {
-                nodeEditFormPresenter.createChildren();
+                nodeEditFormPresenter.createChildren(selectedNodeId);
             }
         });
 
         uiPanelPresenter.setEditHandler(new EditHandler() {
             @Override
             public void onEdit() {
-                nodeEditFormPresenter.setSelectedNode(selectedNodeId);
-                nodeEditFormPresenter.editNode();
+                nodeEditFormPresenter.editNode(selectedNodeId);
             }
         });
 
@@ -150,16 +148,16 @@ public class TreeApp implements EntryPoint {
             @Override
             public void onDelete() {
                 update();
+                selectedNodeId = null;
                 uiPanelPresenter.setSelectedNodeId(null);
                 selectedNodeFormPresenter.setEmpty();
-                nodeEditFormPresenter.setSelectedNode(null);
             }
         });
 
         nodeEditFormPresenter.setRefreshHandler(new RefreshHandler() {
             @Override
             public void onRefresh() {
-                selectedNodeFormPresenter.updateSelectedNode();
+                selectedNodeFormPresenter.setSelectedNode(selectedNodeId);
                 update();
             }
         });
