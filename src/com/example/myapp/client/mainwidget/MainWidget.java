@@ -3,7 +3,6 @@ package com.example.myapp.client.mainwidget;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
 
 public class MainWidget extends Composite {
 
@@ -79,7 +78,6 @@ public class MainWidget extends Composite {
     private FlowPanel createTableContainer() {
         FlowPanel tableContainer = new FlowPanel();
         tableContainer.addStyleName(STYLE_NODE_TABLE_CONTAINER);
-        RootPanel.get().add(tableContainer);
 
         Label label = new Label(LABEL_ALL_NODES);
         label.addStyleName(STYLE_HEADING);

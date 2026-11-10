@@ -135,7 +135,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
 
         name.setValue(node.getName());
         ip.setValue(node.getIp());
-        port.setValue(node.getPort().toString());
+        port.setValue(node.getPort());
     }
 
     public void setEmpty() {

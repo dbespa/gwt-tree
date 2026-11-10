@@ -41,6 +41,8 @@ public class TreeApp implements EntryPoint {
 
     private MainWidget mainWidget;
 
+    private Long selectedNodeId;
+
     public void onModuleLoad() {
         build();
         bind();
@@ -104,6 +106,7 @@ public class TreeApp implements EntryPoint {
         nodeTreePresenter.setNodeSelectHandler(new NodeSelectHandler() {
             @Override
             public void onNodeSelect(Long selectedNodeId) {
+                TreeApp.this.selectedNodeId = selectedNodeId;
                 uiPanelPresenter.setSelectedNodeId(selectedNodeId);
                 selectedNodeFormPresenter.setSelectedNode(selectedNodeId);
                 nodeEditFormPresenter.setSelectedNode(selectedNodeId);
@@ -138,6 +141,7 @@ public class TreeApp implements EntryPoint {
         uiPanelPresenter.setEditHandler(new EditHandler() {
             @Override
             public void onEdit() {
+                nodeEditFormPresenter.setSelectedNode(selectedNodeId);
                 nodeEditFormPresenter.editNode();
             }
         });
@@ -145,7 +149,7 @@ public class TreeApp implements EntryPoint {
         uiPanelPresenter.setDeleteHandler(new DeleteHandler() {
             @Override
             public void onDelete() {
-                nodeTreePresenter.updateTree();
+                update();
                 uiPanelPresenter.setSelectedNodeId(null);
                 selectedNodeFormPresenter.setEmpty();
                 nodeEditFormPresenter.setSelectedNode(null);
@@ -156,7 +160,7 @@ public class TreeApp implements EntryPoint {
             @Override
             public void onRefresh() {
                 selectedNodeFormPresenter.updateSelectedNode();
-                nodeTreePresenter.updateTree();
+                update();
             }
         });
     }

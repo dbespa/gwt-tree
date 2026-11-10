@@ -21,11 +21,6 @@ public class NodeEditFormPresenter {
     public NodeEditFormPresenter(NodeEditFormDisplay view) {
         this.nodeRpcService = TreeApp.getRpcService();
         this.view = view;
-
-        if (view == null) {
-            return;
-        }
-
         setCancelHandler();
         setSaveHandler();
     }
@@ -37,23 +32,7 @@ public class NodeEditFormPresenter {
             return;
         }
 
-        nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                GWT.log("Ошибка получения данных с сервера: " + caught.getLocalizedMessage());
-            }
-
-            @Override
-            public void onSuccess(NodeBean result) {
-                if (result == null) {
-                    return;
-                }
-
-                currentNodeId = result.getId();
-                currentNodeParentId = result.getParentId();
-                view.setSelectedNode(toNodeViewData(result));
-            }
-        });
+        currentNodeId = selectedNodeId;
     }
 
     public void createRoot() {
@@ -75,30 +54,28 @@ public class NodeEditFormPresenter {
     }
 
     public void editNode() {
-        view.setEditHeader();
-        view.show();
+        nodeRpcService.getNodeById(currentNodeId, new AsyncCallback<NodeBean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                GWT.log("Ошибка получения данных с сервера: " + caught.getLocalizedMessage());
+            }
+
+            @Override
+            public void onSuccess(NodeBean result) {
+                if (result == null) {
+                    return;
+                }
+
+                currentNodeParentId = result.getParentId();
+                view.setSelectedNode(toNodeViewData(result));
+                view.setEditHeader();
+                view.show();
+            }
+        });
     }
 
-    private NodeBean toNodeBean(Long id, Long parentId, NodeViewData node) {
-        if (node == null) {
-            return null;
-        }
-
-        String name = node.getName();
-        String ip = node.getIp();
-        Integer port = Integer.parseInt(node.getPort());
-        return new NodeBean(id, parentId, name, ip, port);
-    }
-
-    private NodeViewData toNodeViewData(NodeBean node) {
-        if (node == null) {
-            return null;
-        }
-
-        String name = node.getName();
-        String ip = node.getIp();
-        String port = node.getPort().toString();
-        return new NodeViewData(name, ip, port);
+    public void setRefreshHandler(RefreshHandler onRefresh) {
+        this.onRefresh = onRefresh;
     }
 
     public void setCancelHandler() {
@@ -144,29 +121,40 @@ public class NodeEditFormPresenter {
         });
     }
 
+    private NodeBean toNodeBean(Long id, Long parentId, NodeViewData node) {
+        if (node == null) {
+            return null;
+        }
+
+        String name = node.getName();
+        String ip = node.getIp();
+        Integer port;
+        try {
+            port = Integer.parseInt(node.getPort());
+        } catch (Exception e) {
+            GWT.log("Ошибка конвертации: " + e.getLocalizedMessage());
+            port = null;
+        }
+        return new NodeBean(id, parentId, name, ip, port);
+    }
+
+    private NodeViewData toNodeViewData(NodeBean node) {
+        if (node == null) {
+            return null;
+        }
+
+        String name = node.getName();
+        String ip = node.getIp();
+
+        Integer portValue = node.getPort();
+        String port = portValue == null ? null : portValue.toString();
+        return new NodeViewData(name, ip, port);
+    }
+
     private Boolean isValid(NodeViewData node) {
         return nameIsValid(node.getName())
                 && ipIsValid(node.getIp())
                 && portIsValid(node.getPort());
-    }
-
-    void focusInvalidField(NodeViewData node) {
-        view.setAllFieldsValid();
-
-        if (!nameIsValid(node.getName())) {
-            view.setNameFieldInvalid();
-            return;
-        }
-
-        if (!ipIsValid(node.getIp())) {
-            view.setIpFieldInvalid();
-            return;
-        }
-
-        if (!portIsValid(node.getPort())) {
-            view.setPortFieldInvalid();
-            return;
-        }
     }
 
     private Boolean nameIsValid(String name) {
@@ -218,7 +206,22 @@ public class NodeEditFormPresenter {
         return true;
     }
 
-    public void setRefreshHandler(RefreshHandler onRefresh) {
-        this.onRefresh = onRefresh;
+    void focusInvalidField(NodeViewData node) {
+        view.setAllFieldsValid();
+
+        if (!nameIsValid(node.getName())) {
+            view.setNameFieldInvalid();
+            return;
+        }
+
+        if (!ipIsValid(node.getIp())) {
+            view.setIpFieldInvalid();
+            return;
+        }
+
+        if (!portIsValid(node.getPort())) {
+            view.setPortFieldInvalid();
+            return;
+        }
     }
 }

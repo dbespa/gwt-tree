@@ -85,14 +85,20 @@ public class SelectedNodeFormView extends Composite implements SelectedNodeFormD
             return;
         }
 
+        Long idValue = node.getId();
+        String idStr = idValue == null ? EMPTY_DATA : idValue.toString();
+
         Long parentIdValue = node.getParentId();
         String parentIdStr = parentIdValue == null ? EMPTY_DATA : parentIdValue.toString();
 
-        id.setText(node.getId().toString());
+        Integer portValue = node.getPort();
+        String portStr = portValue == null ? EMPTY_DATA : portValue.toString();
+
+        id.setText(idStr);
         parentId.setText(parentIdStr);
         name.setText(node.getName());
         ip.setText(node.getIp());
-        port.setText(node.getPort().toString());
+        port.setText(portStr);
     }
 
     public void setEmpty() {

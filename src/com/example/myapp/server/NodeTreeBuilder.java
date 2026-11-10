@@ -1,10 +1,10 @@
 package com.example.myapp.server;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.example.myapp.server.entity.NodeEntity;
 import com.example.myapp.shared.bean.NodeTreeBean;
-import com.google.gwt.dev.util.collect.HashMap;
 
 public class NodeTreeBuilder {
 

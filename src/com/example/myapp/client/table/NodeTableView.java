@@ -76,12 +76,12 @@ public class NodeTableView extends Composite implements NodeTableDisplay {
     }
 
     private FlowPanel createRow(NodeBean node) {
-        FlowPanel row = new FlowPanel();
-        row.addStyleName(STYLE_ROW);
-
         if (node == null) {
             return null;
         }
+
+        FlowPanel row = new FlowPanel();
+        row.addStyleName(STYLE_ROW);
 
         Long parentId = node.getParentId();
         String strParentId = (parentId == null ? NULL_PARENT_ID_PLACEHOLDER : String.valueOf(parentId));

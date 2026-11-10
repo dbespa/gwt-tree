@@ -28,20 +28,7 @@ public class SelectedNodeFormPresenter {
 
     public void setSelectedNode(Long selectedNodeId) {
         this.selectedNodeId = selectedNodeId;
-        nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                GWT.log("Ошибка получения данных с сервера: " + caught.getLocalizedMessage());
-                view.setEmpty();
-            }
-
-            @Override
-            public void onSuccess(NodeBean result) {
-                if (result != null) {
-                    view.setSelectedNode(result);
-                }
-            }
-        });
+        updateSelectedNode();
     }
 
     public void updateSelectedNode() {
@@ -62,6 +49,7 @@ public class SelectedNodeFormPresenter {
     }
 
     public void setEmpty() {
+        selectedNodeId = null;
         view.setEmpty();
     }
 }

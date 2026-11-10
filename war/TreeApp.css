@@ -1,27 +1,27 @@
 :root {
-    --color-active: rgb(128 177 235);
-    --color-hover: rgb(175 203 236);
-    --color-active-hover: rgb(90 156 235);
+    --color-active: rgb(128, 177, 235);
+    --color-hover: rgb(175, 203, 236);
+    --color-active-hover: rgb(90, 156, 235);
     --max-width: 1200px;
 }
 
 * {
-    font-size: 14px;
     box-sizing: border-box;
+    font-size: 14px;
 }
 
 .MainWidget {
+    max-width: var(--max-width);
+    margin: 50px auto;
     display: flex;
     flex-direction: column;
-    max-width: var(--max-width);
-    margin: 75px auto;
     align-items: center;
 }
 
 .MainWidget-heading {
+    margin-bottom: 10px;
     font-size: 24px;
     font-weight: 700;
-    margin-bottom: 10px;
 }
 
 .MainWidget-ui-panel-container {
@@ -38,8 +38,8 @@
 
 .MainWidget-node-edit-form .NodeEditFormView {
     width: max-content;
-    padding: 10px;
     border-radius: 10px;
+    padding: 10px;
 }
 
 .MainWidget-wrapper {
@@ -51,21 +51,20 @@
 
 .UiPanelView-ui-panel {
     width: max-content;
-    padding: 10px;
     border: 1px solid black;
     border-radius: 10px;
+    padding: 10px;
     display: flex;
     flex-direction: row;
+    gap: 20px;
     align-items: center;
     justify-content: center;
-    gap: 20px;
 }
 
 .NodeTreeView-tree {
     width: max-content;
     min-width: 160px;
     min-height: 80px;
-    padding: 10px;
     border: 1px solid black;
     border-radius: 10px;
     padding: 10px;
@@ -76,14 +75,18 @@
     flex-direction: row;
 }
 
+.NodeTreeRowWidget-children-container {
+    flex-grow: 1;
+}
+
 .NodeTreeRowWidget-tree-row {
     padding-right: 25px;
     margin-bottom: 3px;
     border-radius: 5px;
     display: flex;
     flex-direction: row;
-    align-items: center;
     gap: 5px;
+    align-items: center;
     cursor: pointer;
 }
 
@@ -113,16 +116,16 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    align-items: center;
 }
 
 .SelectedNodeFormView-form {
     width: max-content;
-    padding: 10px;
     border: 1px solid black;
     border-radius: 10px;
+    padding: 10px;
     display: flex;
     flex-direction: row;
+    border-radius: 10px;
 }
 
 .SelectedNodeFormView-column {
@@ -176,16 +179,16 @@
 }
 
 .NodeEditFormView-form {
+    margin-bottom: 10px;
     display: flex;
     flex-direction: row;
-    margin-bottom: 10px;
 }
 
 .NodeEditFormView-header {
+    margin-bottom: 10px;
     text-align: center;
     font-size: 20px;
     font-weight: 700;
-    margin-bottom: 10px;
 }
 
 .NodeEditFormView-column {
@@ -200,9 +203,10 @@
 }
 
 .NodeEditFormView-column .NodeEditFormView-cell {
+    height: 30px;
     width: 150px;
-    padding: 5px;
     border: none;
+    padding: 5px;
     font-size: 14px;
 }
 
@@ -211,8 +215,9 @@
 }
 
 .NodeEditFormView-cell-invalid:focus {
-    outline: 1px solid red;
-    border-radius: 5px;
+    outline: 2px solid red;
+    border-radius: 2px;
+    z-index: 10;
 }
 
 .NodeEditFormView-button-panel {
