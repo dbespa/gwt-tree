@@ -10,11 +10,11 @@ public interface NodeEditFormDisplay extends IsWidget {
 
     void setSaveHandler(SaveHandler onSave);
 
-    void setSelectedNode(NodeViewData node);
+    void setSelectedNode(NodeFormViewData node);
 
-    void setCreateHeader();
+    void setModeCreate();
 
-    void setEditHeader();
+    void setModeEdit(NodeFormViewData node);
 
     void show();
 

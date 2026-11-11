@@ -1,14 +1,14 @@
-package com.example.myapp.client.bean;
+package com.example.myapp.client.tree;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodeViewData {
+public class NodeTreeViewData {
     private Long id;
     private String name;
-    private List<NodeViewData> children;
+    private List<NodeTreeViewData> children;
 
-    public NodeViewData(Long id, String name) {
+    public NodeTreeViewData(Long id, String name) {
         this.id = id;
         this.name = name;
         this.children = new ArrayList<>();
@@ -30,15 +30,15 @@ public class NodeViewData {
         this.name = name;
     }
 
-    public List<NodeViewData> getChildren() {
+    public List<NodeTreeViewData> getChildren() {
         return new ArrayList<>(children);
     }
 
-    public void setChildren(List<NodeViewData> children) {
+    public void setChildren(List<NodeTreeViewData> children) {
         this.children = new ArrayList<>(children);
     }
 
-    public void addChild(NodeViewData child) {
+    public void addChild(NodeTreeViewData child) {
         children.add(child);
     }
 

@@ -1,5 +1,6 @@
 package com.example.myapp.client.editform;
 
+import com.example.myapp.client.StringUtils;
 import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.handler.CancelHandler;
 import com.example.myapp.client.handler.RefreshHandler;
@@ -34,25 +35,24 @@ public class NodeEditFormPresenter {
     }
 
     // TODO mativ посмотреть как избавится от бойлера. Есть идея полу-фасада
-    public void createRoot() {
+    private void setCreateMode() {
+        currentNodeId = null;
+
+        view.setModeCreate();
+        view.show();
+    }
+
+    public void setCreateRootMode() {
         currentNodeParentId = null;
-        currentNodeId = null;
-
-        view.setCreateHeader();
-        view.setSelectedNode(null);
-        view.show();
+        setCreateMode();
     }
 
-    public void createChild(Long selectedNodeId) {
+    public void setCreateChildMode(Long selectedNodeId) {
         currentNodeParentId = selectedNodeId;
-        currentNodeId = null;
-
-        view.setCreateHeader();
-        view.setSelectedNode(null);
-        view.show();
+        setCreateMode();
     }
 
-    public void editNode(final Long selectedNodeId) {
+    public void setEditNodeMode(final Long selectedNodeId) {
         nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -67,8 +67,7 @@ public class NodeEditFormPresenter {
 
                 currentNodeParentId = result.getParentId();
                 currentNodeId = selectedNodeId;
-                view.setSelectedNode(toNodeViewData(result));
-                view.setEditHeader();
+                view.setModeEdit(toNodeViewData(result));
                 view.show();
             }
         });
@@ -92,7 +91,7 @@ public class NodeEditFormPresenter {
     private void setSaveHandler() {
         view.setSaveHandler(new SaveHandler() {
             @Override
-            public void onSave(NodeViewData node) {
+            public void onSave(NodeFormViewData node) {
                 if (node == null) {
                     return;
                 }
@@ -127,24 +126,19 @@ public class NodeEditFormPresenter {
         });
     }
 
-    private NodeBean toNodeBean(Long id, Long parentId, NodeViewData node) {
+    private NodeBean toNodeBean(Long id, Long parentId, NodeFormViewData node) {
         if (node == null) {
             return null;
         }
 
         String name = node.getName();
         String ip = node.getIp();
-        Integer port;
-        try {
-            port = Integer.parseInt(node.getPort());
-        } catch (Exception e) {
-            GWT.log("Ошибка конвертации: " + e.getLocalizedMessage());
-            port = null;
-        }
+
+        Integer port = StringUtils.parseIntQuiet(node.getPort());
         return new NodeBean(id, parentId, name, ip, port);
     }
 
-    private NodeViewData toNodeViewData(NodeBean node) {
+    private NodeFormViewData toNodeViewData(NodeBean node) {
         if (node == null) {
             return null;
         }
@@ -154,10 +148,10 @@ public class NodeEditFormPresenter {
 
         Integer portValue = node.getPort();
         String port = portValue == null ? null : portValue.toString();
-        return new NodeViewData(name, ip, port);
+        return new NodeFormViewData(name, ip, port);
     }
 
-    private void focusInvalidField(NodeViewData node) {
+    private void focusInvalidField(NodeFormViewData node) {
         view.setAllFieldsValid();
 
         if (!validator.nameIsValid(node.getName())) {

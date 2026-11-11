@@ -3,7 +3,6 @@ package com.example.myapp.client.tree;
 import java.util.List;
 
 import com.example.myapp.client.TreeApp;
-import com.example.myapp.client.bean.NodeViewData;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.example.myapp.shared.bean.NodeTreeBean;
@@ -69,26 +68,26 @@ public class NodeTreePresenter {
                     view.setTree(null);
                     return;
                 }
-                NodeViewData convertedTree = convertTree(result);
+                NodeTreeViewData convertedTree = convertTree(result);
                 view.setTree(convertedTree);
                 view.unselectOtherNodes(selectedNodeId);
             }
         });
     }
 
-    private NodeViewData convertToNodeViewData(NodeTreeBean node) {
+    private NodeTreeViewData convertToNodeViewData(NodeTreeBean node) {
         if (node == null) {
             return null;
         }
-        return new NodeViewData(node.getId(), node.getName());
+        return new NodeTreeViewData(node.getId(), node.getName());
     }
 
-    private NodeViewData convertTree(NodeTreeBean node) {
+    private NodeTreeViewData convertTree(NodeTreeBean node) {
         if (node == null) {
             return null;
         }
 
-        NodeViewData convertedNode = convertToNodeViewData(node);
+        NodeTreeViewData convertedNode = convertToNodeViewData(node);
 
         if (node.isEmpty()) {
             return convertedNode;

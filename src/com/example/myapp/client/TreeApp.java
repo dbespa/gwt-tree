@@ -120,21 +120,21 @@ public class TreeApp implements EntryPoint {
             @Override
             public void onAddRootClick() {
                 setSelectedNodeId(null);
-                nodeEditFormPresenter.createRoot();
+                nodeEditFormPresenter.setCreateRootMode();
             }
         });
 
         uiPanelPresenter.setAddChildClickHandler(new AddChildClickHandler() {
             @Override
             public void onAddChildClick() {
-                nodeEditFormPresenter.createChild(nodeTreePresenter.getSelectedNodeId());
+                nodeEditFormPresenter.setCreateChildMode(nodeTreePresenter.getSelectedNodeId());
             }
         });
 
         uiPanelPresenter.setEditClickHandler(new EditClickHandler() {
             @Override
             public void onEditClick() {
-                nodeEditFormPresenter.editNode(nodeTreePresenter.getSelectedNodeId());
+                nodeEditFormPresenter.setEditNodeMode(nodeTreePresenter.getSelectedNodeId());
             }
         });
 

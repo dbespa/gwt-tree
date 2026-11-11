@@ -1,12 +1,14 @@
 package com.example.myapp.client.editform;
 
+import com.example.myapp.client.StringUtils;
+
 public class NodeEditFormValidator {
 
     public NodeEditFormValidator() {
         //do nothing
     }
 
-    public Boolean isValid(NodeViewData node) {
+    public Boolean isValid(NodeFormViewData node) {
         return nameIsValid(node.getName())
                 && ipIsValid(node.getIp())
                 && portIsValid(node.getPort());
@@ -28,13 +30,13 @@ public class NodeEditFormValidator {
         }
 
         for (int i = 0; i < parts.length; i++) {
-            try {
-                Integer part = Integer.parseInt(parts[i]);
-                if (part < 0 || part > 255) {
-                    return false;
-                }
+            Integer part = StringUtils.parseIntQuiet(parts[i]);
 
-            } catch (Exception e) {
+            if (part == null) {
+                return false;
+            }
+
+            if (part < 0 || part > 255) {
                 return false;
             }
         }
@@ -46,15 +48,13 @@ public class NodeEditFormValidator {
             return false;
         }
 
-        Integer portInt = null;
-        try {
-            portInt = Integer.parseInt(port.trim());
+        Integer portInt = StringUtils.parseIntQuiet(port.trim());
 
-            if (portInt < 0 || portInt > 65535) {
-                return false;
-            }
+        if (portInt == null) {
+            return false;
+        }
 
-        } catch (Exception e) {
+        if (portInt < 0 || portInt > 65535) {
             return false;
         }
 

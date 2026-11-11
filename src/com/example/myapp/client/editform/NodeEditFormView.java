@@ -128,7 +128,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         return textBox;
     }
 
-    public void setSelectedNode(NodeViewData node) {
+    public void setSelectedNode(NodeFormViewData node) {
         if (node == null) {
             clear();
             return;
@@ -145,12 +145,14 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         port.setValue(EMPTY_DATA);
     }
 
-    public void setCreateHeader() {
+    public void setModeCreate() {
         header.setText(LABEL_CREATE_NODE);
+        setSelectedNode(null);
     }
 
-    public void setEditHeader() {
+    public void setModeEdit(NodeFormViewData node) {
         header.setText(LABEL_EDIT_NODE);
+        setSelectedNode(node);
     }
 
     public void show() {
@@ -162,12 +164,12 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         main.hide();
     }
 
-    private NodeViewData getFormData() {
+    private NodeFormViewData getFormData() {
         String nameStr = name.getValue();
         String ipStr = ip.getValue();
         String portStr = port.getValue();
 
-        NodeViewData formData = new NodeViewData(nameStr, ipStr, portStr);
+        NodeFormViewData formData = new NodeFormViewData(nameStr, ipStr, portStr);
         return formData;
     }
 

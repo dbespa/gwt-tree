@@ -2,7 +2,6 @@ package com.example.myapp.client.tree;
 
 import java.util.List;
 
-import com.example.myapp.client.bean.NodeViewData;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -37,7 +36,7 @@ public class NodeTreeRowWidget extends Composite {
 
     private Long id;
 
-    public NodeTreeRowWidget(NodeViewData node) {
+    public NodeTreeRowWidget(NodeTreeViewData node) {
         id = node.getId();
         build(node);
         bind();
@@ -51,7 +50,7 @@ public class NodeTreeRowWidget extends Composite {
         main.add(childrenContainer);
     }
 
-    private void build(NodeViewData node) {
+    private void build(NodeTreeViewData node) {
         main = new FlowPanel();
         main.addStyleName(STYLE_NODE_CONTAINER);
 
@@ -87,7 +86,7 @@ public class NodeTreeRowWidget extends Composite {
         childrenContainer.setVisible(!childrenIsVisible);
     }
 
-    private FlowPanel createNodeRow(NodeViewData node) {
+    private FlowPanel createNodeRow(NodeTreeViewData node) {
         FlowPanel resultNodeRow = new FlowPanel();
         resultNodeRow.addStyleName(STYLE_TREE_ROW);
 
@@ -99,7 +98,7 @@ public class NodeTreeRowWidget extends Composite {
         return resultNodeRow;
     }
 
-    private FlowPanel createChildrenPanel(NodeViewData node) {
+    private FlowPanel createChildrenPanel(NodeTreeViewData node) {
         if (node.isEmpty()) {
             return null;
         }
@@ -118,9 +117,9 @@ public class NodeTreeRowWidget extends Composite {
         return panel;
     }
 
-    private void fillChildrenWidgets(NodeViewData node) {
-        List<NodeViewData> children = node.getChildren();
-        for (NodeViewData child : children) {
+    private void fillChildrenWidgets(NodeTreeViewData node) {
+        List<NodeTreeViewData> children = node.getChildren();
+        for (NodeTreeViewData child : children) {
             NodeTreeRowWidget childWidget = new NodeTreeRowWidget(child);
             childrenContainer.add(childWidget);
         }

@@ -1,6 +1,5 @@
 package com.example.myapp.client.tree;
 
-import com.example.myapp.client.bean.NodeViewData;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -29,7 +28,7 @@ public class NodeTreeView extends Composite implements NodeTreeDisplay {
         this.onNodeSelect = onSelect;
     }
 
-    public void setTree(NodeViewData tree) {
+    public void setTree(NodeTreeViewData tree) {
         main.clear();
 
         if (tree == null || tree.isEmpty()) {
