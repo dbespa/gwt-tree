@@ -2,10 +2,10 @@ package com.example.myapp.client;
 
 import com.example.myapp.client.editform.NodeEditFormPresenter;
 import com.example.myapp.client.editform.NodeEditFormView;
-import com.example.myapp.client.handler.AddChildHandler;
+import com.example.myapp.client.handler.AddChildClickHandler;
 import com.example.myapp.client.handler.AddRootClickHandler;
-import com.example.myapp.client.handler.DeleteHandler;
-import com.example.myapp.client.handler.EditHandler;
+import com.example.myapp.client.handler.AfterDeleteHandler;
+import com.example.myapp.client.handler.EditClickHandler;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.example.myapp.client.mainwidget.MainWidget;
@@ -68,7 +68,7 @@ public class TreeApp implements EntryPoint {
         NodeTreeView nodeTreeView = new NodeTreeView();
         FlowPanel treeContainer = mainWidget.getTreeContainer();
 
-        nodeTreePresenter = new NodeTreePresenter(nodeRpcService, nodeTreeView);
+        nodeTreePresenter = new NodeTreePresenter(nodeTreeView);
         nodeTreePresenter.go(treeContainer);
     }
 
@@ -129,23 +129,23 @@ public class TreeApp implements EntryPoint {
             }
         });
 
-        uiPanelPresenter.setAddChildHandler(new AddChildHandler() {
+        uiPanelPresenter.setAddChildClickHandler(new AddChildClickHandler() {
             @Override
-            public void onAddChild() {
+            public void onAddChildClick() {
                 nodeEditFormPresenter.createChildren(selectedNodeId);
             }
         });
 
-        uiPanelPresenter.setEditHandler(new EditHandler() {
+        uiPanelPresenter.setEditClickHandler(new EditClickHandler() {
             @Override
-            public void onEdit() {
+            public void onEditClick() {
                 nodeEditFormPresenter.editNode(selectedNodeId);
             }
         });
 
-        uiPanelPresenter.setDeleteHandler(new DeleteHandler() {
+        uiPanelPresenter.setAfterDeleteHandler(new AfterDeleteHandler() {
             @Override
-            public void onDelete() {
+            public void onAfterDelete() {
                 selectedNodeId = null;
                 uiPanelPresenter.setSelectedNodeId(null);
                 selectedNodeFormPresenter.setEmpty();

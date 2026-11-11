@@ -1,9 +1,9 @@
 package com.example.myapp.client.uipanel;
 
-import com.example.myapp.client.handler.AddChildHandler;
+import com.example.myapp.client.handler.AddChildClickHandler;
 import com.example.myapp.client.handler.AddRootClickHandler;
-import com.example.myapp.client.handler.DeleteHandler;
-import com.example.myapp.client.handler.EditHandler;
+import com.example.myapp.client.handler.AfterDeleteHandler;
+import com.example.myapp.client.handler.EditClickHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.google.gwt.user.client.ui.IsWidget;
 
@@ -13,13 +13,13 @@ public interface UiPanelDisplay extends IsWidget {
 
     void setSelectedNodeId(Long id);
 
-    void setAddRootClickHandler(AddRootClickHandler onAddRoot);
+    void setAddRootClickHandler(AddRootClickHandler onAddRootClick);
 
-    void setAddChildHandler(AddChildHandler onAddChild);
+    void setAddChildClickHandler(AddChildClickHandler onAddChildClick);
 
-    void setEditHandler(EditHandler onEdit);
+    void setEditClickHandler(EditClickHandler onEditClick);
 
-    void setDeleteHandler(DeleteHandler onDelete);
+    void setAfterDeleteHandler(AfterDeleteHandler onAfterDelete);
 
     void setButtonsActive(Boolean isActive);
 }

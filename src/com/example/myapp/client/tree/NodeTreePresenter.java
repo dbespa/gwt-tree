@@ -18,7 +18,7 @@ public class NodeTreePresenter {
 
     private Long selectedNodeId;
 
-    public NodeTreePresenter(NodeRpcServiceAsync nodeRpcService, NodeTreeDisplay view) {
+    public NodeTreePresenter(NodeTreeDisplay view) {
         this.nodeRpcService = TreeApp.getRpcService();
         this.view = view;
     }

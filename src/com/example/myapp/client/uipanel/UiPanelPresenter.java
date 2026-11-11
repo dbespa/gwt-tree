@@ -1,10 +1,10 @@
 package com.example.myapp.client.uipanel;
 
 import com.example.myapp.client.TreeApp;
-import com.example.myapp.client.handler.AddChildHandler;
+import com.example.myapp.client.handler.AddChildClickHandler;
 import com.example.myapp.client.handler.AddRootClickHandler;
-import com.example.myapp.client.handler.DeleteHandler;
-import com.example.myapp.client.handler.EditHandler;
+import com.example.myapp.client.handler.AfterDeleteHandler;
+import com.example.myapp.client.handler.EditClickHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.google.gwt.core.client.GWT;
@@ -45,18 +45,18 @@ public class UiPanelPresenter {
         view.setAddRootClickHandler(onAddRootClick);
     }
 
-    public void setAddChildHandler(final AddChildHandler onAddChild) {
-        view.setAddChildHandler(onAddChild);
+    public void setAddChildClickHandler(final AddChildClickHandler onAddChildClick) {
+        view.setAddChildClickHandler(onAddChildClick);
     }
 
-    public void setEditHandler(final EditHandler onEdit) {
-        view.setEditHandler(onEdit);
+    public void setEditClickHandler(final EditClickHandler onEditClick) {
+        view.setEditClickHandler(onEditClick);
     }
 
-    public void setDeleteHandler(final DeleteHandler onDelete) {
-        view.setDeleteHandler(new DeleteHandler() {
+    public void setAfterDeleteHandler(final AfterDeleteHandler onAfterDelete) {
+        view.setAfterDeleteHandler(new AfterDeleteHandler() {
             @Override
-            public void onDelete() {
+            public void onAfterDelete() {
                 nodeRpcService.deleteNode(selectedId, new AsyncCallback<Void>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -66,7 +66,7 @@ public class UiPanelPresenter {
                     @Override
                     public void onSuccess(Void result) {
                         view.setSelectedNodeId(null);
-                        onDelete.onDelete();
+                        onAfterDelete.onAfterDelete();
                     }
                 });
             }

@@ -1,9 +1,9 @@
 package com.example.myapp.client.uipanel;
 
-import com.example.myapp.client.handler.AddChildHandler;
+import com.example.myapp.client.handler.AddChildClickHandler;
 import com.example.myapp.client.handler.AddRootClickHandler;
-import com.example.myapp.client.handler.DeleteHandler;
-import com.example.myapp.client.handler.EditHandler;
+import com.example.myapp.client.handler.AfterDeleteHandler;
+import com.example.myapp.client.handler.EditClickHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -70,38 +70,38 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         });
     }
 
-    public void setAddRootClickHandler(final AddRootClickHandler onAddRoot) {
+    public void setAddRootClickHandler(final AddRootClickHandler onAddRootClick) {
         addRootButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                onAddRoot.onAddRootClick();
+                onAddRootClick.onAddRootClick();
             }
         });
     }
 
-    public void setAddChildHandler(final AddChildHandler onAddChild) {
+    public void setAddChildClickHandler(final AddChildClickHandler onAddChildClick) {
         addChildButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                onAddChild.onAddChild();
+                onAddChildClick.onAddChildClick();
             }
         });
     }
 
-    public void setEditHandler(final EditHandler onEdit) {
+    public void setEditClickHandler(final EditClickHandler onEditClick) {
         editButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                onEdit.onEdit();
+                onEditClick.onEditClick();
             }
         });
     }
 
-    public void setDeleteHandler(final DeleteHandler onDelete) {
+    public void setAfterDeleteHandler(final AfterDeleteHandler onAfterDelete) {
         deleteButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                onDelete.onDelete();
+                onAfterDelete.onAfterDelete();
             }
         });
     }
