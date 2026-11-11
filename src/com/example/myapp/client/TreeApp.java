@@ -35,8 +35,6 @@ public class TreeApp implements EntryPoint {
 
     private MainWidget mainWidget;
 
-    private Long selectedNodeId;
-
     //TODO mativ
     // Есть место оптимизации. Подумать какую одинаковую работу приложение
     // выполняет несколько раз подряд и как её можно оптимизировать?
@@ -105,9 +103,7 @@ public class TreeApp implements EntryPoint {
         nodeTreePresenter.setNodeSelectHandler(new NodeSelectHandler() {
             @Override
             public void onNodeSelect(Long selectedNodeId) {
-                TreeApp.this.selectedNodeId = selectedNodeId;
-                uiPanelPresenter.setSelectedNodeId(selectedNodeId);
-                selectedNodeFormPresenter.setSelectedNode(selectedNodeId);
+                setSelectedNodeId(selectedNodeId);
             }
         });
 
@@ -121,10 +117,7 @@ public class TreeApp implements EntryPoint {
         uiPanelPresenter.setAddRootClickHandler(new AddRootClickHandler() {
             @Override
             public void onAddRootClick() {
-                TreeApp.this.selectedNodeId = null;
-                uiPanelPresenter.setSelectedNodeId(null);
-                selectedNodeFormPresenter.setEmpty();
-                nodeTreePresenter.setAllNodesUnselected();
+                setSelectedNodeId(null);
                 nodeEditFormPresenter.createRoot();
             }
         });
@@ -132,23 +125,21 @@ public class TreeApp implements EntryPoint {
         uiPanelPresenter.setAddChildClickHandler(new AddChildClickHandler() {
             @Override
             public void onAddChildClick() {
-                nodeEditFormPresenter.createChildren(selectedNodeId);
+                nodeEditFormPresenter.createChildren(nodeTreePresenter.getSelectedNodeId());
             }
         });
 
         uiPanelPresenter.setEditClickHandler(new EditClickHandler() {
             @Override
             public void onEditClick() {
-                nodeEditFormPresenter.editNode(selectedNodeId);
+                nodeEditFormPresenter.editNode(nodeTreePresenter.getSelectedNodeId());
             }
         });
 
         uiPanelPresenter.setAfterDeleteHandler(new AfterDeleteHandler() {
             @Override
             public void onAfterDelete() {
-                selectedNodeId = null;
-                uiPanelPresenter.setSelectedNodeId(null);
-                selectedNodeFormPresenter.setEmpty();
+                setSelectedNodeId(null);
                 update();
             }
         });
@@ -156,10 +147,19 @@ public class TreeApp implements EntryPoint {
         nodeEditFormPresenter.setRefreshHandler(new RefreshHandler() {
             @Override
             public void onRefresh() {
-                selectedNodeFormPresenter.setSelectedNode(selectedNodeId);
+                selectedNodeFormPresenter.setSelectedNode(nodeTreePresenter.getSelectedNodeId());
                 update();
             }
         });
+    }
+
+    private void setSelectedNodeId(Long selectedNodeId) {
+        if (selectedNodeId == null) {
+            nodeTreePresenter.setSelectedNode(null);
+        }
+
+        uiPanelPresenter.setSelectedNodeId(selectedNodeId);
+        selectedNodeFormPresenter.setSelectedNode(selectedNodeId);
     }
 
     private void update() {

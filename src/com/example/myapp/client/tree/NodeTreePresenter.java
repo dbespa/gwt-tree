@@ -44,6 +44,18 @@ public class NodeTreePresenter {
         });
     }
 
+    public Long getSelectedNodeId() {
+        return selectedNodeId;
+    }
+
+    public void setSelectedNode(Long selectedNodeId) {
+        this.selectedNodeId = selectedNodeId;
+
+        if (selectedNodeId == null) {
+            setAllNodesUnselected();
+        }
+    }
+
     public void updateTree() {
         nodeRpcService.getTree(new AsyncCallback<NodeTreeBean>() {
             @Override

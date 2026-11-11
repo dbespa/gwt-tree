@@ -25,6 +25,11 @@ public class SelectedNodeFormPresenter {
     }
 
     public void setSelectedNode(Long selectedNodeId) {
+        if (selectedNodeId == null) {
+            view.setEmpty();
+            return;
+        }
+
         nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -39,9 +44,5 @@ public class SelectedNodeFormPresenter {
                 }
             }
         });
-    }
-
-    public void setEmpty() {
-        view.setEmpty();
     }
 }
