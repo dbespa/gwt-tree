@@ -3,7 +3,7 @@ package com.example.myapp.client;
 import com.example.myapp.client.editform.NodeEditFormPresenter;
 import com.example.myapp.client.editform.NodeEditFormView;
 import com.example.myapp.client.handler.AddChildHandler;
-import com.example.myapp.client.handler.AddRootHandler;
+import com.example.myapp.client.handler.AddRootClickHandler;
 import com.example.myapp.client.handler.DeleteHandler;
 import com.example.myapp.client.handler.EditHandler;
 import com.example.myapp.client.handler.NodeSelectHandler;
@@ -33,15 +33,14 @@ public class TreeApp implements EntryPoint {
     private UiPanelPresenter uiPanelPresenter;
     private NodeEditFormPresenter nodeEditFormPresenter;
 
-    private NodeTableView nodeTableView;
-    private NodeTreeView nodeTreeView;
-    private SelectedNodeFormView selectedNodeFormView;
-    private UiPanelView uiPanelView;
-    private NodeEditFormView nodeEditFormView;
-
     private MainWidget mainWidget;
 
     private Long selectedNodeId;
+
+    //TODO mativ
+    // Есть место оптимизации. Подумать какую одинаковую работу приложение
+    // выполняет несколько раз подряд и как её можно оптимизировать?
+    // Только подумать и сообщить, править пока не надо.
 
     public void onModuleLoad() {
         build();
@@ -66,7 +65,7 @@ public class TreeApp implements EntryPoint {
     }
 
     private void buildTree() {
-        nodeTreeView = new NodeTreeView();
+        NodeTreeView nodeTreeView = new NodeTreeView();
         FlowPanel treeContainer = mainWidget.getTreeContainer();
 
         nodeTreePresenter = new NodeTreePresenter(nodeRpcService, nodeTreeView);
@@ -74,7 +73,7 @@ public class TreeApp implements EntryPoint {
     }
 
     private void buildSelectedNodeForm() {
-        selectedNodeFormView = new SelectedNodeFormView();
+        SelectedNodeFormView selectedNodeFormView = new SelectedNodeFormView();
         FlowPanel selectedNodeFormContainer = mainWidget.getSelectedNodeFormContainer();
 
         selectedNodeFormPresenter = new SelectedNodeFormPresenter(selectedNodeFormView);
@@ -82,7 +81,7 @@ public class TreeApp implements EntryPoint {
     }
 
     private void buildUiPanel() {
-        uiPanelView = new UiPanelView();
+        UiPanelView uiPanelView = new UiPanelView();
         FlowPanel uiPanelContainer = mainWidget.getUiPanelContainer();
 
         uiPanelPresenter = new UiPanelPresenter(uiPanelView);
@@ -90,7 +89,7 @@ public class TreeApp implements EntryPoint {
     }
 
     private void buildTable() {
-        nodeTableView = new NodeTableView();
+        NodeTableView nodeTableView = new NodeTableView();
         FlowPanel tableContainer = mainWidget.getTableContainer();
 
         nodeTablePresenter = new NodeTablePresenter(nodeTableView);
@@ -98,7 +97,7 @@ public class TreeApp implements EntryPoint {
     }
 
     private void buildEditForm() {
-        nodeEditFormView = new NodeEditFormView();
+        NodeEditFormView nodeEditFormView = new NodeEditFormView();
         nodeEditFormPresenter = new NodeEditFormPresenter(nodeEditFormView);
     }
 
@@ -119,9 +118,9 @@ public class TreeApp implements EntryPoint {
             }
         });
 
-        uiPanelPresenter.setAddRootHandler(new AddRootHandler() {
+        uiPanelPresenter.setAddRootClickHandler(new AddRootClickHandler() {
             @Override
-            public void onAddRoot() {
+            public void onAddRootClick() {
                 TreeApp.this.selectedNodeId = null;
                 uiPanelPresenter.setSelectedNodeId(null);
                 selectedNodeFormPresenter.setEmpty();
@@ -147,10 +146,10 @@ public class TreeApp implements EntryPoint {
         uiPanelPresenter.setDeleteHandler(new DeleteHandler() {
             @Override
             public void onDelete() {
-                update();
                 selectedNodeId = null;
                 uiPanelPresenter.setSelectedNodeId(null);
                 selectedNodeFormPresenter.setEmpty();
+                update();
             }
         });
 

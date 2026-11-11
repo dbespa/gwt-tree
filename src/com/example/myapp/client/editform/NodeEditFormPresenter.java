@@ -25,6 +25,8 @@ public class NodeEditFormPresenter {
         setSaveHandler();
     }
 
+    
+    // TODO mativ посмотреть как избавится от бойлера. Есть идея полу-фасада
     public void createRoot() {
         currentNodeParentId = null;
         currentNodeId = null;

@@ -1,7 +1,7 @@
 package com.example.myapp.client.uipanel;
 
 import com.example.myapp.client.handler.AddChildHandler;
-import com.example.myapp.client.handler.AddRootHandler;
+import com.example.myapp.client.handler.AddRootClickHandler;
 import com.example.myapp.client.handler.DeleteHandler;
 import com.example.myapp.client.handler.EditHandler;
 import com.example.myapp.client.handler.RefreshHandler;
@@ -13,7 +13,7 @@ public interface UiPanelDisplay extends IsWidget {
 
     void setSelectedNodeId(Long id);
 
-    void setAddRootHandler(AddRootHandler onAddRoot);
+    void setAddRootClickHandler(AddRootClickHandler onAddRoot);
 
     void setAddChildHandler(AddChildHandler onAddChild);
 

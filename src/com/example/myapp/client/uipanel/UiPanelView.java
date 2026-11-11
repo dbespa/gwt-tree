@@ -1,7 +1,7 @@
 package com.example.myapp.client.uipanel;
 
 import com.example.myapp.client.handler.AddChildHandler;
-import com.example.myapp.client.handler.AddRootHandler;
+import com.example.myapp.client.handler.AddRootClickHandler;
 import com.example.myapp.client.handler.DeleteHandler;
 import com.example.myapp.client.handler.EditHandler;
 import com.example.myapp.client.handler.RefreshHandler;
@@ -70,11 +70,11 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         });
     }
 
-    public void setAddRootHandler(final AddRootHandler onAddRoot) {
+    public void setAddRootClickHandler(final AddRootClickHandler onAddRoot) {
         addRootButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                onAddRoot.onAddRoot();
+                onAddRoot.onAddRootClick();
             }
         });
     }

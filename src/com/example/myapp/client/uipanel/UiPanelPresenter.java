@@ -2,7 +2,7 @@ package com.example.myapp.client.uipanel;
 
 import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.handler.AddChildHandler;
-import com.example.myapp.client.handler.AddRootHandler;
+import com.example.myapp.client.handler.AddRootClickHandler;
 import com.example.myapp.client.handler.DeleteHandler;
 import com.example.myapp.client.handler.EditHandler;
 import com.example.myapp.client.handler.RefreshHandler;
@@ -41,8 +41,8 @@ public class UiPanelPresenter {
         view.setRefreshHandler(onRefresh);
     }
 
-    public void setAddRootHandler(final AddRootHandler onAddRoot) {
-        view.setAddRootHandler(onAddRoot);
+    public void setAddRootClickHandler(final AddRootClickHandler onAddRootClick) {
+        view.setAddRootClickHandler(onAddRootClick);
     }
 
     public void setAddChildHandler(final AddChildHandler onAddChild) {
