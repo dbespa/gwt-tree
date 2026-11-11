@@ -1,6 +1,7 @@
 package com.example.myapp.client;
 
 import com.example.myapp.client.editform.NodeEditFormPresenter;
+import com.example.myapp.client.editform.NodeEditFormValidator;
 import com.example.myapp.client.editform.NodeEditFormView;
 import com.example.myapp.client.handler.AddChildClickHandler;
 import com.example.myapp.client.handler.AddRootClickHandler;
@@ -96,7 +97,8 @@ public class TreeApp implements EntryPoint {
 
     private void buildEditForm() {
         NodeEditFormView nodeEditFormView = new NodeEditFormView();
-        nodeEditFormPresenter = new NodeEditFormPresenter(nodeEditFormView);
+        NodeEditFormValidator nodeEditFormValidator = new NodeEditFormValidator();
+        nodeEditFormPresenter = new NodeEditFormPresenter(nodeEditFormValidator, nodeEditFormView);
     }
 
     private void bind() {
@@ -125,7 +127,7 @@ public class TreeApp implements EntryPoint {
         uiPanelPresenter.setAddChildClickHandler(new AddChildClickHandler() {
             @Override
             public void onAddChildClick() {
-                nodeEditFormPresenter.createChildren(nodeTreePresenter.getSelectedNodeId());
+                nodeEditFormPresenter.createChild(nodeTreePresenter.getSelectedNodeId());
             }
         });
 

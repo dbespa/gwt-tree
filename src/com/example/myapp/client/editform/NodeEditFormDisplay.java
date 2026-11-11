@@ -16,8 +16,6 @@ public interface NodeEditFormDisplay extends IsWidget {
 
     void setEditHeader();
 
-    void setEmpty();
-
     void show();
 
     void hide();

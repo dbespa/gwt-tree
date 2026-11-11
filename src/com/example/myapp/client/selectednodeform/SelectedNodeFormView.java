@@ -82,6 +82,7 @@ public class SelectedNodeFormView extends Composite implements SelectedNodeFormD
 
     public void setSelectedNode(NodeBean node) {
         if (node == null) {
+            clear();
             return;
         }
 
@@ -101,7 +102,7 @@ public class SelectedNodeFormView extends Composite implements SelectedNodeFormD
         port.setText(portStr);
     }
 
-    public void setEmpty() {
+    private void clear() {
         id.setText(EMPTY_DATA);
         parentId.setText(EMPTY_DATA);
         name.setText(EMPTY_DATA);

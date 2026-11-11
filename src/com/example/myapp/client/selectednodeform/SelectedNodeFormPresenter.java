@@ -26,7 +26,7 @@ public class SelectedNodeFormPresenter {
 
     public void setSelectedNode(Long selectedNodeId) {
         if (selectedNodeId == null) {
-            view.setEmpty();
+            view.setSelectedNode(null);
             return;
         }
 
@@ -34,7 +34,7 @@ public class SelectedNodeFormPresenter {
             @Override
             public void onFailure(Throwable caught) {
                 GWT.log("Ошибка получения данных с сервера: " + caught.getLocalizedMessage());
-                view.setEmpty();
+                view.setSelectedNode(null);
             }
 
             @Override

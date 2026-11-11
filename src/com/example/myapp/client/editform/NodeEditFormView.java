@@ -130,6 +130,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
 
     public void setSelectedNode(NodeViewData node) {
         if (node == null) {
+            clear();
             return;
         }
 
@@ -138,7 +139,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         port.setValue(node.getPort());
     }
 
-    public void setEmpty() {
+    private void clear() {
         name.setValue(EMPTY_DATA);
         ip.setValue(EMPTY_DATA);
         port.setValue(EMPTY_DATA);

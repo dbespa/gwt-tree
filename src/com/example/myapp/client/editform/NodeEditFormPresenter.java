@@ -13,14 +13,22 @@ public class NodeEditFormPresenter {
 
     private NodeRpcServiceAsync nodeRpcService;
     private NodeEditFormDisplay view;
+    private NodeEditFormValidator validator;
+
     private RefreshHandler onRefresh;
 
     private Long currentNodeParentId;
     private Long currentNodeId;
 
-    public NodeEditFormPresenter(NodeEditFormDisplay view) {
+    public NodeEditFormPresenter(NodeEditFormValidator validator, NodeEditFormDisplay view) {
         this.nodeRpcService = TreeApp.getRpcService();
         this.view = view;
+        this.validator = validator;
+
+        bind();
+    }
+
+    private void bind() {
         setCancelHandler();
         setSaveHandler();
     }
@@ -31,16 +39,16 @@ public class NodeEditFormPresenter {
         currentNodeId = null;
 
         view.setCreateHeader();
-        view.setEmpty();
+        view.setSelectedNode(null);
         view.show();
     }
 
-    public void createChildren(Long selectedNodeId) {
+    public void createChild(Long selectedNodeId) {
         currentNodeParentId = selectedNodeId;
         currentNodeId = null;
 
         view.setCreateHeader();
-        view.setEmpty();
+        view.setSelectedNode(null);
         view.show();
     }
 
@@ -75,7 +83,7 @@ public class NodeEditFormPresenter {
             @Override
             public void onCancel() {
                 view.setAllFieldsValid();
-                view.setEmpty();
+                view.setSelectedNode(null);
                 view.hide();
             }
         });
@@ -89,28 +97,32 @@ public class NodeEditFormPresenter {
                     return;
                 }
 
-                if (!isValid(node)) {
+                if (!validator.isValid(node)) {
                     focusInvalidField(node);
                     return;
                 }
 
                 NodeBean nodeBean = toNodeBean(currentNodeId, currentNodeParentId, node);
-                nodeRpcService.save(nodeBean, new AsyncCallback<Void>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        GWT.log("Ошибка отправки данных на сервер: " + caught.getLocalizedMessage());
-                    }
+                saveNodeBean(nodeBean);
+            }
+        });
+    }
 
-                    @Override
-                    public void onSuccess(Void result) {
-                        view.hide();
-                        view.setAllFieldsValid();
-                        if (onRefresh == null) {
-                            return;
-                        }
-                        onRefresh.onRefresh();
-                    }
-                });
+    private void saveNodeBean(NodeBean nodeBean) {
+        nodeRpcService.save(nodeBean, new AsyncCallback<Void>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                GWT.log("Ошибка отправки данных на сервер: " + caught.getLocalizedMessage());
+            }
+
+            @Override
+            public void onSuccess(Void result) {
+                view.hide();
+                view.setAllFieldsValid();
+                if (onRefresh == null) {
+                    return;
+                }
+                onRefresh.onRefresh();
             }
         });
     }
@@ -145,75 +157,20 @@ public class NodeEditFormPresenter {
         return new NodeViewData(name, ip, port);
     }
 
-    private Boolean isValid(NodeViewData node) {
-        return nameIsValid(node.getName())
-                && ipIsValid(node.getIp())
-                && portIsValid(node.getPort());
-    }
-
-    private Boolean nameIsValid(String name) {
-        return name != null && !name.trim().isEmpty();
-    }
-
-    private Boolean ipIsValid(String ip) {
-        if (ip == null || ip.trim().isEmpty()) {
-            return false;
-        }
-
-        String[] parts = ip.trim().split("\\.");
-
-        if (parts.length != 4) {
-            return false;
-        }
-
-        for (int i = 0; i < parts.length; i++) {
-            try {
-                Integer part = Integer.parseInt(parts[i]);
-                if (part < 0 || part > 255) {
-                    return false;
-                }
-
-            } catch (Exception e) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private Boolean portIsValid(String port) {
-        if (port == null || port.trim().isEmpty()) {
-            return false;
-        }
-
-        Integer portInt = null;
-        try {
-            portInt = Integer.parseInt(port.trim());
-
-            if (portInt < 0 || portInt > 65535) {
-                return false;
-            }
-
-        } catch (Exception e) {
-            return false;
-        }
-
-        return true;
-    }
-
     private void focusInvalidField(NodeViewData node) {
         view.setAllFieldsValid();
 
-        if (!nameIsValid(node.getName())) {
+        if (!validator.nameIsValid(node.getName())) {
             view.setNameFieldInvalid();
             return;
         }
 
-        if (!ipIsValid(node.getIp())) {
+        if (!validator.ipIsValid(node.getIp())) {
             view.setIpFieldInvalid();
             return;
         }
 
-        if (!portIsValid(node.getPort())) {
+        if (!validator.portIsValid(node.getPort())) {
             view.setPortFieldInvalid();
             return;
         }

@@ -6,6 +6,4 @@ import com.google.gwt.user.client.ui.IsWidget;
 public interface SelectedNodeFormDisplay extends IsWidget {
 
     void setSelectedNode(NodeBean node);
-
-    void setEmpty();
 }
