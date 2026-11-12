@@ -1,15 +1,15 @@
 package com.example.myapp.client.editform;
 
-public class NodeFormViewData {
+public class NodeEditFormViewData {
     private String name;
     private String ip;
     private String port;
 
-    public NodeFormViewData() {
+    public NodeEditFormViewData() {
         // do nothing
     }
 
-    public NodeFormViewData(String name, String ip, String port) {
+    public NodeEditFormViewData(String name, String ip, String port) {
         this.name = name;
         this.ip = ip;
         this.port = port;

@@ -1,13 +1,13 @@
 package com.example.myapp.client.uipanel;
 
 import com.example.myapp.client.TreeApp;
+import com.example.myapp.client.errormessage.ErrorMessageUtils;
 import com.example.myapp.client.handler.AddChildClickHandler;
 import com.example.myapp.client.handler.AddRootClickHandler;
 import com.example.myapp.client.handler.AfterDeleteHandler;
 import com.example.myapp.client.handler.EditClickHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -60,12 +60,16 @@ public class UiPanelPresenter {
                 nodeRpcService.deleteNode(selectedId, new AsyncCallback<Void>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        GWT.log("Ошибка сервера: " + caught.getLocalizedMessage());
+                        String errorMessage = "Ошибка сервера: " + caught.getLocalizedMessage();
+                        ErrorMessageUtils.showErrorMessage(errorMessage);
                     }
 
                     @Override
                     public void onSuccess(Void result) {
                         view.setSelectedNodeId(null);
+                        if (onAfterDelete == null) {
+                            return;
+                        }
                         onAfterDelete.onAfterDelete();
                     }
                 });

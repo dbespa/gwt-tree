@@ -3,10 +3,13 @@ package com.example.myapp.client;
 import com.example.myapp.client.editform.NodeEditFormPresenter;
 import com.example.myapp.client.editform.NodeEditFormValidator;
 import com.example.myapp.client.editform.NodeEditFormView;
+import com.example.myapp.client.errormessage.ErrorMessageUtils;
+import com.example.myapp.client.errormessage.ErrorMessageWidget;
 import com.example.myapp.client.handler.AddChildClickHandler;
 import com.example.myapp.client.handler.AddRootClickHandler;
 import com.example.myapp.client.handler.AfterDeleteHandler;
 import com.example.myapp.client.handler.EditClickHandler;
+import com.example.myapp.client.handler.ErrorHandler;
 import com.example.myapp.client.handler.NodeSelectHandler;
 import com.example.myapp.client.handler.RefreshHandler;
 import com.example.myapp.client.mainwidget.MainWidget;
@@ -35,6 +38,7 @@ public class TreeApp implements EntryPoint {
     private NodeEditFormPresenter nodeEditFormPresenter;
 
     private MainWidget mainWidget;
+    private ErrorMessageWidget errorMessageWidget;
 
     //TODO mativ
     // Есть место оптимизации. Подумать какую одинаковую работу приложение
@@ -50,6 +54,7 @@ public class TreeApp implements EntryPoint {
     private void build() {
         nodeRpcService = (NodeRpcServiceAsync) GWT.create(NodeRpcService.class);
         mainWidget = new MainWidget();
+        errorMessageWidget = new ErrorMessageWidget();
 
         RootPanel.get().add(mainWidget);
         buildTree();
@@ -102,6 +107,13 @@ public class TreeApp implements EntryPoint {
     }
 
     private void bind() {
+        ErrorMessageUtils.setErrorHandler(new ErrorHandler() {
+            @Override
+            public void onError(String errorMessage) {
+                errorMessageWidget.showErrorMessage(errorMessage);
+            }
+        });
+
         nodeTreePresenter.setNodeSelectHandler(new NodeSelectHandler() {
             @Override
             public void onNodeSelect(Long selectedNodeId) {
@@ -112,6 +124,14 @@ public class TreeApp implements EntryPoint {
         uiPanelPresenter.setRefreshHandler(new RefreshHandler() {
             @Override
             public void onRefresh() {
+                update();
+            }
+        });
+
+        nodeEditFormPresenter.setRefreshHandler(new RefreshHandler() {
+            @Override
+            public void onRefresh() {
+                selectedNodeFormPresenter.setSelectedNode(nodeTreePresenter.getSelectedNodeId());
                 update();
             }
         });
@@ -142,14 +162,6 @@ public class TreeApp implements EntryPoint {
             @Override
             public void onAfterDelete() {
                 setSelectedNodeId(null);
-                update();
-            }
-        });
-
-        nodeEditFormPresenter.setRefreshHandler(new RefreshHandler() {
-            @Override
-            public void onRefresh() {
-                selectedNodeFormPresenter.setSelectedNode(nodeTreePresenter.getSelectedNodeId());
                 update();
             }
         });

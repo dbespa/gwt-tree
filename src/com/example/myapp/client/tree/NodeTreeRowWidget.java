@@ -44,12 +44,6 @@ public class NodeTreeRowWidget extends Composite {
         initWidget(main);
     }
 
-    public void removeCaption() {
-        main.clear();
-        nodeRow = null;
-        main.add(childrenContainer);
-    }
-
     private void build(NodeTreeViewData node) {
         main = new FlowPanel();
         main.addStyleName(STYLE_NODE_CONTAINER);
@@ -61,7 +55,7 @@ public class NodeTreeRowWidget extends Composite {
             return;
         }
 
-        FlowPanel children = createChildrenPanel(node);
+        FlowPanel children = createChildrenPanel();
         main.add(children);
     }
 
@@ -98,11 +92,7 @@ public class NodeTreeRowWidget extends Composite {
         return resultNodeRow;
     }
 
-    private FlowPanel createChildrenPanel(NodeTreeViewData node) {
-        if (node.isEmpty()) {
-            return null;
-        }
-
+    private FlowPanel createChildrenPanel() {
         FlowPanel panel = new FlowPanel();
         panel.addStyleName(STYLE_CHILDREN_WRAPPER);
 
@@ -123,6 +113,12 @@ public class NodeTreeRowWidget extends Composite {
             NodeTreeRowWidget childWidget = new NodeTreeRowWidget(child);
             childrenContainer.add(childWidget);
         }
+    }
+
+    public void removeCaption() {
+        main.clear();
+        nodeRow = null;
+        main.add(childrenContainer);
     }
 
     private void traversal(NodeAction action) {
@@ -156,9 +152,11 @@ public class NodeTreeRowWidget extends Composite {
             @Override
             public void onClick(ClickEvent event) {
                 setSelected(true);
-                if (onNodeSelect != null) {
-                    onNodeSelect.onNodeSelect(id);
+
+                if (onNodeSelect == null) {
+                    return;
                 }
+                onNodeSelect.onNodeSelect(id);
             }
         }, ClickEvent.getType());
     }

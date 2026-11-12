@@ -1,7 +1,5 @@
 package com.example.myapp.client.editform;
 
-import com.example.myapp.client.handler.CancelHandler;
-import com.example.myapp.client.handler.SaveHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -128,7 +126,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         return textBox;
     }
 
-    public void setSelectedNode(NodeFormViewData node) {
+    public void setSelectedNode(NodeEditFormViewData node) {
         if (node == null) {
             clear();
             return;
@@ -143,19 +141,23 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         name.setValue(EMPTY_DATA);
         ip.setValue(EMPTY_DATA);
         port.setValue(EMPTY_DATA);
+
+        setAllFieldsValid();
     }
 
-    public void setModeCreate() {
+    public void showCreateForm() {
         header.setText(LABEL_CREATE_NODE);
         setSelectedNode(null);
+        show();
     }
 
-    public void setModeEdit(NodeFormViewData node) {
+    public void showEditForm(NodeEditFormViewData node) {
         header.setText(LABEL_EDIT_NODE);
         setSelectedNode(node);
+        show();
     }
 
-    public void show() {
+    private void show() {
         main.center();
         main.show();
     }
@@ -164,36 +166,34 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
         main.hide();
     }
 
-    private NodeFormViewData getFormData() {
+    private NodeEditFormViewData getFormData() {
         String nameStr = name.getValue();
         String ipStr = ip.getValue();
         String portStr = port.getValue();
 
-        NodeFormViewData formData = new NodeFormViewData(nameStr, ipStr, portStr);
+        NodeEditFormViewData formData = new NodeEditFormViewData(nameStr, ipStr, portStr);
         return formData;
     }
 
     public void setCancelHandler(final CancelHandler onCancel) {
-        if (onCancel == null) {
-            return;
-        }
-
         cancelButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                if (onCancel == null) {
+                    return;
+                }
                 onCancel.onCancel();
             }
         });
     }
 
     public void setSaveHandler(final SaveHandler onSave) {
-        if (onSave == null) {
-            return;
-        }
-
         saveButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                if (onSave == null) {
+                    return;
+                }
                 onSave.onSave(getFormData());
             }
         });

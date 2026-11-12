@@ -1,4 +1,4 @@
-package com.example.myapp.client.handler;
+package com.example.myapp.client.editform;
 
 public interface CancelHandler {
 

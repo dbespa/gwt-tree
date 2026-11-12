@@ -2,12 +2,10 @@ package com.example.myapp.client.editform;
 
 import com.example.myapp.client.StringUtils;
 import com.example.myapp.client.TreeApp;
-import com.example.myapp.client.handler.CancelHandler;
+import com.example.myapp.client.errormessage.ErrorMessageUtils;
 import com.example.myapp.client.handler.RefreshHandler;
-import com.example.myapp.client.handler.SaveHandler;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.example.myapp.shared.bean.NodeBean;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class NodeEditFormPresenter {
@@ -34,54 +32,10 @@ public class NodeEditFormPresenter {
         setSaveHandler();
     }
 
-    // TODO mativ посмотреть как избавится от бойлера. Есть идея полу-фасада
-    private void setCreateMode() {
-        currentNodeId = null;
-
-        view.setModeCreate();
-        view.show();
-    }
-
-    public void setCreateRootMode() {
-        currentNodeParentId = null;
-        setCreateMode();
-    }
-
-    public void setCreateChildMode(Long selectedNodeId) {
-        currentNodeParentId = selectedNodeId;
-        setCreateMode();
-    }
-
-    public void setEditNodeMode(final Long selectedNodeId) {
-        nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                GWT.log("Ошибка получения данных с сервера: " + caught.getLocalizedMessage());
-            }
-
-            @Override
-            public void onSuccess(NodeBean result) {
-                if (result == null) {
-                    return;
-                }
-
-                currentNodeParentId = result.getParentId();
-                currentNodeId = selectedNodeId;
-                view.setModeEdit(toNodeViewData(result));
-                view.show();
-            }
-        });
-    }
-
-    public void setRefreshHandler(RefreshHandler onRefresh) {
-        this.onRefresh = onRefresh;
-    }
-
     private void setCancelHandler() {
         view.setCancelHandler(new CancelHandler() {
             @Override
             public void onCancel() {
-                view.setAllFieldsValid();
                 view.setSelectedNode(null);
                 view.hide();
             }
@@ -91,8 +45,11 @@ public class NodeEditFormPresenter {
     private void setSaveHandler() {
         view.setSaveHandler(new SaveHandler() {
             @Override
-            public void onSave(NodeFormViewData node) {
+            public void onSave(NodeEditFormViewData node) {
                 if (node == null) {
+                    view.setSelectedNode(null);
+                    String errorMessage = "Ошибка данных";
+                    ErrorMessageUtils.showErrorMessage(errorMessage);
                     return;
                 }
 
@@ -107,17 +64,68 @@ public class NodeEditFormPresenter {
         });
     }
 
+    // TODO mativ посмотреть как избавится от бойлера. Есть идея полу-фасада
+    public void setCreateRootMode() {
+        currentNodeParentId = null;
+        setCreateMode();
+    }
+
+    public void setCreateChildMode(Long selectedNodeId) {
+        currentNodeParentId = selectedNodeId;
+        setCreateMode();
+    }
+
+    private void setCreateMode() {
+        currentNodeId = null;
+        view.showCreateForm();
+    }
+
+    public void setEditNodeMode(final Long selectedNodeId) {
+        nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                String errorMessage = "Ошибка получения данных с сервера: " + caught.getLocalizedMessage();
+                ErrorMessageUtils.showErrorMessage(errorMessage);
+            }
+
+            @Override
+            public void onSuccess(NodeBean result) {
+                if (result == null) {
+                    String errorMessage = "Ошибка данных";
+                    ErrorMessageUtils.showErrorMessage(errorMessage);
+                    return;
+                }
+
+                currentNodeParentId = result.getParentId();
+                currentNodeId = selectedNodeId;
+                view.showEditForm(toNodeViewData(result));
+            }
+        });
+    }
+
+    public void setRefreshHandler(RefreshHandler onRefresh) {
+        this.onRefresh = onRefresh;
+    }
+
     private void saveNodeBean(NodeBean nodeBean) {
+        if (nodeBean == null) {
+            view.setSelectedNode(null);
+            ErrorMessageUtils.showErrorMessage("Ошибка данных");
+            return;
+        }
+
         nodeRpcService.save(nodeBean, new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable caught) {
-                GWT.log("Ошибка отправки данных на сервер: " + caught.getLocalizedMessage());
+                String errorMessage = "Ошибка отправки данных на сервер: " + caught.getLocalizedMessage();
+                ErrorMessageUtils.showErrorMessage(errorMessage);
             }
 
             @Override
             public void onSuccess(Void result) {
+                view.setSelectedNode(null);
                 view.hide();
-                view.setAllFieldsValid();
+
                 if (onRefresh == null) {
                     return;
                 }
@@ -126,7 +134,7 @@ public class NodeEditFormPresenter {
         });
     }
 
-    private NodeBean toNodeBean(Long id, Long parentId, NodeFormViewData node) {
+    private NodeBean toNodeBean(Long id, Long parentId, NodeEditFormViewData node) {
         if (node == null) {
             return null;
         }
@@ -138,7 +146,7 @@ public class NodeEditFormPresenter {
         return new NodeBean(id, parentId, name, ip, port);
     }
 
-    private NodeFormViewData toNodeViewData(NodeBean node) {
+    private NodeEditFormViewData toNodeViewData(NodeBean node) {
         if (node == null) {
             return null;
         }
@@ -148,10 +156,14 @@ public class NodeEditFormPresenter {
 
         Integer portValue = node.getPort();
         String port = portValue == null ? null : portValue.toString();
-        return new NodeFormViewData(name, ip, port);
+        return new NodeEditFormViewData(name, ip, port);
     }
 
-    private void focusInvalidField(NodeFormViewData node) {
+    private void focusInvalidField(NodeEditFormViewData node) {
+        if (node == null) {
+            return;
+        }
+
         view.setAllFieldsValid();
 
         if (!validator.nameIsValid(node.getName())) {

@@ -45,7 +45,7 @@
 .MainWidget-wrapper {
     display: flex;
     flex-direction: row;
-    gap: 100px;
+    gap: 50px;
     align-items: center;
 }
 
@@ -170,7 +170,7 @@
 }
 
 .NodeTableView-cell {
-    width: 90px;
+    width: 110px;
     padding: 20px;
 }
 

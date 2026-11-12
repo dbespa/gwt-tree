@@ -24,6 +24,8 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
     private static final String LABEL_DELETE = "Delete";
     private static final String LABEL_SELECTED_ID = "selected node id = ";
 
+    private static final String EMPTY_DATA = "-";
+
     private FlowPanel main;
     private Button refreshButton;
     private Button addRootButton;
@@ -57,7 +59,7 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
     }
 
     public void setSelectedNodeId(Long id) {
-        String selectedNodeId = id == null ? "" : String.valueOf(id);
+        String selectedNodeId = id == null ? EMPTY_DATA : String.valueOf(id);
         selectedNodeLabel.setText(LABEL_SELECTED_ID + selectedNodeId);
     }
 
@@ -65,6 +67,9 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         refreshButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                if (onRefresh == null) {
+                    return;
+                }
                 onRefresh.onRefresh();
             }
         });
@@ -74,6 +79,9 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         addRootButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                if (onAddRootClick == null) {
+                    return;
+                }
                 onAddRootClick.onAddRootClick();
             }
         });
@@ -83,6 +91,9 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         addChildButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                if (onAddChildClick == null) {
+                    return;
+                }
                 onAddChildClick.onAddChildClick();
             }
         });
@@ -92,6 +103,9 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         editButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                if (onEditClick == null) {
+                    return;
+                }
                 onEditClick.onEditClick();
             }
         });
@@ -101,6 +115,9 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         deleteButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                if (onAfterDelete == null) {
+                    return;
+                }
                 onAfterDelete.onAfterDelete();
             }
         });

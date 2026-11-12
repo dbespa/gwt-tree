@@ -8,7 +8,11 @@ public class NodeEditFormValidator {
         //do nothing
     }
 
-    public Boolean isValid(NodeFormViewData node) {
+    public Boolean isValid(NodeEditFormViewData node) {
+        if (node == null) {
+            return false;
+        }
+
         return nameIsValid(node.getName())
                 && ipIsValid(node.getIp())
                 && portIsValid(node.getPort());
