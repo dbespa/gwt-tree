@@ -40,11 +40,6 @@ public class TreeApp implements EntryPoint {
     private MainWidget mainWidget;
     private ErrorMessageWidget errorMessageWidget;
 
-    //TODO mativ
-    // Есть место оптимизации. Подумать какую одинаковую работу приложение
-    // выполняет несколько раз подряд и как её можно оптимизировать?
-    // Только подумать и сообщить, править пока не надо.
-
     public void onModuleLoad() {
         build();
         bind();

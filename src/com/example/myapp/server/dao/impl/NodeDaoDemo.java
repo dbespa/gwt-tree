@@ -58,12 +58,15 @@ public class NodeDaoDemo implements NodeDao {
     }
 
     @Override
-    public void deleteNode(Long id) {
+    public NodeEntity deleteNode(Long id) {
         List<Long> nodesToDelete = new ArrayList<>();
         nodesToDelete.add(id);
         nodesToDelete.addAll(collectChildrenId(id));
 
+        NodeEntity node = getNodeById(id);
+
         demoNodes.removeIf(item -> nodesToDelete.contains(item.getId()));
+        return node;
     }
 
     private List<Long> collectChildrenId(Long id) {
@@ -80,33 +83,37 @@ public class NodeDaoDemo implements NodeDao {
     }
 
     @Override
-    public void save(NodeEntity node) {
+    public NodeEntity save(NodeEntity node) {
         if (node == null) {
-            return;
+            return null;
         }
 
         if (node.getId() == null) {
-            addNew(node);
-            return;
+            return addNew(node);
         }
 
-        editNode(node);
+        return editNode(node);
     }
 
-    private void addNew(NodeEntity node) {
-        node.setId(nextId());
+    private NodeEntity addNew(NodeEntity node) {
+        Long id = nextId();
+        node.setId(id);
         demoNodes.add(node);
+        return getNodeById(id);
     }
 
-    private void editNode(NodeEntity node) {
-        Long nodeId = node.getId();
-        for (NodeEntity nodeItem : demoNodes) {
-            if (nodeItem.getId().equals(nodeId)) {
-                nodeItem.setName(node.getName());
-                nodeItem.setIp(node.getIp());
-                nodeItem.setPort(node.getPort());
-                return;
-            }
+    private NodeEntity editNode(NodeEntity newNode) {
+        Long id = newNode.getId();
+        NodeEntity node = getNodeById(id);
+
+        if (node == null) {
+            return null;
         }
+
+        node.setName(newNode.getName());
+        node.setIp(newNode.getIp());
+        node.setPort(newNode.getPort());
+
+        return getNodeById(id);
     }
 }

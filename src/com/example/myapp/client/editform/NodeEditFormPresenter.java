@@ -9,7 +9,7 @@ import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class NodeEditFormPresenter {
-
+    
     private NodeRpcServiceAsync nodeRpcService;
     private NodeEditFormDisplay view;
     private NodeEditFormValidator validator;
@@ -64,18 +64,16 @@ public class NodeEditFormPresenter {
         });
     }
 
-    // TODO mativ посмотреть как избавится от бойлера. Есть идея полу-фасада
     public void setCreateRootMode() {
-        currentNodeParentId = null;
-        setCreateMode();
+        setCreateMode(null);
     }
 
     public void setCreateChildMode(Long selectedNodeId) {
-        currentNodeParentId = selectedNodeId;
-        setCreateMode();
+        setCreateMode(selectedNodeId);
     }
 
-    private void setCreateMode() {
+    private void setCreateMode(Long parentNodeId) {
+        currentNodeParentId = parentNodeId;
         currentNodeId = null;
         view.showCreateForm();
     }

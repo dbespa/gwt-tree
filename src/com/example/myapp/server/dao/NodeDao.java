@@ -10,7 +10,7 @@ public interface NodeDao {
 
     public NodeEntity getNodeById(Long id);
 
-    public void save(NodeEntity node);
+    public NodeEntity save(NodeEntity node);
 
-    public void deleteNode(Long id);
+    public NodeEntity deleteNode(Long id);
 }
