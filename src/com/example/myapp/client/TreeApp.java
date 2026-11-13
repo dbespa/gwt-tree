@@ -3,15 +3,7 @@ package com.example.myapp.client;
 import com.example.myapp.client.editform.NodeEditFormPresenter;
 import com.example.myapp.client.editform.NodeEditFormValidator;
 import com.example.myapp.client.editform.NodeEditFormView;
-import com.example.myapp.client.errormessage.ErrorMessageUtils;
 import com.example.myapp.client.errormessage.ErrorMessageWidget;
-import com.example.myapp.client.handler.AddChildClickHandler;
-import com.example.myapp.client.handler.AddRootClickHandler;
-import com.example.myapp.client.handler.AfterDeleteHandler;
-import com.example.myapp.client.handler.EditClickHandler;
-import com.example.myapp.client.handler.ErrorHandler;
-import com.example.myapp.client.handler.NodeSelectHandler;
-import com.example.myapp.client.handler.RefreshHandler;
 import com.example.myapp.client.mainwidget.MainWidget;
 import com.example.myapp.client.rpc.NodeRpcService;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
@@ -23,14 +15,24 @@ import com.example.myapp.client.tree.NodeTreePresenter;
 import com.example.myapp.client.tree.NodeTreeView;
 import com.example.myapp.client.uipanel.UiPanelPresenter;
 import com.example.myapp.client.uipanel.UiPanelView;
+import com.example.myapp.event.AddChildClickEvent;
+import com.example.myapp.event.EditClickEvent;
+import com.example.myapp.event.RefreshEvent;
+import com.example.myapp.event.handler.AddChildClickHandler;
+import com.example.myapp.event.handler.EditClickHandler;
+import com.example.myapp.event.handler.RefreshHandler;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class TreeApp implements EntryPoint {
 
     private static NodeRpcServiceAsync nodeRpcService;
+    private EventBus eventBus;
+
     private NodeTreePresenter nodeTreePresenter;
     private SelectedNodeFormPresenter selectedNodeFormPresenter;
     private NodeTablePresenter nodeTablePresenter;
@@ -38,7 +40,6 @@ public class TreeApp implements EntryPoint {
     private NodeEditFormPresenter nodeEditFormPresenter;
 
     private MainWidget mainWidget;
-    private ErrorMessageWidget errorMessageWidget;
 
     public void onModuleLoad() {
         build();
@@ -46,10 +47,16 @@ public class TreeApp implements EntryPoint {
         update();
     }
 
+    public static NodeRpcServiceAsync getRpcService() {
+        return nodeRpcService;
+    }
+
     private void build() {
         nodeRpcService = (NodeRpcServiceAsync) GWT.create(NodeRpcService.class);
+        eventBus = new SimpleEventBus();
+
         mainWidget = new MainWidget();
-        errorMessageWidget = new ErrorMessageWidget();
+        ErrorMessageWidget errorMessageWidget = new ErrorMessageWidget(eventBus);
 
         RootPanel.get().add(mainWidget);
         buildTree();
@@ -59,15 +66,11 @@ public class TreeApp implements EntryPoint {
         buildEditForm();
     }
 
-    public static NodeRpcServiceAsync getRpcService() {
-        return nodeRpcService;
-    }
-
     private void buildTree() {
         NodeTreeView nodeTreeView = new NodeTreeView();
         FlowPanel treeContainer = mainWidget.getTreeContainer();
 
-        nodeTreePresenter = new NodeTreePresenter(nodeTreeView);
+        nodeTreePresenter = new NodeTreePresenter(eventBus, nodeTreeView);
         nodeTreePresenter.go(treeContainer);
     }
 
@@ -75,7 +78,7 @@ public class TreeApp implements EntryPoint {
         SelectedNodeFormView selectedNodeFormView = new SelectedNodeFormView();
         FlowPanel selectedNodeFormContainer = mainWidget.getSelectedNodeFormContainer();
 
-        selectedNodeFormPresenter = new SelectedNodeFormPresenter(selectedNodeFormView);
+        selectedNodeFormPresenter = new SelectedNodeFormPresenter(eventBus, selectedNodeFormView);
         selectedNodeFormPresenter.go(selectedNodeFormContainer);
     }
 
@@ -83,7 +86,7 @@ public class TreeApp implements EntryPoint {
         UiPanelView uiPanelView = new UiPanelView();
         FlowPanel uiPanelContainer = mainWidget.getUiPanelContainer();
 
-        uiPanelPresenter = new UiPanelPresenter(uiPanelView);
+        uiPanelPresenter = new UiPanelPresenter(eventBus, uiPanelView);
         uiPanelPresenter.go(uiPanelContainer);
     }
 
@@ -91,84 +94,38 @@ public class TreeApp implements EntryPoint {
         NodeTableView nodeTableView = new NodeTableView();
         FlowPanel tableContainer = mainWidget.getTableContainer();
 
-        nodeTablePresenter = new NodeTablePresenter(nodeTableView);
+        nodeTablePresenter = new NodeTablePresenter(eventBus, nodeTableView);
         nodeTablePresenter.go(tableContainer);
     }
 
     private void buildEditForm() {
         NodeEditFormView nodeEditFormView = new NodeEditFormView();
         NodeEditFormValidator nodeEditFormValidator = new NodeEditFormValidator();
-        nodeEditFormPresenter = new NodeEditFormPresenter(nodeEditFormValidator, nodeEditFormView);
+        nodeEditFormPresenter = new NodeEditFormPresenter(eventBus, nodeEditFormValidator, nodeEditFormView);
     }
 
     private void bind() {
-        ErrorMessageUtils.setErrorHandler(new ErrorHandler() {
+        eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
             @Override
-            public void onError(String errorMessage) {
-                errorMessageWidget.showErrorMessage(errorMessage);
-            }
-        });
-
-        nodeTreePresenter.setNodeSelectHandler(new NodeSelectHandler() {
-            @Override
-            public void onNodeSelect(Long selectedNodeId) {
-                setSelectedNodeId(selectedNodeId);
-            }
-        });
-
-        uiPanelPresenter.setRefreshHandler(new RefreshHandler() {
-            @Override
-            public void onRefresh() {
-                update();
-            }
-        });
-
-        nodeEditFormPresenter.setRefreshHandler(new RefreshHandler() {
-            @Override
-            public void onRefresh() {
+            public void onRefresh(RefreshEvent refreshEvent) {
                 selectedNodeFormPresenter.setSelectedNode(nodeTreePresenter.getSelectedNodeId());
                 update();
             }
         });
 
-        uiPanelPresenter.setAddRootClickHandler(new AddRootClickHandler() {
+        eventBus.addHandler(AddChildClickEvent.TYPE, new AddChildClickHandler() {
             @Override
-            public void onAddRootClick() {
-                setSelectedNodeId(null);
-                nodeEditFormPresenter.setCreateRootMode();
-            }
-        });
-
-        uiPanelPresenter.setAddChildClickHandler(new AddChildClickHandler() {
-            @Override
-            public void onAddChildClick() {
+            public void onAddChildClick(AddChildClickEvent addChildClickEvent) {
                 nodeEditFormPresenter.setCreateChildMode(nodeTreePresenter.getSelectedNodeId());
             }
         });
 
-        uiPanelPresenter.setEditClickHandler(new EditClickHandler() {
+        eventBus.addHandler(EditClickEvent.TYPE, new EditClickHandler() {
             @Override
-            public void onEditClick() {
+            public void onEditClick(EditClickEvent editClickEvent) {
                 nodeEditFormPresenter.setEditNodeMode(nodeTreePresenter.getSelectedNodeId());
             }
         });
-
-        uiPanelPresenter.setAfterDeleteHandler(new AfterDeleteHandler() {
-            @Override
-            public void onAfterDelete() {
-                setSelectedNodeId(null);
-                update();
-            }
-        });
-    }
-
-    private void setSelectedNodeId(Long selectedNodeId) {
-        if (selectedNodeId == null) {
-            nodeTreePresenter.setSelectedNode(null);
-        }
-
-        uiPanelPresenter.setSelectedNodeId(selectedNodeId);
-        selectedNodeFormPresenter.setSelectedNode(selectedNodeId);
     }
 
     private void update() {

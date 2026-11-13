@@ -2,7 +2,8 @@ package com.example.myapp.client.tree;
 
 import java.util.List;
 
-import com.example.myapp.client.handler.NodeSelectHandler;
+import com.example.myapp.event.NodeSelectEvent;
+import com.example.myapp.event.handler.NodeSelectHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -156,7 +157,7 @@ public class NodeTreeRowWidget extends Composite {
                 if (onNodeSelect == null) {
                     return;
                 }
-                onNodeSelect.onNodeSelect(id);
+                onNodeSelect.onNodeSelect(new NodeSelectEvent(id));
             }
         }, ClickEvent.getType());
     }

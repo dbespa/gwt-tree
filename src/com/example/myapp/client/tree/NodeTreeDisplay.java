@@ -1,6 +1,6 @@
 package com.example.myapp.client.tree;
 
-import com.example.myapp.client.handler.NodeSelectHandler;
+import com.example.myapp.event.handler.NodeSelectHandler;
 import com.google.gwt.user.client.ui.IsWidget;
 
 public interface NodeTreeDisplay extends IsWidget {

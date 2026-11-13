@@ -1,5 +1,9 @@
 package com.example.myapp.client.editform;
 
+import com.example.myapp.event.CancelEvent;
+import com.example.myapp.event.SaveEvent;
+import com.example.myapp.event.handler.CancelHandler;
+import com.example.myapp.event.handler.SaveHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -42,6 +46,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
     private FlowPanel dataColumn;
     private FlowPanel wrapper;
     private Label header;
+
     private Button cancelButton;
     private Button saveButton;
 
@@ -182,7 +187,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
                 if (onCancel == null) {
                     return;
                 }
-                onCancel.onCancel();
+                onCancel.onCancel(new CancelEvent());
             }
         });
     }
@@ -194,7 +199,7 @@ public class NodeEditFormView extends Composite implements NodeEditFormDisplay {
                 if (onSave == null) {
                     return;
                 }
-                onSave.onSave(getFormData());
+                onSave.onSave(new SaveEvent(getFormData()));
             }
         });
     }

@@ -1,10 +1,15 @@
 package com.example.myapp.client.uipanel;
 
-import com.example.myapp.client.handler.AddChildClickHandler;
-import com.example.myapp.client.handler.AddRootClickHandler;
-import com.example.myapp.client.handler.AfterDeleteHandler;
-import com.example.myapp.client.handler.EditClickHandler;
-import com.example.myapp.client.handler.RefreshHandler;
+import com.example.myapp.event.AddChildClickEvent;
+import com.example.myapp.event.AddRootClickEvent;
+import com.example.myapp.event.AfterDeleteEvent;
+import com.example.myapp.event.EditClickEvent;
+import com.example.myapp.event.RefreshEvent;
+import com.example.myapp.event.handler.AddChildClickHandler;
+import com.example.myapp.event.handler.AddRootClickHandler;
+import com.example.myapp.event.handler.AfterDeleteHandler;
+import com.example.myapp.event.handler.EditClickHandler;
+import com.example.myapp.event.handler.RefreshHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -70,7 +75,7 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
                 if (onRefresh == null) {
                     return;
                 }
-                onRefresh.onRefresh();
+                onRefresh.onRefresh(new RefreshEvent());
             }
         });
     }
@@ -82,7 +87,7 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
                 if (onAddRootClick == null) {
                     return;
                 }
-                onAddRootClick.onAddRootClick();
+                onAddRootClick.onAddRootClick(new AddRootClickEvent());
             }
         });
     }
@@ -94,7 +99,7 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
                 if (onAddChildClick == null) {
                     return;
                 }
-                onAddChildClick.onAddChildClick();
+                onAddChildClick.onAddChildClick(new AddChildClickEvent());
             }
         });
     }
@@ -106,7 +111,7 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
                 if (onEditClick == null) {
                     return;
                 }
-                onEditClick.onEditClick();
+                onEditClick.onEditClick(new EditClickEvent());
             }
         });
     }
@@ -118,7 +123,7 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
                 if (onAfterDelete == null) {
                     return;
                 }
-                onAfterDelete.onAfterDelete();
+                onAfterDelete.onAfterDelete(new AfterDeleteEvent());
             }
         });
     }

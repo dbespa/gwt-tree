@@ -1,5 +1,7 @@
 package com.example.myapp.client.editform;
 
+import com.example.myapp.event.handler.CancelHandler;
+import com.example.myapp.event.handler.SaveHandler;
 import com.google.gwt.user.client.ui.IsWidget;
 
 public interface NodeEditFormDisplay extends IsWidget {
