@@ -18,6 +18,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 public class SelectedNodeFormPresenter {
 
+    private static final String ERROR_DATA = "Ошибка данных";
+
     private NodeRpcServiceAsync nodeRpcService;
     private EventBus eventBus;
 
@@ -25,8 +27,8 @@ public class SelectedNodeFormPresenter {
 
     public SelectedNodeFormPresenter(EventBus eventBus, SelectedNodeFormDisplay view) {
         nodeRpcService = TreeApp.getRpcService();
-
         this.eventBus = eventBus;
+
         this.view = view;
 
         bind();
@@ -68,7 +70,7 @@ public class SelectedNodeFormPresenter {
         container.add(view.asWidget());
     }
 
-    public void setSelectedNode(Long selectedNodeId) {
+    private void setSelectedNode(Long selectedNodeId) {
         if (selectedNodeId == null) {
             view.setSelectedNode(null);
             return;
@@ -86,7 +88,7 @@ public class SelectedNodeFormPresenter {
             public void onSuccess(NodeBean result) {
                 if (result == null) {
                     view.setSelectedNode(null);
-                    eventBus.fireEvent(new ErrorEvent("Ошибка данных"));
+                    eventBus.fireEvent(new ErrorEvent(ERROR_DATA));
                     return;
                 }
                 view.setSelectedNode(result);

@@ -16,6 +16,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 public class NodeTablePresenter {
 
+    private static final String ERROR_DATA = "Ошибка данных";
+
     private NodeRpcServiceAsync nodeRpcService;
     private EventBus eventBus;
 
@@ -31,15 +33,15 @@ public class NodeTablePresenter {
     }
 
     private void bind() {
-        eventBus.addHandler(AfterDeleteEvent.TYPE, new AfterDeleteHandler() {
-            public void onAfterDelete(AfterDeleteEvent afterDeleteEvent) {
+        eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
+            @Override
+            public void onRefresh(RefreshEvent refreshEvent) {
                 updateTable();
             }
         });
 
-        eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
-            @Override
-            public void onRefresh(RefreshEvent refreshEvent) {
+        eventBus.addHandler(AfterDeleteEvent.TYPE, new AfterDeleteHandler() {
+            public void onAfterDelete(AfterDeleteEvent afterDeleteEvent) {
                 updateTable();
             }
         });
@@ -64,7 +66,7 @@ public class NodeTablePresenter {
             public void onSuccess(List<NodeBean> result) {
                 if (result == null) {
                     view.setNodeList(null);
-                    eventBus.fireEvent(new ErrorEvent("Ошибка данных"));
+                    eventBus.fireEvent(new ErrorEvent(ERROR_DATA));
                     return;
                 }
                 view.setNodeList(result);

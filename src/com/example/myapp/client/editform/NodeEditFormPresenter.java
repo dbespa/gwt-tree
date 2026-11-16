@@ -21,6 +21,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class NodeEditFormPresenter {
 
+    private static final String ERROR_DATA = "Ошибка данных";
+
     private NodeRpcServiceAsync nodeRpcService;
     private EventBus eventBus;
 
@@ -32,9 +34,9 @@ public class NodeEditFormPresenter {
 
     public NodeEditFormPresenter(EventBus eventBus, NodeEditFormValidator validator, NodeEditFormDisplay view) {
         nodeRpcService = TreeApp.getRpcService();
-
         this.eventBus = eventBus;
         this.validator = validator;
+
         this.view = view;
 
         bind();
@@ -77,8 +79,7 @@ public class NodeEditFormPresenter {
 
                 if (node == null) {
                     view.setSelectedNode(null);
-                    String errorMessage = "Ошибка данных";
-                    eventBus.fireEvent(new ErrorEvent(errorMessage));
+                    eventBus.fireEvent(new ErrorEvent(ERROR_DATA));
                     return;
                 }
 
@@ -93,11 +94,11 @@ public class NodeEditFormPresenter {
         });
     }
 
-    public void setCreateRootMode() {
+    private void setCreateRootMode() {
         setCreateMode(null);
     }
 
-    public void setCreateChildMode(Long selectedNodeId) {
+    private void setCreateChildMode(Long selectedNodeId) {
         setCreateMode(selectedNodeId);
     }
 
@@ -107,7 +108,7 @@ public class NodeEditFormPresenter {
         view.showCreateForm();
     }
 
-    public void setEditNodeMode(final Long selectedNodeId) {
+    private void setEditNodeMode(final Long selectedNodeId) {
         nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -118,8 +119,7 @@ public class NodeEditFormPresenter {
             @Override
             public void onSuccess(NodeBean result) {
                 if (result == null) {
-                    String errorMessage = "Ошибка данных";
-                    eventBus.fireEvent(new ErrorEvent(errorMessage));
+                    eventBus.fireEvent(new ErrorEvent(ERROR_DATA));
                     return;
                 }
 
@@ -133,7 +133,7 @@ public class NodeEditFormPresenter {
     private void saveNodeBean(NodeBean nodeBean) {
         if (nodeBean == null) {
             view.setSelectedNode(null);
-            eventBus.fireEvent(new ErrorEvent("Ошибка данных"));
+            eventBus.fireEvent(new ErrorEvent(ERROR_DATA));
             return;
         }
 

@@ -98,7 +98,7 @@ public class TreeApp implements EntryPoint {
     }
 
     private void update() {
-        nodeTreePresenter.updateTree();
+        nodeTreePresenter.updateTree(null);
         nodeTablePresenter.updateTable();
     }
 }

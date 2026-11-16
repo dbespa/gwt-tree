@@ -39,30 +39,17 @@ public class UiPanelPresenter {
     }
 
     private void bind() {
-        eventBus.addHandler(NodeSelectEvent.TYPE, new NodeSelectHandler() {
-            @Override
-            public void onNodeSelect(NodeSelectEvent nodeSelectEvent) {
-                setSelectedNodeId(nodeSelectEvent.getSelectedNodeId());
-            }
-        });
-
-        eventBus.addHandler(AddRootClickEvent.TYPE, new AddRootClickHandler() {
-            @Override
-            public void onAddRootClick(AddRootClickEvent addRootEvent) {
-                setSelectedNodeId(null);
-            }
-        });
-
-        eventBus.addHandler(AfterDeleteEvent.TYPE, new AfterDeleteHandler() {
-            public void onAfterDelete(AfterDeleteEvent afterDeleteEvent) {
-                setSelectedNodeId(null);
-            }
-        });
-
         eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
             @Override
             public void onRefresh(RefreshEvent refreshEvent) {
                 setSelectedNodeId(refreshEvent.getSelectedNodeId());
+            }
+        });
+
+        eventBus.addHandler(NodeSelectEvent.TYPE, new NodeSelectHandler() {
+            @Override
+            public void onNodeSelect(NodeSelectEvent nodeSelectEvent) {
+                setSelectedNodeId(nodeSelectEvent.getSelectedNodeId());
             }
         });
 
@@ -76,6 +63,7 @@ public class UiPanelPresenter {
         view.setAddRootClickHandler(new AddRootClickHandler() {
             @Override
             public void onAddRootClick(AddRootClickEvent addRootEvent) {
+                setSelectedNodeId(null);
                 eventBus.fireEvent(addRootEvent);
             }
         });
@@ -106,7 +94,7 @@ public class UiPanelPresenter {
 
                     @Override
                     public void onSuccess(Void result) {
-                        view.setSelectedNodeId(null);
+                        setSelectedNodeId(null);
                         eventBus.fireEvent(afterDeleteEvent);
                     }
                 });
@@ -121,7 +109,7 @@ public class UiPanelPresenter {
         container.add(view.asWidget());
     }
 
-    public void setSelectedNodeId(Long id) {
+    private void setSelectedNodeId(Long id) {
         selectedId = id;
         view.setSelectedNodeId(id);
         view.setButtonsActive(id != null);

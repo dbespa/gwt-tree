@@ -20,12 +20,12 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 public class NodeTreePresenter {
 
+    private static final String ERROR_DATA = "Ошибка данных";
+
     private NodeRpcServiceAsync nodeRpcService;
     private EventBus eventBus;
 
     private NodeTreeDisplay view;
-
-    private Long selectedNodeId;
 
     public NodeTreePresenter(EventBus eventBus, NodeTreeDisplay view) {
         nodeRpcService = TreeApp.getRpcService();
@@ -37,44 +37,30 @@ public class NodeTreePresenter {
     }
 
     private void bind() {
-        eventBus.addHandler(NodeSelectEvent.TYPE, new NodeSelectHandler() {
+        eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
             @Override
-            public void onNodeSelect(NodeSelectEvent nodeSelectEvent) {
-                if (nodeSelectEvent.getSelectedNodeId() == null) {
-                    setSelectedNode(null);
-                }
+            public void onRefresh(RefreshEvent refreshEvent) {
+                updateTree(refreshEvent.getSelectedNodeId());
             }
         });
 
         eventBus.addHandler(AddRootClickEvent.TYPE, new AddRootClickHandler() {
             @Override
             public void onAddRootClick(AddRootClickEvent addRootEvent) {
-                setSelectedNode(null);
+                view.unselectOtherNodes(null);
             }
         });
 
         eventBus.addHandler(AfterDeleteEvent.TYPE, new AfterDeleteHandler() {
             public void onAfterDelete(AfterDeleteEvent afterDeleteEvent) {
-                setSelectedNode(null);
-                updateTree();
-            }
-        });
-
-        eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
-            @Override
-            public void onRefresh(RefreshEvent refreshEvent) {
-                updateTree();
-                setSelectedNode(refreshEvent.getSelectedNodeId());
+                updateTree(null);
             }
         });
 
         view.setNodeSelectHandler(new NodeSelectHandler() {
             @Override
             public void onNodeSelect(NodeSelectEvent nodeSelectEvent) {
-                Long selectedNodeId = nodeSelectEvent.getSelectedNodeId();
-                NodeTreePresenter.this.selectedNodeId = selectedNodeId;
-                view.unselectOtherNodes(selectedNodeId);
-
+                view.unselectOtherNodes(nodeSelectEvent.getSelectedNodeId());
                 eventBus.fireEvent(nodeSelectEvent);
             }
         });
@@ -87,19 +73,7 @@ public class NodeTreePresenter {
         container.add(view.asWidget());
     }
 
-    public Long getSelectedNodeId() {
-        return selectedNodeId;
-    }
-
-    public void setSelectedNode(Long selectedNodeId) {
-        this.selectedNodeId = selectedNodeId;
-
-        if (selectedNodeId == null) {
-            view.unselectOtherNodes(null);
-        }
-    }
-
-    public void updateTree() {
+    public void updateTree(final Long selectedNodeId) {
         nodeRpcService.getTree(new AsyncCallback<NodeTreeBean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -111,7 +85,7 @@ public class NodeTreePresenter {
             public void onSuccess(NodeTreeBean result) {
                 if (result == null) {
                     view.setTree(null);
-                    eventBus.fireEvent(new ErrorEvent("Ошибка данных"));
+                    eventBus.fireEvent(new ErrorEvent(ERROR_DATA));
                     return;
                 }
                 NodeTreeViewData convertedTree = convertTree(result);

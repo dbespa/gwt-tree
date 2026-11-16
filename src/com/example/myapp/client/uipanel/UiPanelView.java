@@ -53,7 +53,7 @@ public class UiPanelView extends Composite implements UiPanelDisplay {
         addChildButton = new Button(LABEL_ADD_CHILD);
         editButton = new Button(LABEL_EDIT);
         deleteButton = new Button(LABEL_DELETE);
-        selectedNodeLabel = new Label(LABEL_SELECTED_ID);
+        selectedNodeLabel = new Label(LABEL_SELECTED_ID + EMPTY_DATA);
 
         main.add(refreshButton);
         main.add(addRootButton);
