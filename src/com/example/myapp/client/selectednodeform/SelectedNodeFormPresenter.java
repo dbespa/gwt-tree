@@ -6,9 +6,11 @@ import com.example.myapp.event.AddRootClickEvent;
 import com.example.myapp.event.AfterDeleteEvent;
 import com.example.myapp.event.ErrorEvent;
 import com.example.myapp.event.NodeSelectEvent;
+import com.example.myapp.event.RefreshEvent;
 import com.example.myapp.event.handler.AddRootClickHandler;
 import com.example.myapp.event.handler.AfterDeleteHandler;
 import com.example.myapp.event.handler.NodeSelectHandler;
+import com.example.myapp.event.handler.RefreshHandler;
 import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -48,6 +50,13 @@ public class SelectedNodeFormPresenter {
         eventBus.addHandler(AfterDeleteEvent.TYPE, new AfterDeleteHandler() {
             public void onAfterDelete(AfterDeleteEvent afterDeleteEvent) {
                 setSelectedNode(null);
+            }
+        });
+
+        eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
+            @Override
+            public void onRefresh(RefreshEvent refreshEvent) {
+                setSelectedNode(refreshEvent.getSelectedNodeId());
             }
         });
     }

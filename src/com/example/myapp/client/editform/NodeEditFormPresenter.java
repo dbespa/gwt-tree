@@ -3,13 +3,17 @@ package com.example.myapp.client.editform;
 import com.example.myapp.client.StringUtils;
 import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
+import com.example.myapp.event.AddChildClickEvent;
 import com.example.myapp.event.AddRootClickEvent;
 import com.example.myapp.event.CancelEvent;
+import com.example.myapp.event.EditClickEvent;
 import com.example.myapp.event.ErrorEvent;
 import com.example.myapp.event.RefreshEvent;
 import com.example.myapp.event.SaveEvent;
+import com.example.myapp.event.handler.AddChildClickHandler;
 import com.example.myapp.event.handler.AddRootClickHandler;
 import com.example.myapp.event.handler.CancelHandler;
+import com.example.myapp.event.handler.EditClickHandler;
 import com.example.myapp.event.handler.SaveHandler;
 import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.event.shared.EventBus;
@@ -41,6 +45,20 @@ public class NodeEditFormPresenter {
             @Override
             public void onAddRootClick(AddRootClickEvent addRootEvent) {
                 setCreateRootMode();
+            }
+        });
+
+        eventBus.addHandler(AddChildClickEvent.TYPE, new AddChildClickHandler() {
+            @Override
+            public void onAddChildClick(AddChildClickEvent addChildClickEvent) {
+                setCreateChildMode(addChildClickEvent.getSelectedNodeId());
+            }
+        });
+
+        eventBus.addHandler(EditClickEvent.TYPE, new EditClickHandler() {
+            @Override
+            public void onEditClick(EditClickEvent editClickEvent) {
+                setEditNodeMode(editClickEvent.getSelectedNodeId());
             }
         });
 
@@ -119,7 +137,7 @@ public class NodeEditFormPresenter {
             return;
         }
 
-        nodeRpcService.save(nodeBean, new AsyncCallback<Void>() {
+        nodeRpcService.save(nodeBean, new AsyncCallback<NodeBean>() {
             @Override
             public void onFailure(Throwable caught) {
                 String errorMessage = "Ошибка отправки данных на сервер: " + caught.getLocalizedMessage();
@@ -127,11 +145,11 @@ public class NodeEditFormPresenter {
             }
 
             @Override
-            public void onSuccess(Void result) {
+            public void onSuccess(NodeBean result) {
                 view.setSelectedNode(null);
                 view.hide();
 
-                eventBus.fireEvent(new RefreshEvent());
+                eventBus.fireEvent(new RefreshEvent(result.getId()));
             }
         });
     }

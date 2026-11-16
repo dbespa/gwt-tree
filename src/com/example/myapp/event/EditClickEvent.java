@@ -7,8 +7,18 @@ public class EditClickEvent extends GwtEvent<EditClickHandler> {
 
     public static Type<EditClickHandler> TYPE = new Type<EditClickHandler>();
 
+    private Long selectedNodeId;
+
     public EditClickEvent() {
         // do nothing
+    }
+
+    public EditClickEvent(Long selectedNodeId) {
+        this.selectedNodeId = selectedNodeId;
+    }
+
+    public Long getSelectedNodeId() {
+        return selectedNodeId;
     }
 
     @Override

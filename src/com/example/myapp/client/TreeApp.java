@@ -15,12 +15,6 @@ import com.example.myapp.client.tree.NodeTreePresenter;
 import com.example.myapp.client.tree.NodeTreeView;
 import com.example.myapp.client.uipanel.UiPanelPresenter;
 import com.example.myapp.client.uipanel.UiPanelView;
-import com.example.myapp.event.AddChildClickEvent;
-import com.example.myapp.event.EditClickEvent;
-import com.example.myapp.event.RefreshEvent;
-import com.example.myapp.event.handler.AddChildClickHandler;
-import com.example.myapp.event.handler.EditClickHandler;
-import com.example.myapp.event.handler.RefreshHandler;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -43,7 +37,6 @@ public class TreeApp implements EntryPoint {
 
     public void onModuleLoad() {
         build();
-        bind();
         update();
     }
 
@@ -102,30 +95,6 @@ public class TreeApp implements EntryPoint {
         NodeEditFormView nodeEditFormView = new NodeEditFormView();
         NodeEditFormValidator nodeEditFormValidator = new NodeEditFormValidator();
         nodeEditFormPresenter = new NodeEditFormPresenter(eventBus, nodeEditFormValidator, nodeEditFormView);
-    }
-
-    private void bind() {
-        eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
-            @Override
-            public void onRefresh(RefreshEvent refreshEvent) {
-                selectedNodeFormPresenter.setSelectedNode(nodeTreePresenter.getSelectedNodeId());
-                update();
-            }
-        });
-
-        eventBus.addHandler(AddChildClickEvent.TYPE, new AddChildClickHandler() {
-            @Override
-            public void onAddChildClick(AddChildClickEvent addChildClickEvent) {
-                nodeEditFormPresenter.setCreateChildMode(nodeTreePresenter.getSelectedNodeId());
-            }
-        });
-
-        eventBus.addHandler(EditClickEvent.TYPE, new EditClickHandler() {
-            @Override
-            public void onEditClick(EditClickEvent editClickEvent) {
-                nodeEditFormPresenter.setEditNodeMode(nodeTreePresenter.getSelectedNodeId());
-            }
-        });
     }
 
     private void update() {

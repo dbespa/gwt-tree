@@ -7,8 +7,18 @@ public class AddChildClickEvent extends GwtEvent<AddChildClickHandler> {
 
     public static Type<AddChildClickHandler> TYPE = new Type<AddChildClickHandler>();
 
+    private Long selectedNodeId;
+
     public AddChildClickEvent() {
         // do nothing
+    }
+
+    public AddChildClickEvent(Long selectedNodeId) {
+        this.selectedNodeId = selectedNodeId;
+    }
+
+    public Long getSelectedNodeId() {
+        return selectedNodeId;
     }
 
     @Override

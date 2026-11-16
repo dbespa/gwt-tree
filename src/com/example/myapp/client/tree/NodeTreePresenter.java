@@ -8,9 +8,11 @@ import com.example.myapp.event.AddRootClickEvent;
 import com.example.myapp.event.AfterDeleteEvent;
 import com.example.myapp.event.ErrorEvent;
 import com.example.myapp.event.NodeSelectEvent;
+import com.example.myapp.event.RefreshEvent;
 import com.example.myapp.event.handler.AddRootClickHandler;
 import com.example.myapp.event.handler.AfterDeleteHandler;
 import com.example.myapp.event.handler.NodeSelectHandler;
+import com.example.myapp.event.handler.RefreshHandler;
 import com.example.myapp.shared.bean.NodeTreeBean;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -58,6 +60,14 @@ public class NodeTreePresenter {
             }
         });
 
+        eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
+            @Override
+            public void onRefresh(RefreshEvent refreshEvent) {
+                updateTree();
+                setSelectedNode(refreshEvent.getSelectedNodeId());
+            }
+        });
+
         view.setNodeSelectHandler(new NodeSelectHandler() {
             @Override
             public void onNodeSelect(NodeSelectEvent nodeSelectEvent) {
@@ -85,7 +95,7 @@ public class NodeTreePresenter {
         this.selectedNodeId = selectedNodeId;
 
         if (selectedNodeId == null) {
-            setAllNodesUnselected();
+            view.unselectOtherNodes(null);
         }
     }
 
@@ -134,10 +144,5 @@ public class NodeTreePresenter {
             convertedNode.addChild(convertTree(nodeBean));
         }
         return convertedNode;
-    }
-
-    public void setAllNodesUnselected() {
-        selectedNodeId = null;
-        view.unselectOtherNodes(null);
     }
 }

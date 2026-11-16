@@ -59,10 +59,17 @@ public class UiPanelPresenter {
             }
         });
 
+        eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
+            @Override
+            public void onRefresh(RefreshEvent refreshEvent) {
+                setSelectedNodeId(refreshEvent.getSelectedNodeId());
+            }
+        });
+
         view.setRefreshHandler(new RefreshHandler() {
             @Override
             public void onRefresh(RefreshEvent refreshEvent) {
-                eventBus.fireEvent(refreshEvent);
+                eventBus.fireEvent(new RefreshEvent(selectedId));
             }
         });
 
@@ -76,14 +83,14 @@ public class UiPanelPresenter {
         view.setAddChildClickHandler(new AddChildClickHandler() {
             @Override
             public void onAddChildClick(AddChildClickEvent addChildClickEvent) {
-                eventBus.fireEvent(addChildClickEvent);
+                eventBus.fireEvent(new AddChildClickEvent(selectedId));
             }
         });
 
         view.setEditClickHandler(new EditClickHandler() {
             @Override
             public void onEditClick(EditClickEvent editClickEvent) {
-                eventBus.fireEvent(editClickEvent);
+                eventBus.fireEvent(new EditClickEvent(selectedId));
             }
         });
 

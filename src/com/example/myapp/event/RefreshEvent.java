@@ -7,8 +7,18 @@ public class RefreshEvent extends GwtEvent<RefreshHandler> {
 
     public static Type<RefreshHandler> TYPE = new Type<RefreshHandler>();
 
+    private Long selectedNodeId;
+
     public RefreshEvent() {
         // do nothing
+    }
+
+    public RefreshEvent(Long selectedNodeId) {
+        this.selectedNodeId = selectedNodeId;
+    }
+
+    public Long getSelectedNodeId() {
+        return selectedNodeId;
     }
 
     @Override
