@@ -35,6 +35,9 @@ public class TreeApp implements EntryPoint {
 
     private MainWidget mainWidget;
 
+    //TODO mativ запоминать состояние дерева после изменений. Сейчас лоно всегда раскрывается полностью.
+    //TODO mativ синглетоны на клиенте и сервере. Почему они разные.
+
     public void onModuleLoad() {
         build();
         update();
