@@ -5,12 +5,10 @@ import java.util.List;
 import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.example.myapp.event.AddRootClickEvent;
-import com.example.myapp.event.AfterDeleteEvent;
 import com.example.myapp.event.ErrorEvent;
 import com.example.myapp.event.NodeSelectEvent;
 import com.example.myapp.event.RefreshEvent;
 import com.example.myapp.event.handler.AddRootClickHandler;
-import com.example.myapp.event.handler.AfterDeleteHandler;
 import com.example.myapp.event.handler.NodeSelectHandler;
 import com.example.myapp.event.handler.RefreshHandler;
 import com.example.myapp.shared.bean.NodeTreeBean;
@@ -48,12 +46,6 @@ public class NodeTreePresenter {
             @Override
             public void onAddRootClick(AddRootClickEvent addRootEvent) {
                 view.unselectOtherNodes(null);
-            }
-        });
-
-        eventBus.addHandler(AfterDeleteEvent.TYPE, new AfterDeleteHandler() {
-            public void onAfterDelete(AfterDeleteEvent afterDeleteEvent) {
-                updateTree(null);
             }
         });
 

@@ -4,10 +4,8 @@ import java.util.List;
 
 import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
-import com.example.myapp.event.AfterDeleteEvent;
 import com.example.myapp.event.ErrorEvent;
 import com.example.myapp.event.RefreshEvent;
-import com.example.myapp.event.handler.AfterDeleteHandler;
 import com.example.myapp.event.handler.RefreshHandler;
 import com.example.myapp.shared.bean.NodeBean;
 import com.google.gwt.event.shared.EventBus;
@@ -36,12 +34,6 @@ public class NodeTablePresenter {
         eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
             @Override
             public void onRefresh(RefreshEvent refreshEvent) {
-                updateTable();
-            }
-        });
-
-        eventBus.addHandler(AfterDeleteEvent.TYPE, new AfterDeleteHandler() {
-            public void onAfterDelete(AfterDeleteEvent afterDeleteEvent) {
                 updateTable();
             }
         });

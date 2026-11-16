@@ -95,7 +95,7 @@ public class UiPanelPresenter {
                     @Override
                     public void onSuccess(Void result) {
                         setSelectedNodeId(null);
-                        eventBus.fireEvent(afterDeleteEvent);
+                        eventBus.fireEvent(new RefreshEvent());
                     }
                 });
             }
