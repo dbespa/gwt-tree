@@ -3,10 +3,11 @@ package com.example.myapp.server.service;
 import java.util.List;
 
 import com.example.myapp.client.rpc.NodeRpcService;
+import com.example.myapp.server.MyBatisUtils;
 import com.example.myapp.server.NodeConverter;
 import com.example.myapp.server.NodeTreeBuilder;
 import com.example.myapp.server.dao.NodeDao;
-import com.example.myapp.server.dao.impl.NodeDaoDemo;
+import com.example.myapp.server.dao.impl.NodeDaoDatabase;
 import com.example.myapp.server.entity.NodeEntity;
 import com.example.myapp.shared.bean.NodeBean;
 import com.example.myapp.shared.bean.NodeTreeBean;
@@ -22,7 +23,7 @@ public class NodeRpcServiceImpl extends RemoteServiceServlet implements NodeRpcS
     private final NodeTreeBuilder nodeTreeBuilder;
 
     public NodeRpcServiceImpl() {
-        nodeDao = new NodeDaoDemo();
+        nodeDao = new NodeDaoDatabase(MyBatisUtils.getSqlSessionFactory());
         nodeConverter = new NodeConverter();
         nodeTreeBuilder = new NodeTreeBuilder();
     }

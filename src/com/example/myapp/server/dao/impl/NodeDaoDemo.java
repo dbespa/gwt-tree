@@ -95,10 +95,10 @@ public class NodeDaoDemo implements NodeDao {
         return editNode(node);
     }
 
-    private NodeEntity addNew(NodeEntity node) {
+    private NodeEntity addNew(NodeEntity newNode) {
         Long id = nextId();
-        node.setId(id);
-        demoNodes.add(node);
+        newNode.setId(id);
+        demoNodes.add(newNode);
         return getNodeById(id);
     }
 

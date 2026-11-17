@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.myapp.server.mapper.NodeMapper">
+    <select id="getAllNodes"
+        resultType="com.example.myapp.server.entity.NodeEntity">
+        SELECT id, parentId, "name", ip, port FROM nodes
+    </select>
+
+    <select id="getNodeById"
+        resultType="com.example.myapp.server.entity.NodeEntity">
+        SELECT id, parentId, "name", ip, port FROM nodes
+        WHERE
+        id=#{id}
+    </select>
+
+    <insert id="addNewNode"
+        parameterType="com.example.myapp.server.entity.NodeEntity"
+        useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO nodes (parentId,
+        "name", ip, port)
+        VALUES (#{parentId}, #{name}, #{ip}, #{port})
+    </insert>
+
+    <update id="editNode"
+        parameterType="com.example.myapp.server.entity.NodeEntity">
+        UPDATE nodes
+        SET name=#{name},
+        ip=#{ip},
+        port=#{port}
+        WHERE id={#id}
+    </update>
+
+    <delete id="deleteNode">
+        DELETE FROM nodes 
+        WHERE id={#id}
+    </delete>
+</mapper>
