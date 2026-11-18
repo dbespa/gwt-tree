@@ -1,6 +1,9 @@
 package com.example.myapp.client.tree;
 
+import java.util.Set;
+
 import com.example.myapp.event.handler.NodeSelectHandler;
+import com.example.myapp.event.handler.ToggleChildrenHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 
@@ -13,6 +16,7 @@ public class NodeTreeView extends Composite implements NodeTreeDisplay {
     private NodeTreeRowWidget virtualRoot;
 
     private NodeSelectHandler onNodeSelect;
+    private ToggleChildrenHandler onToggleChildren;
 
     public NodeTreeView() {
         build();
@@ -28,6 +32,10 @@ public class NodeTreeView extends Composite implements NodeTreeDisplay {
         this.onNodeSelect = onSelect;
     }
 
+    public void setToggleChildrenHandler(ToggleChildrenHandler onToggleChildren) {
+        this.onToggleChildren = onToggleChildren;
+    }
+
     public void setTree(NodeTreeViewData tree) {
         main.clear();
 
@@ -37,6 +45,7 @@ public class NodeTreeView extends Composite implements NodeTreeDisplay {
 
         virtualRoot = new NodeTreeRowWidget(tree);
         virtualRoot.setNodeSelectHandler(onNodeSelect);
+        virtualRoot.setToggleChildrenHandler(onToggleChildren);
         virtualRoot.removeCaption();
         main.add(virtualRoot);
     }
@@ -46,5 +55,12 @@ public class NodeTreeView extends Composite implements NodeTreeDisplay {
             return;
         }
         virtualRoot.unselectOtherNodes(selectedNodeId);
+    }
+
+    public void collapseNodes(Set<Long> collapsedNodes) {
+        if (virtualRoot == null) {
+            return;
+        }
+        virtualRoot.setCollapsedNodes(collapsedNodes);
     }
 }

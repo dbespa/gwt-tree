@@ -1,6 +1,8 @@
 package com.example.myapp.client.tree;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
@@ -8,9 +10,11 @@ import com.example.myapp.event.AddRootClickEvent;
 import com.example.myapp.event.ErrorEvent;
 import com.example.myapp.event.NodeSelectEvent;
 import com.example.myapp.event.RefreshEvent;
+import com.example.myapp.event.ToggleChildrenEvent;
 import com.example.myapp.event.handler.AddRootClickHandler;
 import com.example.myapp.event.handler.NodeSelectHandler;
 import com.example.myapp.event.handler.RefreshHandler;
+import com.example.myapp.event.handler.ToggleChildrenHandler;
 import com.example.myapp.shared.bean.NodeTreeBean;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -25,7 +29,11 @@ public class NodeTreePresenter {
 
     private NodeTreeDisplay view;
 
+    private Set<Long> collapsedNodes;
+
     public NodeTreePresenter(EventBus eventBus, NodeTreeDisplay view) {
+        collapsedNodes = new HashSet<>();
+
         nodeRpcService = TreeApp.getRpcService();
         this.eventBus = eventBus;
 
@@ -56,6 +64,20 @@ public class NodeTreePresenter {
                 eventBus.fireEvent(nodeSelectEvent);
             }
         });
+
+        view.setToggleChildrenHandler(new ToggleChildrenHandler() {
+            @Override
+            public void onToggleChildren(ToggleChildrenEvent toggleChildrenEvent) {
+                Long id = toggleChildrenEvent.getSelectedNodeId();
+                Boolean isCollapsed = toggleChildrenEvent.isCollapsed();
+
+                if (isCollapsed) {
+                    collapsedNodes.add(id);
+                } else {
+                    collapsedNodes.remove(id);
+                }
+            }
+        });
     }
 
     public void go(HasWidgets container) {
@@ -83,6 +105,7 @@ public class NodeTreePresenter {
                 NodeTreeViewData convertedTree = convertTree(result);
                 view.setTree(convertedTree);
                 view.unselectOtherNodes(selectedNodeId);
+                view.collapseNodes(collapsedNodes);
             }
         });
     }
