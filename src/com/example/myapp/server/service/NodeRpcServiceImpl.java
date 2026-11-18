@@ -24,7 +24,7 @@ public class NodeRpcServiceImpl extends RemoteServiceServlet implements NodeRpcS
 
     public NodeRpcServiceImpl() {
         nodeDao = new NodeDaoDatabase(MyBatisUtils.getSqlSessionFactory());
-        nodeConverter = new NodeConverter();
+        nodeConverter = NodeConverter.getInstance();
         nodeTreeBuilder = new NodeTreeBuilder();
     }
 

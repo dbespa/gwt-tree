@@ -8,8 +8,23 @@ import com.example.myapp.shared.bean.NodeBean;
 
 public class NodeConverter {
 
-    public NodeConverter() {
+    private static volatile NodeConverter instance;
+
+    private NodeConverter() {
         //do nothing
+    }
+
+    public static NodeConverter getInstance() {
+        NodeConverter result = instance;
+        if (result != null) {
+            return result;
+        }
+        synchronized (NodeConverter.class) {
+            if (instance == null) {
+                instance = new NodeConverter();
+            }
+            return instance;
+        }
     }
 
     public List<NodeBean> convertToNodeBeanList(List<NodeEntity> allNodes) {
