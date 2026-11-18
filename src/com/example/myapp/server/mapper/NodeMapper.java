@@ -12,7 +12,7 @@ public interface NodeMapper {
 
     void addNewNode(NodeEntity node);
 
-    void editNode(NodeEntity node);
+    NodeEntity editNode(NodeEntity node);
 
-    void deleteNode(Long id);
+    NodeEntity deleteNode(Long id);
 }

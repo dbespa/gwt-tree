@@ -57,16 +57,16 @@ public class NodeDaoDatabase implements NodeDao {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
             mapper.addNewNode(newNode);
             session.commit();
-            return getNodeById(newNode.getId());
+            return newNode;
         }
     }
 
     private NodeEntity editNode(NodeEntity newNode) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
-            mapper.editNode(newNode);
+            NodeEntity node = mapper.editNode(newNode);
             session.commit();
-            return getNodeById(newNode.getId());
+            return node;
         }
     }
 
@@ -74,8 +74,7 @@ public class NodeDaoDatabase implements NodeDao {
     public NodeEntity deleteNode(Long id) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
-            NodeEntity node = getNodeById(id);
-            mapper.deleteNode(id);
+            NodeEntity node = mapper.deleteNode(id);
             session.commit();
             return node;
         }

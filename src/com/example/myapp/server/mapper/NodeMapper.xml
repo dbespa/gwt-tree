@@ -5,12 +5,12 @@
 <mapper namespace="com.example.myapp.server.mapper.NodeMapper">
     <select id="getAllNodes"
         resultType="com.example.myapp.server.entity.NodeEntity">
-        SELECT id, parentId, "name", ip, port FROM nodes
+        SELECT id, parentId, name, ip, port FROM nodes
     </select>
 
     <select id="getNodeById"
         resultType="com.example.myapp.server.entity.NodeEntity">
-        SELECT id, parentId, "name", ip, port FROM nodes
+        SELECT id, parentId, name, ip, port FROM nodes
         WHERE
         id=#{id}
     </select>
@@ -19,21 +19,25 @@
         parameterType="com.example.myapp.server.entity.NodeEntity"
         useGeneratedKeys="true" keyProperty="id">
         INSERT INTO nodes (parentId,
-        "name", ip, port)
+        name, ip, port)
         VALUES (#{parentId}, #{name}, #{ip}, #{port})
     </insert>
 
-    <update id="editNode"
+    <select id="editNode"
         parameterType="com.example.myapp.server.entity.NodeEntity">
         UPDATE nodes
         SET name=#{name},
         ip=#{ip},
         port=#{port}
-        WHERE id={#id}
-    </update>
+        WHERE id=#{id}
+        RETURNING id, parentId, name, ip,
+        port
+    </select>
 
-    <delete id="deleteNode">
-        DELETE FROM nodes 
-        WHERE id={#id}
-    </delete>
+    <select id="deleteNode">
+        DELETE FROM nodes
+        WHERE id=#{id}
+        RETURNING id,
+        parentId, name, ip, port
+    </select>
 </mapper>
