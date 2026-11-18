@@ -3,23 +3,27 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.myapp.server.mapper.NodeMapper">
-    <select id="getAllNodes"
-        resultType="com.example.myapp.server.entity.NodeEntity">
-        SELECT id, parentId, name, ip, port FROM nodes
+    <select id="getAllNodes" resultType="com.example.myapp.server.entity.NodeEntity">
+        SELECT n.id,
+               n.parentId,
+               n.name,
+               n.ip,
+               n.port
+        FROM nodes n
     </select>
 
     <select id="getNodeById"
         resultType="com.example.myapp.server.entity.NodeEntity">
-        SELECT id, parentId, name, ip, port FROM nodes
-        WHERE
-        id=#{id}
+        SELECT id, parentId, name, ip, port 
+        FROM nodes
+        WHERE id=#{id}
     </select>
 
     <insert id="addNewNode"
         parameterType="com.example.myapp.server.entity.NodeEntity"
-        useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO nodes (parentId,
-        name, ip, port)
+        useGeneratedKeys="true" 
+        keyProperty="id">
+        INSERT INTO nodes (parentId, name, ip, port)
         VALUES (#{parentId}, #{name}, #{ip}, #{port})
     </insert>
 
@@ -27,17 +31,15 @@
         parameterType="com.example.myapp.server.entity.NodeEntity">
         UPDATE nodes
         SET name=#{name},
-        ip=#{ip},
-        port=#{port}
+            ip=#{ip},
+            port=#{port}
         WHERE id=#{id}
-        RETURNING id, parentId, name, ip,
-        port
+        RETURNING id, parentId, name, ip, port
     </select>
 
     <select id="deleteNode">
         DELETE FROM nodes
         WHERE id=#{id}
-        RETURNING id,
-        parentId, name, ip, port
+        RETURNING id, parentId, name, ip, port
     </select>
 </mapper>
