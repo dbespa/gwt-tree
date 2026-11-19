@@ -1,5 +1,6 @@
 package com.example.myapp.client.editform;
 
+import com.example.myapp.client.EventBusSingleton;
 import com.example.myapp.client.StringUtils;
 import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
@@ -16,7 +17,6 @@ import com.example.myapp.event.handler.CancelHandler;
 import com.example.myapp.event.handler.EditClickHandler;
 import com.example.myapp.event.handler.SaveHandler;
 import com.example.myapp.shared.bean.NodeBean;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class NodeEditFormPresenter {
@@ -24,7 +24,6 @@ public class NodeEditFormPresenter {
     private static final String ERROR_DATA = "Ошибка данных";
 
     private NodeRpcServiceAsync nodeRpcService;
-    private EventBus eventBus;
 
     private NodeEditFormDisplay view;
     private NodeEditFormValidator validator;
@@ -32,9 +31,8 @@ public class NodeEditFormPresenter {
     private Long currentNodeParentId;
     private Long currentNodeId;
 
-    public NodeEditFormPresenter(EventBus eventBus, NodeEditFormValidator validator, NodeEditFormDisplay view) {
+    public NodeEditFormPresenter(NodeEditFormValidator validator, NodeEditFormDisplay view) {
         nodeRpcService = TreeApp.getRpcService();
-        this.eventBus = eventBus;
         this.validator = validator;
 
         this.view = view;
@@ -43,21 +41,21 @@ public class NodeEditFormPresenter {
     }
 
     private void bind() {
-        eventBus.addHandler(AddRootClickEvent.TYPE, new AddRootClickHandler() {
+        EventBusSingleton.getInstance().addHandler(AddRootClickEvent.TYPE, new AddRootClickHandler() {
             @Override
             public void onAddRootClick(AddRootClickEvent addRootEvent) {
                 setCreateRootMode();
             }
         });
 
-        eventBus.addHandler(AddChildClickEvent.TYPE, new AddChildClickHandler() {
+        EventBusSingleton.getInstance().addHandler(AddChildClickEvent.TYPE, new AddChildClickHandler() {
             @Override
             public void onAddChildClick(AddChildClickEvent addChildClickEvent) {
                 setCreateChildMode(addChildClickEvent.getSelectedNodeId());
             }
         });
 
-        eventBus.addHandler(EditClickEvent.TYPE, new EditClickHandler() {
+        EventBusSingleton.getInstance().addHandler(EditClickEvent.TYPE, new EditClickHandler() {
             @Override
             public void onEditClick(EditClickEvent editClickEvent) {
                 setEditNodeMode(editClickEvent.getSelectedNodeId());
@@ -79,7 +77,7 @@ public class NodeEditFormPresenter {
 
                 if (node == null) {
                     view.setSelectedNode(null);
-                    eventBus.fireEvent(new ErrorEvent(ERROR_DATA));
+                    EventBusSingleton.getInstance().fireEvent(new ErrorEvent(ERROR_DATA));
                     return;
                 }
 
@@ -113,13 +111,13 @@ public class NodeEditFormPresenter {
             @Override
             public void onFailure(Throwable caught) {
                 String errorMessage = "Ошибка получения данных с сервера: " + caught.getLocalizedMessage();
-                eventBus.fireEvent(new ErrorEvent(errorMessage));
+                EventBusSingleton.getInstance().fireEvent(new ErrorEvent(errorMessage));
             }
 
             @Override
             public void onSuccess(NodeBean result) {
                 if (result == null) {
-                    eventBus.fireEvent(new ErrorEvent(ERROR_DATA));
+                    EventBusSingleton.getInstance().fireEvent(new ErrorEvent(ERROR_DATA));
                     return;
                 }
 
@@ -133,7 +131,7 @@ public class NodeEditFormPresenter {
     private void saveNodeBean(NodeBean nodeBean) {
         if (nodeBean == null) {
             view.setSelectedNode(null);
-            eventBus.fireEvent(new ErrorEvent(ERROR_DATA));
+            EventBusSingleton.getInstance().fireEvent(new ErrorEvent(ERROR_DATA));
             return;
         }
 
@@ -141,7 +139,7 @@ public class NodeEditFormPresenter {
             @Override
             public void onFailure(Throwable caught) {
                 String errorMessage = "Ошибка отправки данных на сервер: " + caught.getLocalizedMessage();
-                eventBus.fireEvent(new ErrorEvent(errorMessage));
+                EventBusSingleton.getInstance().fireEvent(new ErrorEvent(errorMessage));
             }
 
             @Override
@@ -149,7 +147,7 @@ public class NodeEditFormPresenter {
                 view.setSelectedNode(null);
                 view.hide();
 
-                eventBus.fireEvent(new RefreshEvent(result.getId()));
+                EventBusSingleton.getInstance().fireEvent(new RefreshEvent(result.getId()));
             }
         });
     }

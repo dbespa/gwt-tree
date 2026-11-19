@@ -1,5 +1,6 @@
 package com.example.myapp.client.uipanel;
 
+import com.example.myapp.client.EventBusSingleton;
 import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.example.myapp.event.AddChildClickEvent;
@@ -15,22 +16,19 @@ import com.example.myapp.event.handler.AfterDeleteHandler;
 import com.example.myapp.event.handler.EditClickHandler;
 import com.example.myapp.event.handler.NodeSelectHandler;
 import com.example.myapp.event.handler.RefreshHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 public class UiPanelPresenter {
 
     private NodeRpcServiceAsync nodeRpcService;
-    private EventBus eventBus;
 
     private UiPanelDisplay view;
 
     private Long selectedId;
 
-    public UiPanelPresenter(EventBus eventBus, UiPanelDisplay view) {
+    public UiPanelPresenter(UiPanelDisplay view) {
         nodeRpcService = TreeApp.getRpcService();
-        this.eventBus = eventBus;
 
         this.view = view;
         view.setButtonsActive(false);
@@ -39,14 +37,14 @@ public class UiPanelPresenter {
     }
 
     private void bind() {
-        eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
+        EventBusSingleton.getInstance().addHandler(RefreshEvent.TYPE, new RefreshHandler() {
             @Override
             public void onRefresh(RefreshEvent refreshEvent) {
                 setSelectedNodeId(refreshEvent.getSelectedNodeId());
             }
         });
 
-        eventBus.addHandler(NodeSelectEvent.TYPE, new NodeSelectHandler() {
+        EventBusSingleton.getInstance().addHandler(NodeSelectEvent.TYPE, new NodeSelectHandler() {
             @Override
             public void onNodeSelect(NodeSelectEvent nodeSelectEvent) {
                 setSelectedNodeId(nodeSelectEvent.getSelectedNodeId());
@@ -56,7 +54,7 @@ public class UiPanelPresenter {
         view.setRefreshHandler(new RefreshHandler() {
             @Override
             public void onRefresh(RefreshEvent refreshEvent) {
-                eventBus.fireEvent(new RefreshEvent(selectedId));
+                EventBusSingleton.getInstance().fireEvent(new RefreshEvent(selectedId));
             }
         });
 
@@ -64,21 +62,21 @@ public class UiPanelPresenter {
             @Override
             public void onAddRootClick(AddRootClickEvent addRootEvent) {
                 setSelectedNodeId(null);
-                eventBus.fireEvent(addRootEvent);
+                EventBusSingleton.getInstance().fireEvent(addRootEvent);
             }
         });
 
         view.setAddChildClickHandler(new AddChildClickHandler() {
             @Override
             public void onAddChildClick(AddChildClickEvent addChildClickEvent) {
-                eventBus.fireEvent(new AddChildClickEvent(selectedId));
+                EventBusSingleton.getInstance().fireEvent(new AddChildClickEvent(selectedId));
             }
         });
 
         view.setEditClickHandler(new EditClickHandler() {
             @Override
             public void onEditClick(EditClickEvent editClickEvent) {
-                eventBus.fireEvent(new EditClickEvent(selectedId));
+                EventBusSingleton.getInstance().fireEvent(new EditClickEvent(selectedId));
             }
         });
 
@@ -89,13 +87,13 @@ public class UiPanelPresenter {
                     @Override
                     public void onFailure(Throwable caught) {
                         String errorMessage = "Ошибка сервера: " + caught.getLocalizedMessage();
-                        eventBus.fireEvent(new ErrorEvent(errorMessage));
+                        EventBusSingleton.getInstance().fireEvent(new ErrorEvent(errorMessage));
                     }
 
                     @Override
                     public void onSuccess(Void result) {
                         setSelectedNodeId(null);
-                        eventBus.fireEvent(new RefreshEvent());
+                        EventBusSingleton.getInstance().fireEvent(new RefreshEvent());
                     }
                 });
             }

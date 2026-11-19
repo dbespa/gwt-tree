@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.example.myapp.client.EventBusSingleton;
 import com.example.myapp.client.TreeApp;
 import com.example.myapp.client.rpc.NodeRpcServiceAsync;
 import com.example.myapp.event.AddRootClickEvent;
@@ -16,7 +17,6 @@ import com.example.myapp.event.handler.NodeSelectHandler;
 import com.example.myapp.event.handler.RefreshHandler;
 import com.example.myapp.event.handler.ToggleChildrenHandler;
 import com.example.myapp.shared.bean.NodeTreeBean;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -25,17 +25,15 @@ public class NodeTreePresenter {
     private static final String ERROR_DATA = "Ошибка данных";
 
     private NodeRpcServiceAsync nodeRpcService;
-    private EventBus eventBus;
 
     private NodeTreeDisplay view;
 
     private Set<Long> collapsedNodes;
 
-    public NodeTreePresenter(EventBus eventBus, NodeTreeDisplay view) {
+    public NodeTreePresenter(NodeTreeDisplay view) {
         collapsedNodes = new HashSet<>();
 
         nodeRpcService = TreeApp.getRpcService();
-        this.eventBus = eventBus;
 
         this.view = view;
 
@@ -43,14 +41,14 @@ public class NodeTreePresenter {
     }
 
     private void bind() {
-        eventBus.addHandler(RefreshEvent.TYPE, new RefreshHandler() {
+        EventBusSingleton.getInstance().addHandler(RefreshEvent.TYPE, new RefreshHandler() {
             @Override
             public void onRefresh(RefreshEvent refreshEvent) {
                 updateTree(refreshEvent.getSelectedNodeId());
             }
         });
 
-        eventBus.addHandler(AddRootClickEvent.TYPE, new AddRootClickHandler() {
+        EventBusSingleton.getInstance().addHandler(AddRootClickEvent.TYPE, new AddRootClickHandler() {
             @Override
             public void onAddRootClick(AddRootClickEvent addRootEvent) {
                 view.unselectOtherNodes(null);
@@ -61,7 +59,7 @@ public class NodeTreePresenter {
             @Override
             public void onNodeSelect(NodeSelectEvent nodeSelectEvent) {
                 view.unselectOtherNodes(nodeSelectEvent.getSelectedNodeId());
-                eventBus.fireEvent(nodeSelectEvent);
+                EventBusSingleton.getInstance().fireEvent(nodeSelectEvent);
             }
         });
 
@@ -92,14 +90,14 @@ public class NodeTreePresenter {
             @Override
             public void onFailure(Throwable caught) {
                 String errorMessage = "Ошибка получения данных с сервера: " + caught.getLocalizedMessage();
-                eventBus.fireEvent(new ErrorEvent(errorMessage));
+                EventBusSingleton.getInstance().fireEvent(new ErrorEvent(errorMessage));
             }
 
             @Override
             public void onSuccess(NodeTreeBean result) {
                 if (result == null) {
                     view.setTree(null);
-                    eventBus.fireEvent(new ErrorEvent(ERROR_DATA));
+                    EventBusSingleton.getInstance().fireEvent(new ErrorEvent(ERROR_DATA));
                     return;
                 }
 

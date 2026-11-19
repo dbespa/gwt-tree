@@ -49,7 +49,6 @@ public class TreeApp implements EntryPoint {
 
     private void build() {
         nodeRpcService = (NodeRpcServiceAsync) GWT.create(NodeRpcService.class);
-        eventBus = EventBusSingleton.getEventBus();
 
         mainWidget = new MainWidget();
         errorMessageWidget = new ErrorMessageWidget();
@@ -67,7 +66,7 @@ public class TreeApp implements EntryPoint {
         NodeTreeView nodeTreeView = new NodeTreeView();
         FlowPanel treeContainer = mainWidget.getTreeContainer();
 
-        nodeTreePresenter = new NodeTreePresenter(eventBus, nodeTreeView);
+        nodeTreePresenter = new NodeTreePresenter(nodeTreeView);
         nodeTreePresenter.go(treeContainer);
     }
 
@@ -75,7 +74,7 @@ public class TreeApp implements EntryPoint {
         SelectedNodeFormView selectedNodeFormView = new SelectedNodeFormView();
         FlowPanel selectedNodeFormContainer = mainWidget.getSelectedNodeFormContainer();
 
-        selectedNodeFormPresenter = new SelectedNodeFormPresenter(eventBus, selectedNodeFormView);
+        selectedNodeFormPresenter = new SelectedNodeFormPresenter(selectedNodeFormView);
         selectedNodeFormPresenter.go(selectedNodeFormContainer);
     }
 
@@ -83,7 +82,7 @@ public class TreeApp implements EntryPoint {
         UiPanelView uiPanelView = new UiPanelView();
         FlowPanel uiPanelContainer = mainWidget.getUiPanelContainer();
 
-        uiPanelPresenter = new UiPanelPresenter(eventBus, uiPanelView);
+        uiPanelPresenter = new UiPanelPresenter(uiPanelView);
         uiPanelPresenter.go(uiPanelContainer);
     }
 
@@ -91,14 +90,14 @@ public class TreeApp implements EntryPoint {
         NodeTableView nodeTableView = new NodeTableView();
         FlowPanel tableContainer = mainWidget.getTableContainer();
 
-        nodeTablePresenter = new NodeTablePresenter(eventBus, nodeTableView);
+        nodeTablePresenter = new NodeTablePresenter(nodeTableView);
         nodeTablePresenter.go(tableContainer);
     }
 
     private void buildEditForm() {
         NodeEditFormView nodeEditFormView = new NodeEditFormView();
         NodeEditFormValidator nodeEditFormValidator = new NodeEditFormValidator();
-        nodeEditFormPresenter = new NodeEditFormPresenter(eventBus, nodeEditFormValidator, nodeEditFormView);
+        nodeEditFormPresenter = new NodeEditFormPresenter(nodeEditFormValidator, nodeEditFormView);
     }
 
     private void update() {
