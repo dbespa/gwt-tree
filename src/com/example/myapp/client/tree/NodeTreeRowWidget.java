@@ -64,29 +64,6 @@ public class NodeTreeRowWidget extends Composite {
         main.add(children);
     }
 
-    private void bind() {
-        toggleButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                toggleChildren();
-            }
-        });
-    }
-
-    private void toggleChildren() {
-        if (childrenContainer == null) {
-            return;
-        }
-
-        Boolean childrenIsVisible = childrenContainer.isVisible();
-        String toggleIcon = childrenIsVisible ? BUTTON_EXPAND : BUTTON_COLLAPSE;
-        toggleButton.setText(toggleIcon);
-
-        childrenContainer.setVisible(!childrenIsVisible);
-
-        onToggleChildren.onToggleChildren(new ToggleChildrenEvent(id, childrenIsVisible));
-    }
-
     private FlowPanel createNodeRow(NodeTreeViewData node) {
         FlowPanel resultNodeRow = new FlowPanel();
         resultNodeRow.addStyleName(STYLE_TREE_ROW);
@@ -112,6 +89,29 @@ public class NodeTreeRowWidget extends Composite {
         panel.add(indent);
         panel.add(childrenContainer);
         return panel;
+    }
+
+    private void bind() {
+        toggleButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                toggleChildren();
+            }
+        });
+    }
+
+    private void toggleChildren() {
+        if (childrenContainer == null) {
+            return;
+        }
+
+        Boolean childrenIsVisible = childrenContainer.isVisible();
+        String toggleIcon = childrenIsVisible ? BUTTON_EXPAND : BUTTON_COLLAPSE;
+        toggleButton.setText(toggleIcon);
+
+        childrenContainer.setVisible(!childrenIsVisible);
+
+        onToggleChildren.onToggleChildren(new ToggleChildrenEvent(id, childrenIsVisible));
     }
 
     private void fillChildrenWidgets(NodeTreeViewData node) {
@@ -142,14 +142,19 @@ public class NodeTreeRowWidget extends Composite {
         }
     }
 
-    public void setNodeSelectHandler(NodeSelectHandler onSelect) {
+    public void setNodeSelectHandler(final NodeSelectHandler onSelect) {
         if (clickRegistration != null) {
             clickRegistration.removeHandler();
         }
 
         this.onNodeSelect = onSelect;
 
-        setChildrenNodeSelectHandler(onSelect);
+        traversal(new NodeAction() {
+            @Override
+            public void action(NodeTreeRowWidget treeRowWidget) {
+                treeRowWidget.setNodeSelectHandler(onSelect);
+            }
+        });
 
         if (nodeRow == null) {
             return;
@@ -168,28 +173,9 @@ public class NodeTreeRowWidget extends Composite {
         }, ClickEvent.getType());
     }
 
-    public void setToggleChildrenHandler(ToggleChildrenHandler onToggleChildren) {
+    public void setToggleChildrenHandler(final ToggleChildrenHandler onToggleChildren) {
         this.onToggleChildren = onToggleChildren;
 
-        setChildrenToggleChildrenHandler(onToggleChildren);
-    }
-
-    private void setChildrenNodeSelectHandler(final NodeSelectHandler onSelect) {
-        if (childrenContainer == null) {
-            return;
-        }
-        traversal(new NodeAction() {
-            @Override
-            public void action(NodeTreeRowWidget treeRowWidget) {
-                treeRowWidget.setNodeSelectHandler(onSelect);
-            }
-        });
-    }
-
-    private void setChildrenToggleChildrenHandler(final ToggleChildrenHandler onToggleChildren) {
-        if (childrenContainer == null) {
-            return;
-        }
         traversal(new NodeAction() {
             @Override
             public void action(NodeTreeRowWidget treeRowWidget) {
@@ -198,7 +184,17 @@ public class NodeTreeRowWidget extends Composite {
         });
     }
 
-    public void setSelected(Boolean isSelected) {
+    public void unselectOtherNodes(final Long selectedNodeId) {
+        setSelected(id.equals(selectedNodeId));
+        traversal(new NodeAction() {
+            @Override
+            public void action(NodeTreeRowWidget treeRowWidget) {
+                treeRowWidget.unselectOtherNodes(selectedNodeId);
+            }
+        });
+    }
+
+    private void setSelected(Boolean isSelected) {
         if (nodeRow == null) {
             return;
         }
@@ -210,33 +206,9 @@ public class NodeTreeRowWidget extends Composite {
         }
     }
 
-    public void unselectOtherNodes(Long selectedNodeId) {
-        setSelected(id.equals(selectedNodeId));
-        unselectChildren(selectedNodeId);
-    }
-
-    private void unselectChildren(final Long selectedNodeId) {
-        if (childrenContainer == null) {
-            return;
-        }
-        traversal(new NodeAction() {
-            @Override
-            public void action(NodeTreeRowWidget treeRowWidget) {
-                treeRowWidget.unselectOtherNodes(selectedNodeId);
-            }
-        });
-    }
-
-    public void setCollapsedNodes(Set<Long> collapsedNodes) {
+    public void setCollapsedNodes(final Set<Long> collapsedNodes) {
         if (collapsedNodes.contains(id)) {
             toggleChildren();
-        }
-        setChildrenCollapsedNodes(collapsedNodes);
-    }
-
-    private void setChildrenCollapsedNodes(final Set<Long> collapsedNodes) {
-        if (childrenContainer == null) {
-            return;
         }
         traversal(new NodeAction() {
             @Override
