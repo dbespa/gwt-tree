@@ -33,6 +33,7 @@ public class TreeApp implements EntryPoint {
     private UiPanelPresenter uiPanelPresenter;
     private NodeEditFormPresenter nodeEditFormPresenter;
 
+    private ErrorMessageWidget errorMessageWidget;
     private MainWidget mainWidget;
 
     //TODO mativ запоминать состояние дерева после изменений. Сейчас лоно всегда раскрывается полностью.
@@ -52,7 +53,8 @@ public class TreeApp implements EntryPoint {
         eventBus = new SimpleEventBus();
 
         mainWidget = new MainWidget();
-        ErrorMessageWidget errorMessageWidget = new ErrorMessageWidget(eventBus);
+        errorMessageWidget = new ErrorMessageWidget();
+        errorMessageWidget.setEventBus(eventBus);
 
         RootPanel.get().add(mainWidget);
         buildTree();

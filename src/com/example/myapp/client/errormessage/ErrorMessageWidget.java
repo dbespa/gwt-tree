@@ -14,13 +14,18 @@ public class ErrorMessageWidget {
 
     private EventBus eventBus;
 
-    public ErrorMessageWidget(EventBus eventBus) {
-        this.eventBus = eventBus;
-
+    public ErrorMessageWidget() {
         errorPopup = new PopupPanel(true);
         errorMessageLabel = new Label();
-
         errorPopup.setWidget(errorMessageLabel);
+    }
+
+    public void setEventBus(EventBus eventBus) {
+        this.eventBus = eventBus;
+
+        if (eventBus == null) {
+            return;
+        }
 
         this.eventBus.addHandler(ErrorEvent.TYPE, new ErrorHandler() {
             @Override
