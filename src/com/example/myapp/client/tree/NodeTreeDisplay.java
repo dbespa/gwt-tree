@@ -16,5 +16,5 @@ public interface NodeTreeDisplay extends IsWidget {
 
     void unselectOtherNodes(Long selectedNodeId);
 
-    public void collapseNodes(Set<Long> collapsedNodes);
+    void collapseNodes(Set<Long> collapsedNodes);
 }

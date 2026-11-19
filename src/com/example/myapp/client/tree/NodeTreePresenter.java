@@ -16,6 +16,7 @@ import com.example.myapp.event.handler.NodeSelectHandler;
 import com.example.myapp.event.handler.RefreshHandler;
 import com.example.myapp.event.handler.ToggleChildrenHandler;
 import com.example.myapp.shared.bean.NodeTreeBean;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -102,8 +103,13 @@ public class NodeTreePresenter {
                     eventBus.fireEvent(new ErrorEvent(ERROR_DATA));
                     return;
                 }
+
                 NodeTreeViewData convertedTree = convertTree(result);
                 view.setTree(convertedTree);
+
+                Set<Long> currentIds = getCurrentIds(result);
+                collapsedNodes.retainAll(currentIds);
+
                 view.unselectOtherNodes(selectedNodeId);
                 view.collapseNodes(collapsedNodes);
             }
@@ -124,14 +130,26 @@ public class NodeTreePresenter {
 
         NodeTreeViewData convertedNode = convertToNodeViewData(node);
 
-        if (node.isEmpty()) {
-            return convertedNode;
-        }
-
         List<NodeTreeBean> children = node.getChildren();
         for (NodeTreeBean nodeBean : children) {
             convertedNode.addChild(convertTree(nodeBean));
         }
         return convertedNode;
+    }
+
+    private Set<Long> getCurrentIds(NodeTreeBean node) {
+        Set<Long> currentIds = new HashSet<>();
+
+        Long id = node.getId();
+        if (id != null) {
+            currentIds.add(id);
+        }
+
+        List<NodeTreeBean> children = node.getChildren();
+        for (NodeTreeBean nodeBean : children) {
+            currentIds.addAll(getCurrentIds(nodeBean));
+        }
+
+        return currentIds;
     }
 }

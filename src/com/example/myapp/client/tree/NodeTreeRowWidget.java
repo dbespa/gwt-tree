@@ -96,6 +96,8 @@ public class NodeTreeRowWidget extends Composite {
             @Override
             public void onClick(ClickEvent event) {
                 toggleChildren();
+                Boolean childrenIsCollapsed = !childrenContainer.isVisible();
+                onToggleChildren.onToggleChildren(new ToggleChildrenEvent(id, childrenIsCollapsed));
             }
         });
     }
@@ -110,8 +112,6 @@ public class NodeTreeRowWidget extends Composite {
         toggleButton.setText(toggleIcon);
 
         childrenContainer.setVisible(!childrenIsVisible);
-
-        onToggleChildren.onToggleChildren(new ToggleChildrenEvent(id, childrenIsVisible));
     }
 
     private void fillChildrenWidgets(NodeTreeViewData node) {
@@ -186,6 +186,7 @@ public class NodeTreeRowWidget extends Composite {
 
     public void unselectOtherNodes(final Long selectedNodeId) {
         setSelected(id.equals(selectedNodeId));
+
         traversal(new NodeAction() {
             @Override
             public void action(NodeTreeRowWidget treeRowWidget) {
@@ -210,6 +211,7 @@ public class NodeTreeRowWidget extends Composite {
         if (collapsedNodes.contains(id)) {
             toggleChildren();
         }
+
         traversal(new NodeAction() {
             @Override
             public void action(NodeTreeRowWidget treeRowWidget) {
