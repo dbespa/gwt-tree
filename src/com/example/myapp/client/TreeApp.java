@@ -18,7 +18,6 @@ import com.example.myapp.client.uipanel.UiPanelView;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -50,7 +49,7 @@ public class TreeApp implements EntryPoint {
 
     private void build() {
         nodeRpcService = (NodeRpcServiceAsync) GWT.create(NodeRpcService.class);
-        eventBus = new SimpleEventBus();
+        eventBus = EventBusSingleton.getEventBus();
 
         mainWidget = new MainWidget();
         errorMessageWidget = new ErrorMessageWidget();

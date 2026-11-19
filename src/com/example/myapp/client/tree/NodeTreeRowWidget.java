@@ -96,6 +96,9 @@ public class NodeTreeRowWidget extends Composite {
             @Override
             public void onClick(ClickEvent event) {
                 toggleChildren();
+                if (childrenContainer == null) {
+                    return;
+                }
                 Boolean childrenIsCollapsed = !childrenContainer.isVisible();
                 onToggleChildren.onToggleChildren(new ToggleChildrenEvent(id, childrenIsCollapsed));
             }

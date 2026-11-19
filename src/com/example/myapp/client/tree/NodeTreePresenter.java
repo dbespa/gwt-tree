@@ -16,7 +16,6 @@ import com.example.myapp.event.handler.NodeSelectHandler;
 import com.example.myapp.event.handler.RefreshHandler;
 import com.example.myapp.event.handler.ToggleChildrenHandler;
 import com.example.myapp.shared.bean.NodeTreeBean;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
