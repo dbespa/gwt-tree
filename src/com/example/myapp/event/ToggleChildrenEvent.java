@@ -19,7 +19,7 @@ public class ToggleChildrenEvent extends GwtEvent<ToggleChildrenHandler> {
         this.isCollapsed = isCollapsed;
     }
 
-    public Long getSelectedNodeId() {
+    public Long getToggledNodeId() {
         return id;
     }
 

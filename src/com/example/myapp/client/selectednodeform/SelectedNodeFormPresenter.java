@@ -59,15 +59,15 @@ public class SelectedNodeFormPresenter {
     }
 
     private void setSelectedNode(Long selectedNodeId) {
+        view.setSelectedNode(null);
+
         if (selectedNodeId == null) {
-            view.setSelectedNode(null);
             return;
         }
 
         nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
             @Override
             public void onFailure(Throwable caught) {
-                view.setSelectedNode(null);
                 String errorMessage = "Ошибка получения данных с сервера: " + caught.getLocalizedMessage();
                 EventBusSingleton.getInstance().fireEvent(new ErrorEvent(errorMessage));
             }
@@ -75,7 +75,6 @@ public class SelectedNodeFormPresenter {
             @Override
             public void onSuccess(NodeBean result) {
                 if (result == null) {
-                    view.setSelectedNode(null);
                     EventBusSingleton.getInstance().fireEvent(new ErrorEvent(ERROR_DATA));
                     return;
                 }

@@ -66,7 +66,7 @@ public class NodeTreePresenter {
         view.setToggleChildrenHandler(new ToggleChildrenHandler() {
             @Override
             public void onToggleChildren(ToggleChildrenEvent toggleChildrenEvent) {
-                Long id = toggleChildrenEvent.getSelectedNodeId();
+                Long id = toggleChildrenEvent.getToggledNodeId();
                 Boolean isCollapsed = toggleChildrenEvent.isCollapsed();
 
                 if (isCollapsed) {
@@ -86,6 +86,8 @@ public class NodeTreePresenter {
     }
 
     public void updateTree(final Long selectedNodeId) {
+        clear();
+
         nodeRpcService.getTree(new AsyncCallback<NodeTreeBean>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -96,7 +98,6 @@ public class NodeTreePresenter {
             @Override
             public void onSuccess(NodeTreeBean result) {
                 if (result == null) {
-                    view.setTree(null);
                     EventBusSingleton.getInstance().fireEvent(new ErrorEvent(ERROR_DATA));
                     return;
                 }
@@ -115,6 +116,12 @@ public class NodeTreePresenter {
                 view.collapseNodes(collapsedNodes);
             }
         });
+    }
+
+    private void clear() {
+        view.setTree(null);
+        view.unselectOtherNodes(null);
+        collapsedNodes.clear();
     }
 
     private NodeTreeViewData convertToNodeViewData(NodeTreeBean node) {

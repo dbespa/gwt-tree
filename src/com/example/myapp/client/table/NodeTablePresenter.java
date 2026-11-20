@@ -45,6 +45,8 @@ public class NodeTablePresenter {
     }
 
     public void updateTable() {
+        view.setNodeList(null);
+
         nodeRpcService.getAllNodes(new AsyncCallback<List<NodeBean>>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -55,7 +57,6 @@ public class NodeTablePresenter {
             @Override
             public void onSuccess(List<NodeBean> result) {
                 if (result == null) {
-                    view.setNodeList(null);
                     EventBusSingleton.getInstance().fireEvent(new ErrorEvent(ERROR_DATA));
                     return;
                 }

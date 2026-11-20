@@ -96,8 +96,8 @@ public class NodeEditFormPresenter {
         setCreateMode(null);
     }
 
-    private void setCreateChildMode(Long selectedNodeId) {
-        setCreateMode(selectedNodeId);
+    private void setCreateChildMode(Long parentNodeId) {
+        setCreateMode(parentNodeId);
     }
 
     private void setCreateMode(Long parentNodeId) {
@@ -107,6 +107,9 @@ public class NodeEditFormPresenter {
     }
 
     private void setEditNodeMode(final Long selectedNodeId) {
+        currentNodeParentId = null;
+        currentNodeId = null;
+
         nodeRpcService.getNodeById(selectedNodeId, new AsyncCallback<NodeBean>() {
             @Override
             public void onFailure(Throwable caught) {
