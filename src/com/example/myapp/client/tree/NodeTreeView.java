@@ -61,6 +61,11 @@ public class NodeTreeView extends Composite implements NodeTreeDisplay {
         if (virtualRoot == null) {
             return;
         }
-        virtualRoot.setCollapsedNodes(collapsedNodes);
+
+        if (collapsedNodes.isEmpty()) {
+            return;
+        }
+
+        virtualRoot.collapseNodes(collapsedNodes);
     }
 }

@@ -19,19 +19,17 @@ public class NodeRpcServiceImpl extends RemoteServiceServlet implements NodeRpcS
 
     private final NodeDao nodeDao;
 
-    private final NodeConverter nodeConverter;
     private final NodeTreeBuilder nodeTreeBuilder;
 
     public NodeRpcServiceImpl() {
         nodeDao = new NodeDaoDatabase(MyBatisUtils.getSqlSessionFactory());
-        nodeConverter = NodeConverter.getInstance();
         nodeTreeBuilder = new NodeTreeBuilder();
     }
 
     @Override
     public List<NodeBean> getAllNodes() {
         List<NodeEntity> allNodes = nodeDao.getAllNodes();
-        return nodeConverter.convertToNodeBeanList(allNodes);
+        return NodeConverter.getInstance().convertToNodeBeanList(allNodes);
     }
 
     @Override
@@ -43,7 +41,7 @@ public class NodeRpcServiceImpl extends RemoteServiceServlet implements NodeRpcS
     @Override
     public NodeBean getNodeById(Long id) {
         NodeEntity node = nodeDao.getNodeById(id);
-        return nodeConverter.convertToNodeBean(node);
+        return NodeConverter.getInstance().convertToNodeBean(node);
     }
 
     @Override
@@ -53,8 +51,8 @@ public class NodeRpcServiceImpl extends RemoteServiceServlet implements NodeRpcS
 
     @Override
     public NodeBean save(NodeBean node) {
-        NodeEntity nodeEntity = nodeConverter.convertToNodeEntity(node);
+        NodeEntity nodeEntity = NodeConverter.getInstance().convertToNodeEntity(node);
         NodeEntity savedNode = nodeDao.save(nodeEntity);
-        return nodeConverter.convertToNodeBean(savedNode);
+        return NodeConverter.getInstance().convertToNodeBean(savedNode);
     }
 }

@@ -210,7 +210,11 @@ public class NodeTreeRowWidget extends Composite {
         }
     }
 
-    public void setCollapsedNodes(final Set<Long> collapsedNodes) {
+    public void collapseNodes(final Set<Long> collapsedNodes) {
+        if (collapsedNodes.isEmpty()) {
+            return;
+        }
+
         if (collapsedNodes.contains(id)) {
             toggleChildren();
         }
@@ -218,7 +222,7 @@ public class NodeTreeRowWidget extends Composite {
         traversal(new NodeAction() {
             @Override
             public void action(NodeTreeRowWidget treeRowWidget) {
-                treeRowWidget.setCollapsedNodes(collapsedNodes);
+                treeRowWidget.collapseNodes(collapsedNodes);
             }
         });
     }

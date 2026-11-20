@@ -104,10 +104,14 @@ public class NodeTreePresenter {
                 NodeTreeViewData convertedTree = convertTree(result);
                 view.setTree(convertedTree);
 
+                view.unselectOtherNodes(selectedNodeId);
+
+                if (collapsedNodes.isEmpty()) {
+                    return;
+                }
+
                 Set<Long> currentIds = getCurrentIds(result);
                 collapsedNodes.retainAll(currentIds);
-
-                view.unselectOtherNodes(selectedNodeId);
                 view.collapseNodes(collapsedNodes);
             }
         });

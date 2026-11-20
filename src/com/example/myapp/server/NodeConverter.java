@@ -19,6 +19,7 @@ public class NodeConverter {
         if (result != null) {
             return result;
         }
+
         synchronized (NodeConverter.class) {
             if (instance == null) {
                 instance = new NodeConverter();
